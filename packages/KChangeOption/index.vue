@@ -5,7 +5,9 @@
         <a-col :span="9"
           ><a-input v-model="val.label" placeholder="名称"
         /></a-col>
-        <a-col :span="9"><a-input v-model="val.value" placeholder="值"/></a-col>
+        <a-col :span="9"
+          ><a-input v-model="val.value" placeholder="值"
+        /></a-col>
         <a-col :span="6"
           ><div @click="handleDelete(index)" class="option-delete-box">
             <a-icon type="delete" /></div
@@ -17,11 +19,27 @@
     <a-row v-if="type === 'rules'" :gutter="8">
       <span v-for="(val, index) in value" :key="index">
         <div class="option-change-box" v-if="index !== 0">
-          <a-col :span="18"
-            ><a-input v-model="val.message" placeholder="提示信息"
+          <a-col v-if="val.hasOwnProperty('min')" :span="18">
+            <a-input-number
+              addonBefore="最小"
+              placeholder="最小"
+              v-model="val.min"
+              :precision="0"
+            ></a-input-number>
+          </a-col>
+          <a-col v-if="val.hasOwnProperty('max')" :span="18">
+            <a-input-number
+              addonBefore="最小"
+              placeholder="最大"
+              v-model="val.max"
+              :precision="0"
+            ></a-input-number>
+          </a-col>
+          <a-col v-if="val.hasOwnProperty('pattern')" :span="18"
+            ><a-input v-model="val.pattern" placeholder="正则表达式pattern"
           /></a-col>
           <a-col :span="18"
-            ><a-input v-model="val.pattern" placeholder="正则表达式pattern"
+            ><a-input v-model="val.message" placeholder="提示信息"
           /></a-col>
           <a-col :span="6"
             ><div @click="handleDelete(index)" class="option-delete-box">
@@ -29,13 +47,22 @@
           ></a-col>
         </div>
       </span>
-      <a-col :span="24"><a @click="handleAddRules">增加校验</a></a-col>
+      <a-col :span="12"
+        ><a @click="handleAddRules({ pattern: '', message: '' })"
+          >增加正则校验</a
+        ></a-col
+      >
+      <a-col :span="12"
+        ><a @click="handleAddRules({ min: 0, max: 999, message: '' })"
+          >增加长度校验</a
+        ></a-col
+      >
     </a-row>
     <a-row v-else-if="type === 'colspan'" :gutter="8">
       <div class="option-change-box" v-for="(val, index) in value" :key="index">
         <a-col :span="18"
           ><a-input-number
-            style="width:100%"
+            style="width: 100%"
             :max="24"
             v-model="val.span"
             placeholder="名称"
@@ -56,7 +83,7 @@
  * description 修改多选、下拉、单选等控件options的组件，添加移除校验规制的组件
  */
 export default {
-  name: "KChangeOption",
+  name: 'KChangeOption',
   props: {
     value: {
       type: Array,
@@ -64,7 +91,7 @@ export default {
     },
     type: {
       type: String,
-      default: "option"
+      default: 'option'
     }
   },
   methods: {
@@ -74,11 +101,11 @@ export default {
         ...this.value,
         {
           value: `${this.value.length + 1}`,
-          label: "选项" + (this.value.length + 1),
-          list: this.type === "tab" ? [] : undefined
+          label: '选项' + (this.value.length + 1),
+          list: this.type === 'tab' ? [] : undefined
         }
       ];
-      this.$emit("input", addData);
+      this.$emit('input', addData);
     },
     handleAddCol() {
       // 添加栅格Col
@@ -89,22 +116,26 @@ export default {
           list: []
         }
       ];
-      this.$emit("input", addData);
+      this.$emit('input', addData);
     },
-    handleAddRules() {
-      const addData = [
-        ...this.value,
-        {
-          pattern: "",
-          message: ""
-        }
-      ];
-      this.$emit("input", addData);
+    // handleAddRules() {
+    //   const addData = [
+    //     ...this.value,
+    //     {
+    //       pattern: '',
+    //       message: ''
+    //     }
+    //   ];
+    //   this.$emit('input', addData);
+    // },
+    handleAddRules(rule) {
+      const addData = [...this.value, rule];
+      this.$emit('input', addData);
     },
     handleDelete(deleteIndex) {
       // 删除
       this.$emit(
-        "input",
+        'input',
         this.value.filter((val, index) => index !== deleteIndex)
       );
     }
