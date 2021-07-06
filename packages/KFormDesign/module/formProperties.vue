@@ -85,7 +85,7 @@
           </div>
         </a-form-item>
         <a-form-item label="预览模态框宽度">
-          <a-input-number style="width:100%;" v-model="previewOptions.width" />
+          <a-input-number style="width: 100%" v-model="previewOptions.width" />
         </a-form-item>
         <a-form-item label="表单CSS">
           <a-textarea v-model="config.customStyle" />
@@ -93,9 +93,10 @@
         <a-form-item label="表单属性">
           <kCheckbox v-model="config.hideRequiredMark" label="隐藏必选标记" />
         </a-form-item>
-        <a-form-item label="提示">
-          实际预览效果请点击预览查看
+        <a-form-item label="mounted()">
+          <a-textarea v-model="config.mounted" placeholder="{}" autosize />
         </a-form-item>
+        <a-form-item label="提示"> 实际预览效果请点击预览查看 </a-form-item>
       </a-form>
     </div>
   </div>
@@ -106,9 +107,9 @@
  * date 2019-11-20
  * description 表单属性设置面板组件
  */
-import kCheckbox from "../../KCheckbox/index.vue";
+import kCheckbox from '../../KCheckbox/index.vue';
 export default {
-  name: "formProperties",
+  name: 'formProperties',
   components: {
     kCheckbox
   },
@@ -124,10 +125,21 @@ export default {
   },
   methods: {
     handleChangeCol(e) {
-      this.config.labelCol.xs = this.config.labelCol.sm = this.config.labelCol.md = this.config.labelCol.lg = this.config.labelCol.xl = this.config.labelCol.xxl = e;
+      this.config.labelCol.xs =
+        this.config.labelCol.sm =
+        this.config.labelCol.md =
+        this.config.labelCol.lg =
+        this.config.labelCol.xl =
+        this.config.labelCol.xxl =
+          e;
 
-      this.config.wrapperCol.xs = this.config.wrapperCol.sm = this.config.wrapperCol.md = this.config.wrapperCol.lg = this.config.wrapperCol.xl = this.config.wrapperCol.xxl =
-        24 - e;
+      this.config.wrapperCol.xs =
+        this.config.wrapperCol.sm =
+        this.config.wrapperCol.md =
+        this.config.wrapperCol.lg =
+        this.config.wrapperCol.xl =
+        this.config.wrapperCol.xxl =
+          24 - e;
     }
   }
 };
