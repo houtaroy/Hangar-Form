@@ -125,21 +125,10 @@ export default {
   },
   methods: {
     handleChangeCol(e) {
-      this.config.labelCol.xs =
-        this.config.labelCol.sm =
-        this.config.labelCol.md =
-        this.config.labelCol.lg =
-        this.config.labelCol.xl =
-        this.config.labelCol.xxl =
-          e;
+      this.config.labelCol.xs = this.config.labelCol.sm = this.config.labelCol.md = this.config.labelCol.lg = this.config.labelCol.xl = this.config.labelCol.xxl = e;
 
-      this.config.wrapperCol.xs =
-        this.config.wrapperCol.sm =
-        this.config.wrapperCol.md =
-        this.config.wrapperCol.lg =
-        this.config.wrapperCol.xl =
-        this.config.wrapperCol.xxl =
-          24 - e;
+      this.config.wrapperCol.xs = this.config.wrapperCol.sm = this.config.wrapperCol.md = this.config.wrapperCol.lg = this.config.wrapperCol.xl = this.config.wrapperCol.xxl =
+        24 - e;
     }
   }
 };
