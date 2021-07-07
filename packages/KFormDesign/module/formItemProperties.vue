@@ -558,6 +558,20 @@
         >
           <a-input v-model="options.addonAfter" placeholder="请输入" />
         </a-form-item>
+        <a-form-item v-if="options.hasOwnProperty('events')" label="事件">
+          <a-button @click="eventModalFlag = true">设置</a-button>
+          <a-modal
+            v-model="eventModalFlag"
+            title="方法"
+            @ok="eventModalFlag = false"
+          >
+            <h-event
+              v-model="options.events"
+              :methods="eventMethods"
+              :maskClosable="false"
+            ></h-event>
+          </a-modal>
+        </a-form-item>
       </a-form>
     </div>
   </div>
@@ -570,6 +584,7 @@
  */
 import KChangeOption from '../../KChangeOption/index.vue';
 import kCheckbox from '../../KCheckbox/index.vue';
+import HEvent from '../../HEvent';
 
 export default {
   name: 'formItemProperties',
@@ -644,18 +659,30 @@ export default {
           value: '9pt',
           label: '小五'
         }
-      ]
+      ],
+      eventModalFlag: false
     };
   },
   computed: {
     options() {
       return this.selectItem.options || {};
+    },
+    eventMethods() {
+      return this.formMethods.filter(method => {
+        return method.name !== 'mounted';
+      });
     }
   },
   props: {
     selectItem: {
       type: Object,
       required: true
+    },
+    formMethods: {
+      type: Array,
+      default: function() {
+        return [];
+      }
     },
     hideModel: {
       type: Boolean,
@@ -664,7 +691,8 @@ export default {
   },
   components: {
     KChangeOption,
-    kCheckbox
+    kCheckbox,
+    HEvent
   }
 };
 </script>

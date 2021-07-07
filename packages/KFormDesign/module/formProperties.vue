@@ -93,8 +93,15 @@
         <a-form-item label="表单属性">
           <kCheckbox v-model="config.hideRequiredMark" label="隐藏必选标记" />
         </a-form-item>
-        <a-form-item label="mounted()">
-          <a-textarea v-model="config.mounted" placeholder="{}" autosize />
+        <a-form-item label="方法">
+          <a-button @click="methodModalFlag = true">设置</a-button>
+          <a-modal
+            v-model="methodModalFlag"
+            title="方法"
+            @ok="methodModalFlag = false"
+          >
+            <h-method v-model="config.methods" :maskClosable="false"></h-method>
+          </a-modal>
         </a-form-item>
         <a-form-item label="提示"> 实际预览效果请点击预览查看 </a-form-item>
       </a-form>
@@ -108,10 +115,13 @@
  * description 表单属性设置面板组件
  */
 import kCheckbox from '../../KCheckbox/index.vue';
+import HMethod from '../../HMethod';
+
 export default {
   name: 'formProperties',
   components: {
-    kCheckbox
+    kCheckbox,
+    HMethod
   },
   props: {
     config: {
@@ -123,7 +133,16 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      methodModalFlag: false
+    };
+  },
   methods: {
+    test() {
+      console.log('我进来了');
+      this.$refs.code.showHint();
+    },
     handleChangeCol(e) {
       this.config.labelCol.xs = this.config.labelCol.sm = this.config.labelCol.md = this.config.labelCol.lg = this.config.labelCol.xl = this.config.labelCol.xxl = e;
 

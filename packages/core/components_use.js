@@ -4,7 +4,7 @@
  *
  * 当需要更多组件依赖时，在该文件加入即可
  */
-import Vue from "vue";
+import Vue from 'vue';
 import {
   ConfigProvider,
   Layout,
@@ -39,16 +39,16 @@ import {
   Collapse,
   Cascader,
   TreeSelect
-} from "ant-design-vue";
-import vcolorpicker from "vcolorpicker";
+} from 'ant-design-vue';
+import vcolorpicker from 'vcolorpicker';
 
-import KBatch from "../KBatch";
-import KSelectInputList from "../KSelectInputList";
-import KEditor from "../KEditor";
-import UploadFile from "../UploadFile";
-import UploadImg from "../UploadImg";
-import KDatePicker from "../KDatePicker";
-import KTimePicker from "../KTimePicker";
+import KBatch from '../KBatch';
+import KSelectInputList from '../KSelectInputList';
+import KEditor from '../KEditor';
+import UploadFile from '../UploadFile';
+import UploadImg from '../UploadImg';
+import KDatePicker from '../KDatePicker';
+import KTimePicker from '../KTimePicker';
 
 export default {
   input: Input,

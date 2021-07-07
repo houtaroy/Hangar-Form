@@ -1,0 +1,515 @@
+{
+	"list": [
+		{
+			"type": "grid",
+			"label": "栅格布局",
+			"columns": [
+				{
+					"span": 12,
+					"list": [
+						{
+							"type": "input",
+							"label": "输入框",
+							"icon": "icon-write",
+							"options": {
+								"type": "text",
+								"width": "100%",
+								"defaultValue": "",
+								"placeholder": "请输入",
+								"clearable": true,
+								"maxLength": null,
+								"addonBefore": "",
+								"addonAfter": "",
+								"hidden": false,
+								"disabled": false
+							},
+							"model": "input_1625624184608",
+							"key": "input_1625624184608",
+							"help": "",
+							"rules": [
+								{
+									"required": true,
+									"message": "必填项"
+								}
+							]
+						},
+						{
+							"type": "input",
+							"label": "输入框",
+							"icon": "icon-write",
+							"options": {
+								"type": "text",
+								"width": "100%",
+								"defaultValue": "",
+								"placeholder": "请输入",
+								"clearable": false,
+								"maxLength": null,
+								"addonBefore": "",
+								"addonAfter": "",
+								"hidden": false,
+								"disabled": false
+							},
+							"model": "input_1625624187341",
+							"key": "input_1625624187341",
+							"help": "",
+							"rules": [
+								{
+									"required": false,
+									"message": "必填项"
+								},
+								{
+									"pattern": "111",
+									"message": "111"
+								}
+							]
+						}
+					]
+				},
+				{
+					"span": 12,
+					"list": [
+						{
+							"type": "textarea",
+							"label": "文本框",
+							"icon": "icon-edit",
+							"options": {
+								"width": "100%",
+								"minRows": 4,
+								"maxRows": 6,
+								"maxLength": null,
+								"defaultValue": "",
+								"clearable": false,
+								"hidden": false,
+								"disabled": false,
+								"placeholder": "请输入"
+							},
+							"model": "textarea_1625624188841",
+							"key": "textarea_1625624188841",
+							"help": "",
+							"rules": [
+								{
+									"required": false,
+									"message": "必填项"
+								}
+							]
+						}
+					]
+				}
+			],
+			"options": {
+				"gutter": 0
+			},
+			"key": "grid_1625624163074"
+		},
+		{
+			"type": "grid",
+			"label": "栅格布局",
+			"columns": [
+				{
+					"span": 24,
+					"list": [
+						{
+							"type": "tabs",
+							"label": "标签页布局",
+							"icon": "icon-tabs",
+							"options": {
+								"tabBarGutter": null,
+								"type": "line",
+								"tabPosition": "top",
+								"size": "default",
+								"animated": true
+							},
+							"columns": [
+								{
+									"value": "1",
+									"label": "选项1",
+									"list": [
+										{
+											"type": "number",
+											"label": "数字输入框",
+											"icon": "icon-number",
+											"options": {
+												"width": "100%",
+												"defaultValue": 0,
+												"min": null,
+												"max": null,
+												"precision": null,
+												"step": 1,
+												"hidden": false,
+												"disabled": false,
+												"placeholder": "请输入"
+											},
+											"model": "number_1625624195507",
+											"key": "number_1625624195507",
+											"help": "",
+											"rules": [
+												{
+													"required": false,
+													"message": "必填项"
+												}
+											]
+										},
+										{
+											"type": "select",
+											"label": "下拉选择器",
+											"icon": "icon-xiala",
+											"options": {
+												"width": "100%",
+												"multiple": false,
+												"disabled": false,
+												"clearable": false,
+												"hidden": false,
+												"placeholder": "请选择",
+												"dynamicKey": "",
+												"dynamic": false,
+												"options": [
+													{
+														"value": "1",
+														"label": "下拉框1"
+													},
+													{
+														"value": "2",
+														"label": "下拉框2"
+													}
+												],
+												"showSearch": false
+											},
+											"model": "select_1625624204295",
+											"key": "select_1625624204295",
+											"help": "",
+											"rules": [
+												{
+													"required": false,
+													"message": "必填项"
+												}
+											]
+										}
+									]
+								},
+								{
+									"value": "2",
+									"label": "选项2",
+									"list": [
+										{
+											"type": "checkbox",
+											"label": "多选框",
+											"icon": "icon-duoxuan1",
+											"options": {
+												"disabled": false,
+												"hidden": false,
+												"defaultValue": [],
+												"dynamicKey": "",
+												"dynamic": false,
+												"options": [
+													{
+														"value": "1",
+														"label": "选项1"
+													},
+													{
+														"value": "2",
+														"label": "选项2"
+													},
+													{
+														"value": "3",
+														"label": "选项3"
+													}
+												]
+											},
+											"model": "checkbox_1625624211475",
+											"key": "checkbox_1625624211475",
+											"help": "",
+											"rules": [
+												{
+													"required": false,
+													"message": "必填项"
+												}
+											]
+										},
+										{
+											"type": "radio",
+											"label": "单选框",
+											"icon": "icon-danxuan-cuxiantiao",
+											"options": {
+												"disabled": false,
+												"hidden": false,
+												"defaultValue": "",
+												"dynamicKey": "",
+												"dynamic": false,
+												"options": [
+													{
+														"value": "1",
+														"label": "选项1"
+													},
+													{
+														"value": "2",
+														"label": "选项2"
+													},
+													{
+														"value": "3",
+														"label": "选项3"
+													}
+												]
+											},
+											"model": "radio_1625624213358",
+											"key": "radio_1625624213358",
+											"help": "",
+											"rules": [
+												{
+													"required": false,
+													"message": "必填项"
+												}
+											]
+										}
+									]
+								}
+							],
+							"key": "tabs_1625624174391"
+						}
+					]
+				}
+			],
+			"options": {
+				"gutter": 0
+			},
+			"key": "grid_1625624149307"
+		},
+		{
+			"type": "table",
+			"label": "表格布局",
+			"trs": [
+				{
+					"tds": [
+						{
+							"colspan": 1,
+							"rowspan": 1,
+							"list": [
+								{
+									"type": "date",
+									"label": "日期选择框",
+									"icon": "icon-calendar",
+									"options": {
+										"width": "100%",
+										"defaultValue": "",
+										"rangeDefaultValue": [],
+										"range": false,
+										"showTime": false,
+										"disabled": false,
+										"hidden": false,
+										"clearable": false,
+										"placeholder": "请选择",
+										"rangePlaceholder": [
+											"开始时间",
+											"结束时间"
+										],
+										"format": "YYYY-MM-DD"
+									},
+									"model": "date_1625624222674",
+									"key": "date_1625624222674",
+									"help": "",
+									"rules": [
+										{
+											"required": false,
+											"message": "必填项"
+										}
+									]
+								},
+								{
+									"type": "time",
+									"label": "时间选择框",
+									"icon": "icon-time",
+									"options": {
+										"width": "100%",
+										"defaultValue": "",
+										"disabled": false,
+										"hidden": false,
+										"clearable": false,
+										"placeholder": "请选择",
+										"format": "HH:mm:ss"
+									},
+									"model": "time_1625624224776",
+									"key": "time_1625624224776",
+									"help": "",
+									"rules": [
+										{
+											"required": false,
+											"message": "必填项"
+										}
+									]
+								}
+							]
+						},
+						{
+							"colspan": 1,
+							"rowspan": 1,
+							"list": [
+								{
+									"type": "treeSelect",
+									"label": "树选择器",
+									"icon": "icon-tree",
+									"options": {
+										"disabled": false,
+										"multiple": false,
+										"hidden": false,
+										"clearable": false,
+										"showSearch": false,
+										"treeCheckable": false,
+										"placeholder": "请选择",
+										"dynamicKey": "",
+										"dynamic": true,
+										"options": [
+											{
+												"value": "1",
+												"label": "选项1",
+												"children": [
+													{
+														"value": "11",
+														"label": "选项11"
+													}
+												]
+											},
+											{
+												"value": "2",
+												"label": "选项2",
+												"children": [
+													{
+														"value": "22",
+														"label": "选项22"
+													}
+												]
+											}
+										]
+									},
+									"model": "treeSelect_1625624232141",
+									"key": "treeSelect_1625624232141",
+									"help": "",
+									"rules": [
+										{
+											"required": false,
+											"message": "必填项"
+										}
+									]
+								},
+								{
+									"type": "cascader",
+									"label": "级联选择器",
+									"icon": "icon-guanlian",
+									"options": {
+										"disabled": false,
+										"hidden": false,
+										"showSearch": false,
+										"placeholder": "请选择",
+										"clearable": false,
+										"dynamicKey": "",
+										"dynamic": true,
+										"options": [
+											{
+												"value": "1",
+												"label": "选项1",
+												"children": [
+													{
+														"value": "11",
+														"label": "选项11"
+													}
+												]
+											},
+											{
+												"value": "2",
+												"label": "选项2",
+												"children": [
+													{
+														"value": "22",
+														"label": "选项22"
+													}
+												]
+											}
+										]
+									},
+									"model": "cascader_1625624234757",
+									"key": "cascader_1625624234757",
+									"help": "",
+									"rules": [
+										{
+											"required": false,
+											"message": "必填项"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"tds": [
+						{
+							"colspan": 1,
+							"rowspan": 1,
+							"list": [
+								{
+									"type": "text",
+									"label": "文字",
+									"icon": "icon-zihao",
+									"options": {
+										"textAlign": "left",
+										"hidden": false,
+										"showRequiredMark": false,
+										"color": "rgb(0, 0, 0)",
+										"fontFamily": "SimHei",
+										"fontSize": "16pt"
+									},
+									"key": "text_1625624242175"
+								}
+							]
+						},
+						{
+							"colspan": 1,
+							"rowspan": 1,
+							"list": [
+								{
+									"type": "html",
+									"label": "HTML",
+									"icon": "icon-ai-code",
+									"options": {
+										"hidden": false,
+										"defaultValue": "<strong>HTML</strong>"
+									},
+									"key": "html_1625624243974"
+								}
+							]
+						}
+					]
+				}
+			],
+			"options": {
+				"width": "100%",
+				"bordered": true,
+				"bright": false,
+				"small": true,
+				"customStyle": ""
+			},
+			"key": "table_1625624180057"
+		}
+	],
+	"config": {
+		"layout": "horizontal",
+		"labelCol": {
+			"xs": 4,
+			"sm": 4,
+			"md": 4,
+			"lg": 4,
+			"xl": 4,
+			"xxl": 4
+		},
+		"labelWidth": 100,
+		"labelLayout": "flex",
+		"wrapperCol": {
+			"xs": 18,
+			"sm": 18,
+			"md": 18,
+			"lg": 18,
+			"xl": 18,
+			"xxl": 18
+		},
+		"hideRequiredMark": false,
+		"customStyle": ""
+	}
+}
