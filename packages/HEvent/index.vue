@@ -17,15 +17,26 @@
         </a-row>
       </div>
     </a-col>
-    <a-col :span="18">
-      <a-select v-if="selected">
-        <a-select-option
-          v-for="method in methods"
-          :key="method.name"
-          :value="method.name"
-          >{{ method.name }}</a-select-option
-        >
-      </a-select>
+    <a-col v-if="selected" :span="18">
+      <a-form-model
+        v-model="selected"
+        :label-col="labelCol"
+        :wrapper-col="wrapperCol"
+      >
+        <a-form-model-item label="事件名称">
+          <a-input v-model="selected.name"></a-input>
+        </a-form-model-item>
+        <a-form-model-item label="事件方法">
+          <a-select v-model="selected.methodName">
+            <a-select-option
+              v-for="method in methods"
+              :key="method.name"
+              :value="method.name"
+              >{{ method.name }}</a-select-option
+            >
+          </a-select>
+        </a-form-model-item>
+      </a-form-model>
     </a-col>
   </a-row>
 </template>
@@ -35,13 +46,15 @@ export default {
   props: ['value', 'methods'],
   data() {
     return {
+      labelCol: { span: 2 },
+      wrapperCol: { span: 22 },
       data: this.value,
       selected: null
     };
   },
   computed: {
     nextEventName() {
-      return 'event' + (this.data.length + 1);
+      return 'event_' + (this.data.length + 1);
     }
   },
   methods: {
@@ -49,7 +62,7 @@ export default {
       this.data.push(
         Object.assign({
           name: this.nextEventName,
-          funcName: ''
+          methodName: ''
         })
       );
     },

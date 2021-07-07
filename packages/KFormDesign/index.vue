@@ -297,7 +297,13 @@ export default {
           wrapperCol: { xs: 18, sm: 18, md: 18, lg: 18, xl: 18, xxl: 18 },
           hideRequiredMark: false,
           customStyle: '',
-          methods: []
+          methods: [
+            {
+              name: 'mounted',
+              arguments: '',
+              body: ''
+            }
+          ]
         }
       },
       previewOptions: {

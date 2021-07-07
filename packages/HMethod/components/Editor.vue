@@ -1,10 +1,16 @@
 <template>
   <a-form-model :model="data" :label-col="labelCol" :wrapper-col="wrapperCol">
     <a-form-model-item label="方法名称">
-      <a-input v-model="data.name"></a-input>
+      <a-input
+        v-model="data.name"
+        :disabled="data.name === 'mounted'"
+      ></a-input>
     </a-form-model-item>
     <a-form-model-item label="方法参数">
-      <a-input v-model="data.arguments"></a-input>
+      <a-input
+        v-model="data.arguments"
+        :disabled="data.name === 'mounted'"
+      ></a-input>
     </a-form-model-item>
     <a-form-model-item label="方法内容">
       <div>{{ data.name }} ({{ data.arguments }}) {</div>
