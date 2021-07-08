@@ -1,20 +1,17 @@
 module.exports = {
   presets: [
-    "@vue/app",
+    '@vue/app',
     // 兼容配置
     [
-      "@babel/preset-env",
+      '@babel/preset-env',
       {
-        useBuiltIns: "entry"
+        useBuiltIns: 'entry'
       }
     ]
   ],
   // 按需加载
   plugins: [
-    "@babel/plugin-proposal-class-properties",
-    [
-      "import",
-      { libraryName: "ant-design-vue", libraryDirectory: "es", style: true }
-    ]
+    '@babel/plugin-proposal-class-properties',
+    ['import', { libraryName: 'ant-design-vue', libraryDirectory: 'es', style: true }]
   ]
 };

@@ -2,18 +2,18 @@
  * @Descripttion:
  * @Author: kcz
  * @Date: 2021-05-02 16:04:02
- * @LastEditors: kcz
- * @LastEditTime: 2021-05-21 13:55:46
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-08 14:30:30
  */
 // 引入@babel/polyfill处理兼容
-import "@babel/polyfill";
+import '@babel/polyfill';
 
-import Vue from "vue";
-import App from "./App.vue";
-import router from "./router/";
+import Vue from 'vue';
+import App from './App.vue';
+import router from './router/';
 
-import KFormDesign from "../packages/index";
-import Cmp from "./components/CustomComponent/index.vue";
+import KFormDesign from '../packages/index';
+import Cmp from './components/CustomComponent/index.vue';
 // const Cmp = {
 //   name: "cmp",
 //   render: function(h) {
@@ -21,36 +21,36 @@ import Cmp from "./components/CustomComponent/index.vue";
 //   }
 // };
 KFormDesign.setFormDesignConfig({
-  title: "测试自定义字段",
+  title: '测试自定义字段',
   list: [
     {
-      type: "demo", // 表单类型
-      label: "自定义组件", // 标题文字
-      icon: "icon-gallery",
+      type: 'demo', // 表单类型
+      label: '自定义组件', // 标题文字
+      icon: 'icon-gallery',
       component: Cmp,
       options: {
         defaultValue: undefined,
         multiple: false,
         disabled: false,
-        width: "100%",
+        width: '100%',
         clearable: true,
-        placeholder: "请选择",
+        placeholder: '请选择',
         showSearch: false
       },
-      model: "",
-      key: "",
+      model: '',
+      key: '',
       rules: [
         {
           required: false,
-          message: "必填项"
+          message: '必填项'
         }
       ]
     }
   ],
-  uploadFile: "",
-  uploadImage: "",
-  uploadFileName: "",
-  uploadImageName: "",
+  uploadFile: '',
+  uploadImage: '',
+  uploadFileName: '',
+  uploadImageName: '',
   uploadFileData: { data: 1545 },
   uploadImageData: { data: 1545 },
   uploadFileHeaders: { data: 1545 },
@@ -70,4 +70,4 @@ Vue.config.productionTip = false;
 new Vue({
   router,
   render: h => h(App)
-}).$mount("#app");
+}).$mount('#app');
