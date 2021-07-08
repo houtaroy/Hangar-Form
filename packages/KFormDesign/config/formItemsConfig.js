@@ -46,7 +46,8 @@ export const basicsList = [
       clearable: false,
       hidden: false, // 是否隐藏，false显示，true隐藏
       disabled: false,
-      placeholder: '请输入'
+      placeholder: '请输入',
+      events: []
     },
     model: '', // 数据字段
     key: '',
@@ -71,7 +72,8 @@ export const basicsList = [
       step: 1, // 步长，点击加减按钮时候，加减多少
       hidden: false, // 是否隐藏，false显示，true隐藏
       disabled: false, //是否禁用
-      placeholder: '请输入'
+      placeholder: '请输入',
+      events: []
     },
     model: '', // 数据字段
     key: '',
@@ -108,7 +110,8 @@ export const basicsList = [
           label: '下拉框2'
         }
       ],
-      showSearch: false // 是否显示搜索框，搜索选择的项的值，而不是文字
+      showSearch: false, // 是否显示搜索框，搜索选择的项的值，而不是文字
+      events: []
     },
     model: '',
     key: '',
@@ -143,7 +146,8 @@ export const basicsList = [
           value: '3',
           label: '选项3'
         }
-      ]
+      ],
+      events: []
     },
     model: '',
     key: '',
@@ -178,7 +182,8 @@ export const basicsList = [
           value: '3',
           label: '选项3'
         }
-      ]
+      ],
+      events: []
     },
     model: '',
     key: '',
@@ -205,7 +210,8 @@ export const basicsList = [
       clearable: false, // 是否显示清除按钮
       placeholder: '请选择',
       rangePlaceholder: ['开始时间', '结束时间'],
-      format: 'YYYY-MM-DD' // 展示格式  （请按照这个规则写 YYYY-MM-DD HH:mm:ss，区分大小写）
+      format: 'YYYY-MM-DD', // 展示格式  （请按照这个规则写 YYYY-MM-DD HH:mm:ss，区分大小写）
+      events: []
     },
     model: '',
     key: '',
@@ -228,7 +234,8 @@ export const basicsList = [
       hidden: false, // 是否隐藏，false显示，true隐藏
       clearable: false, // 是否显示清除按钮
       placeholder: '请选择',
-      format: 'HH:mm:ss' // 展示格式
+      format: 'HH:mm:ss', // 展示格式
+      events: []
     },
     model: '',
     key: '',
@@ -304,7 +311,8 @@ export const basicsList = [
       fileName: 'file',
       headers: {},
       action: 'http://cdn.kcz66.com/uploadFile.txt',
-      placeholder: '上传'
+      placeholder: '上传',
+      events: []
     },
     model: '',
     key: '',
@@ -332,7 +340,8 @@ export const basicsList = [
       fileName: 'image',
       headers: {},
       action: 'http://cdn.kcz66.com/upload-img.txt',
-      listType: 'picture-card'
+      listType: 'picture-card',
+      events: []
     },
     model: '',
     key: '',
@@ -380,7 +389,8 @@ export const basicsList = [
             }
           ]
         }
-      ]
+      ],
+      events: []
     },
     model: '',
     key: '',
@@ -426,7 +436,8 @@ export const basicsList = [
             }
           ]
         }
-      ]
+      ],
+      events: []
     },
     model: '',
     key: '',
@@ -563,7 +574,8 @@ export const basicsList = [
       showRequiredMark: false,
       color: 'rgb(0, 0, 0)',
       fontFamily: 'SimHei',
-      fontSize: '16pt'
+      fontSize: '16pt',
+      events: []
     },
     key: ''
   },
@@ -573,7 +585,8 @@ export const basicsList = [
     icon: 'icon-ai-code',
     options: {
       hidden: false, // 是否隐藏，false显示，true隐藏
-      defaultValue: '<strong>HTML</strong>'
+      defaultValue: '<strong>HTML</strong>',
+      events: []
     },
     key: ''
   }
@@ -644,7 +657,8 @@ export const layoutList = [
       type: 'line',
       tabPosition: 'top',
       size: 'default',
-      animated: true
+      animated: true,
+      events: []
     },
     columns: [
       {
@@ -676,7 +690,8 @@ export const layoutList = [
       }
     ],
     options: {
-      gutter: 0
+      gutter: 0,
+      events: []
     },
     key: '',
     model: ''
@@ -720,7 +735,8 @@ export const layoutList = [
       bordered: true,
       bright: false,
       small: true,
-      customStyle: ''
+      customStyle: '',
+      events: []
     },
     key: '',
     model: ''

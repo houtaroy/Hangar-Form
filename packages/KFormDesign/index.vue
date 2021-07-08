@@ -297,13 +297,17 @@ export default {
           wrapperCol: { xs: 18, sm: 18, md: 18, lg: 18, xl: 18, xxl: 18 },
           hideRequiredMark: false,
           customStyle: '',
-          methods: [
+          lifecycle: [
+            {
+              name: 'created',
+              body: ''
+            },
             {
               name: 'mounted',
-              arguments: '',
               body: ''
             }
-          ]
+          ],
+          methods: []
         }
       },
       previewOptions: {

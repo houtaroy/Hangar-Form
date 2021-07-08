@@ -32,9 +32,17 @@ import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/addon/hint/show-hint.css';
 import 'codemirror/addon/hint/show-hint';
 import 'codemirror/addon/hint/javascript-hint';
+import 'codemirror/addon/scroll/simplescrollbars.js';
+import 'codemirror/addon/scroll/simplescrollbars.css';
 
 export default {
-  props: ['value'],
+  name: 'h-method-form',
+  props: {
+    value: {
+      type: Object,
+      required: true
+    }
+  },
   components: {
     codemirror
   },
@@ -47,7 +55,8 @@ export default {
         mode: 'javascript',
         lineNumbers: true,
         matchBrackets: true,
-        autoCloseBrackets: true
+        autoCloseBrackets: true,
+        scrollbarStyle: 'simple'
       }
     };
   },
@@ -55,13 +64,9 @@ export default {
     value(newVale) {
       this.data = newVale;
     }
-    // data(newVal) {
-    //   this.$emit('input', newVal);
-    // }
   },
   computed: {
     editor() {
-      // get current editor object
       return this.$refs.codemirror.editor;
     }
   },

@@ -15,10 +15,7 @@
             <a-radio-button value="Grid">栅格</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item
-          v-show="config.labelLayout === 'flex'"
-          label="标签宽度（px）"
-        >
+        <a-form-item v-show="config.labelLayout === 'flex'" label="标签宽度（px）">
           <a-input-number v-model="config.labelWidth" />
         </a-form-item>
         <a-form-item label="labelCol" v-show="config.labelLayout !== 'flex'">
@@ -93,14 +90,39 @@
         <a-form-item label="表单属性">
           <kCheckbox v-model="config.hideRequiredMark" label="隐藏必选标记" />
         </a-form-item>
+        <a-form-item label="生命周期">
+          <a-button @click="lifecycleModalFlag = true" style="width: 100%">设置</a-button>
+          <a-modal
+            v-model="lifecycleModalFlag"
+            title="生命周期"
+            @ok="lifecycleModalFlag = false"
+            :maskClosable="false"
+            :width="1200"
+          >
+            <h-form-list
+              v-model="config.lifecycle"
+              formComponent="h-lifecycle-form"
+              labelKey="name"
+              :addButton="false"
+              :deleteButton="false"
+            ></h-form-list>
+          </a-modal>
+        </a-form-item>
         <a-form-item label="方法">
-          <a-button @click="methodModalFlag = true">设置</a-button>
+          <a-button @click="methodModalFlag = true" style="width: 100%">设置</a-button>
           <a-modal
             v-model="methodModalFlag"
             title="方法"
             @ok="methodModalFlag = false"
+            :maskClosable="false"
+            :width="1200"
           >
-            <h-method v-model="config.methods" :maskClosable="false"></h-method>
+            <h-form-list
+              v-model="config.methods"
+              formComponent="h-method-form"
+              labelKey="name"
+              @add="handleMethodAdd"
+            ></h-form-list>
           </a-modal>
         </a-form-item>
         <a-form-item label="提示"> 实际预览效果请点击预览查看 </a-form-item>
@@ -115,13 +137,13 @@
  * description 表单属性设置面板组件
  */
 import kCheckbox from '../../KCheckbox/index.vue';
-import HMethod from '../../HMethod';
+import HFormList from '../../HFormList';
 
 export default {
   name: 'formProperties',
   components: {
     kCheckbox,
-    HMethod
+    HFormList
   },
   props: {
     config: {
@@ -135,13 +157,17 @@ export default {
   },
   data() {
     return {
-      methodModalFlag: false
+      methodModalFlag: false,
+      lifecycleModalFlag: false
     };
   },
   methods: {
-    test() {
-      console.log('我进来了');
-      this.$refs.code.showHint();
+    handleMethodAdd() {
+      this.config.methods.push({
+        name: 'method_' + (this.config.methods.length + 1),
+        arguments: '',
+        body: ''
+      });
     },
     handleChangeCol(e) {
       this.config.labelCol.xs = this.config.labelCol.sm = this.config.labelCol.md = this.config.labelCol.lg = this.config.labelCol.xl = this.config.labelCol.xxl = e;

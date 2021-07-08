@@ -1,31 +1,45 @@
 <template>
-  <div>
-    <h-method v-model="funcs"></h-method>
-  </div>
+  <test ref="test" v-bind="json"></test>
 </template>
 
 <script>
-import HMethod from '../../../packages/HMethod';
+import test from '../../../packages/HFormBuilder';
 
 export default {
   components: {
-    HMethod
+    test
   },
   data() {
     return {
-      methods: [
-        {
-          name: 'mounted',
-          arguments: '',
-          body: ''
-        },
-        {
-          name: 'test',
-          arguments: 'name, code',
-          body: ''
+      json: {
+        formId: '1',
+        config: {
+          config: {
+            lifecycle: [
+              {
+                name: 'mounted',
+                body: "console.log('this', this)"
+              }
+            ],
+            methods: [
+              {
+                name: 'test',
+                arguments: '',
+                body: 'console.log(1)'
+              },
+              {
+                name: 'test2',
+                arguments: 'name',
+                body: 'this.test()'
+              }
+            ]
+          }
         }
-      ]
+      }
     };
+  },
+  methods: {
+    a() {}
   }
 };
 </script>

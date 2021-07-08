@@ -49,6 +49,9 @@ import UploadFile from '../UploadFile';
 import UploadImg from '../UploadImg';
 import KDatePicker from '../KDatePicker';
 import KTimePicker from '../KTimePicker';
+import HMethodForm from '../HMethodForm';
+import HLifecycleForm from '../HLifecycleForm';
+import HEventForm from '../HEventForm';
 
 export default {
   input: Input,
@@ -101,6 +104,9 @@ Vue.use(DatePicker);
 Vue.use(TimePicker);
 Vue.use(Upload);
 Vue.use(vcolorpicker);
+Vue.use(HMethodForm);
+Vue.use(HLifecycleForm);
+Vue.use(HEventForm);
 
 Vue.prototype.$confirm = Modal.confirm;
 Vue.prototype.$message = message;

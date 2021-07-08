@@ -1,24 +1,17 @@
 <template>
   <div class="properties-centent kk-checkbox">
     <div class="properties-body">
-      <a-empty
-        class="hint-box"
-        v-show="selectItem.key === ''"
-        description="未选择控件"
-      />
+      <a-empty class="hint-box" v-show="selectItem.key === ''" description="未选择控件" />
 
       <a-form v-show="selectItem.key !== ''">
-        <a-form-item
-          v-if="typeof selectItem.label !== 'undefined'"
-          label="标签"
-        >
+        <a-form-item v-if="selectItem.hasOwnProperty('key')" label="标识">
+          {{ selectItem.key }}
+        </a-form-item>
+        <a-form-item v-if="typeof selectItem.label !== 'undefined'" label="标签">
           <a-input v-model="selectItem.label" placeholder="请输入" />
         </a-form-item>
 
-        <a-form-item
-          v-if="!hideModel && typeof selectItem.model !== 'undefined'"
-          label="数据字段"
-        >
+        <a-form-item v-if="!hideModel && typeof selectItem.model !== 'undefined'" label="数据字段">
           <a-input v-model="selectItem.model" placeholder="请输入" />
         </a-form-item>
         <!-- input type start -->
@@ -27,35 +20,19 @@
         </a-form-item>
         <!-- input type end -->
         <a-form-item
-          v-if="
-            typeof options.rangePlaceholder !== 'undefined' && options.range
-          "
+          v-if="typeof options.rangePlaceholder !== 'undefined' && options.range"
           label="占位内容"
         >
           <a-input placeholder="请输入" v-model="options.rangePlaceholder[0]" />
           <a-input placeholder="请输入" v-model="options.rangePlaceholder[1]" />
         </a-form-item>
 
-        <a-form-item
-          v-else-if="typeof options.placeholder !== 'undefined'"
-          label="占位内容"
-        >
+        <a-form-item v-else-if="typeof options.placeholder !== 'undefined'" label="占位内容">
           <a-input placeholder="请输入" v-model="options.placeholder" />
         </a-form-item>
-        <a-form-item
-          v-if="selectItem.type === 'textarea'"
-          label="自适应内容高度"
-        >
-          <a-input-number
-            style="width: 100%"
-            v-model="options.minRows"
-            placeholder="最小高度"
-          />
-          <a-input-number
-            style="width: 100%"
-            v-model="options.maxRows"
-            placeholder="最大高度"
-          />
+        <a-form-item v-if="selectItem.type === 'textarea'" label="自适应内容高度">
+          <a-input-number style="width: 100%" v-model="options.minRows" placeholder="最小高度" />
+          <a-input-number style="width: 100%" v-model="options.maxRows" placeholder="最大高度" />
         </a-form-item>
         <a-form-item v-if="typeof options.width !== 'undefined'" label="宽度">
           <a-input placeholder="请输入" v-model="options.width" />
@@ -72,40 +49,20 @@
         <a-form-item v-if="typeof options.max !== 'undefined'" label="最大值">
           <a-input-number v-model="options.max" placeholder="请输入" />
         </a-form-item>
-        <a-form-item
-          v-if="typeof options.maxLength !== 'undefined'"
-          label="最大长度"
-        >
+        <a-form-item v-if="typeof options.maxLength !== 'undefined'" label="最大长度">
           <a-input-number v-model="options.maxLength" placeholder="请输入" />
         </a-form-item>
-        <a-form-item
-          v-if="typeof options.tabBarGutter !== 'undefined'"
-          label="标签间距"
-        >
+        <a-form-item v-if="typeof options.tabBarGutter !== 'undefined'" label="标签间距">
           <a-input-number v-model="options.tabBarGutter" placeholder="请输入" />
         </a-form-item>
-        <a-form-item
-          v-if="typeof options.precision !== 'undefined'"
-          label="数值精度"
-        >
-          <a-input-number
-            :min="0"
-            :max="50"
-            v-model="options.precision"
-            placeholder="请输入"
-          />
+        <a-form-item v-if="typeof options.precision !== 'undefined'" label="数值精度">
+          <a-input-number :min="0" :max="50" v-model="options.precision" placeholder="请输入" />
         </a-form-item>
-        <a-form-item
-          v-if="typeof options.dictCode !== 'undefined'"
-          label="dictCode"
-        >
+        <a-form-item v-if="typeof options.dictCode !== 'undefined'" label="dictCode">
           <a-input v-model="options.dictCode"></a-input>
         </a-form-item>
         <!-- 选项配置及动态数据配置 start -->
-        <a-form-item
-          v-if="typeof options.options !== 'undefined'"
-          label="选项配置"
-        >
+        <a-form-item v-if="typeof options.options !== 'undefined'" label="选项配置">
           <a-radio-group buttonStyle="solid" v-model="options.dynamic">
             <a-radio-button :value="false">静态数据</a-radio-button>
             <a-radio-button :value="true">动态数据</a-radio-button>
@@ -129,10 +86,7 @@
         </a-form-item>
         <!-- tabs配置 end -->
         <a-form-item v-if="selectItem.type === 'grid'" label="栅格间距">
-          <a-input-number
-            v-model="selectItem.options.gutter"
-            placeholder="请输入"
-          />
+          <a-input-number v-model="selectItem.options.gutter" placeholder="请输入" />
         </a-form-item>
         <a-form-item v-if="selectItem.type === 'grid'" label="列配置项">
           <KChangeOption v-model="selectItem.columns" type="colspan" />
@@ -141,10 +95,7 @@
         <a-form-item v-if="selectItem.type === 'switch'" label="默认值">
           <a-switch v-model="options.defaultValue" />
         </a-form-item>
-        <a-form-item
-          v-if="['number', 'slider'].indexOf(selectItem.type) >= 0"
-          label="默认值"
-        >
+        <a-form-item v-if="['number', 'slider'].indexOf(selectItem.type) >= 0" label="默认值">
           <a-input-number
             :step="options.step"
             :min="options.min || -Infinity"
@@ -163,39 +114,27 @@
           <a-select :options="options.options" v-model="options.defaultValue" />
         </a-form-item>
         <a-form-item v-if="selectItem.type === 'radio'" label="默认值">
-          <a-radio-group
-            :options="options.options"
-            v-model="options.defaultValue"
-          />
+          <a-radio-group :options="options.options" v-model="options.defaultValue" />
         </a-form-item>
         <a-form-item v-if="selectItem.type === 'checkbox'" label="默认值">
-          <a-checkbox-group
-            :options="options.options"
-            v-model="options.defaultValue"
-          />
+          <a-checkbox-group :options="options.options" v-model="options.defaultValue" />
         </a-form-item>
         <!-- 日期选择器默认值 start -->
         <a-form-item v-if="selectItem.type === 'date'" label="默认值">
           <a-input
             v-if="!options.range"
             v-model="options.defaultValue"
-            :placeholder="
-              typeof options.format === 'undefined' ? '' : options.format
-            "
+            :placeholder="typeof options.format === 'undefined' ? '' : options.format"
           />
           <a-input
             v-if="options.range"
             v-model="options.rangeDefaultValue[0]"
-            :placeholder="
-              typeof options.format === 'undefined' ? '' : options.format
-            "
+            :placeholder="typeof options.format === 'undefined' ? '' : options.format"
           />
           <a-input
             v-if="options.range"
             v-model="options.rangeDefaultValue[1]"
-            :placeholder="
-              typeof options.format === 'undefined' ? '' : options.format
-            "
+            :placeholder="typeof options.format === 'undefined' ? '' : options.format"
           />
         </a-form-item>
         <!-- 日期选择器默认值 start -->
@@ -211,39 +150,24 @@
               'switch',
               'slider',
               'html'
-            ].includes(selectItem.type) &&
-              typeof options.defaultValue !== 'undefined'
+            ].includes(selectItem.type) && typeof options.defaultValue !== 'undefined'
           "
           label="默认值"
         >
           <a-input
             v-model="options.defaultValue"
-            :placeholder="
-              typeof options.format === 'undefined' ? '请输入' : options.format
-            "
+            :placeholder="typeof options.format === 'undefined' ? '请输入' : options.format"
           />
         </a-form-item>
         <!-- 修改html -->
         <a-form-item v-if="selectItem.type === 'html'" label="默认值">
-          <a-textarea
-            v-model="options.defaultValue"
-            :autoSize="{ minRows: 4, maxRows: 8 }"
-          />
+          <a-textarea v-model="options.defaultValue" :autoSize="{ minRows: 4, maxRows: 8 }" />
         </a-form-item>
-        <a-form-item
-          v-if="typeof options.format !== 'undefined'"
-          label="时间格式"
-        >
-          <a-input
-            v-model="options.format"
-            placeholder="时间格式如：YYYY-MM-DD HH:mm:ss"
-          />
+        <a-form-item v-if="typeof options.format !== 'undefined'" label="时间格式">
+          <a-input v-model="options.format" placeholder="时间格式如：YYYY-MM-DD HH:mm:ss" />
         </a-form-item>
 
-        <a-form-item
-          v-if="typeof options.orientation !== 'undefined'"
-          label="标签位置"
-        >
+        <a-form-item v-if="typeof options.orientation !== 'undefined'" label="标签位置">
           <a-radio-group buttonStyle="solid" v-model="options.orientation">
             <a-radio-button value="left">左</a-radio-button>
             <a-radio-button value="">居中</a-radio-button>
@@ -286,10 +210,7 @@
           </a-radio-group>
         </a-form-item>
         <!-- 下载方式 start -->
-        <a-form-item
-          v-if="typeof options.downloadWay !== 'undefined'"
-          label="下载方式"
-        >
+        <a-form-item v-if="typeof options.downloadWay !== 'undefined'" label="下载方式">
           <a-radio-group buttonStyle="solid" v-model="options.downloadWay">
             <a-radio-button value="a">a标签</a-radio-button>
             <a-radio-button value="ajax">ajax</a-radio-button>
@@ -339,45 +260,27 @@
           </a-radio-group>
         </a-form-item>
         <!-- 上传数量 -->
-        <a-form-item
-          v-if="typeof options.limit !== 'undefined'"
-          label="最大上传数量"
-        >
+        <a-form-item v-if="typeof options.limit !== 'undefined'" label="最大上传数量">
           <a-input-number :min="1" v-model="options.limit" />
         </a-form-item>
 
         <!-- scrollY -->
-        <a-form-item
-          v-if="typeof options.scrollY !== 'undefined'"
-          label="scrollY"
-        >
+        <a-form-item v-if="typeof options.scrollY !== 'undefined'" label="scrollY">
           <a-input-number :min="0" v-model="options.scrollY" />
         </a-form-item>
 
         <!-- 上传地址 -->
-        <a-form-item
-          v-if="typeof options.action !== 'undefined'"
-          label="上传地址"
-        >
+        <a-form-item v-if="typeof options.action !== 'undefined'" label="上传地址">
           <a-input v-model="options.action" placeholder="请输入"></a-input>
         </a-form-item>
 
         <!-- 文件name -->
-        <a-form-item
-          v-if="typeof options.fileName !== 'undefined'"
-          label="文件name"
-        >
+        <a-form-item v-if="typeof options.fileName !== 'undefined'" label="文件name">
           <a-input v-model="options.fileName" placeholder="请输入"></a-input>
         </a-form-item>
         <!-- 上传额外参数 -->
-        <a-form-item
-          v-if="typeof options.data !== 'undefined'"
-          label="额外参数（JSON格式）"
-        >
-          <a-textarea
-            v-model="options.data"
-            placeholder="严格JSON格式"
-          ></a-textarea>
+        <a-form-item v-if="typeof options.data !== 'undefined'" label="额外参数（JSON格式）">
+          <a-textarea v-model="options.data" placeholder="严格JSON格式"></a-textarea>
         </a-form-item>
         <!-- 文字对齐方式 -->
         <a-form-item v-if="selectItem.type === 'text'" label="文字对齐方式">
@@ -503,17 +406,10 @@
         </a-form-item>
 
         <a-form-item
-          v-if="
-            typeof selectItem.rules !== 'undefined' &&
-              selectItem.rules.length > 0
-          "
+          v-if="typeof selectItem.rules !== 'undefined' && selectItem.rules.length > 0"
           label="校验"
         >
-          <kCheckbox
-            v-model="selectItem.rules[0].required"
-            label="必填"
-            style="width: 100%"
-          />
+          <kCheckbox v-model="selectItem.rules[0].required" label="必填" style="width: 100%" />
           <a-input
             v-show="selectItem.rules[0].required"
             v-model="selectItem.rules[0].message"
@@ -536,40 +432,35 @@
           <p style="line-height: 26px">请点击右键增加行列，或者合并单元格</p>
         </a-form-item>
 
-        <a-form-item
-          v-if="typeof selectItem.help !== 'undefined'"
-          label="帮助信息"
-        >
+        <a-form-item v-if="typeof selectItem.help !== 'undefined'" label="帮助信息">
           <a-input v-model="selectItem.help" placeholder="请输入" />
         </a-form-item>
 
         <!-- 前缀 -->
-        <a-form-item
-          label="前缀"
-          v-if="typeof options.addonBefore !== 'undefined'"
-        >
+        <a-form-item label="前缀" v-if="typeof options.addonBefore !== 'undefined'">
           <a-input v-model="options.addonBefore" placeholder="请输入" />
         </a-form-item>
 
         <!-- 后缀 -->
-        <a-form-item
-          label="后缀"
-          v-if="typeof options.addonAfter !== 'undefined'"
-        >
+        <a-form-item label="后缀" v-if="typeof options.addonAfter !== 'undefined'">
           <a-input v-model="options.addonAfter" placeholder="请输入" />
         </a-form-item>
         <a-form-item v-if="options.hasOwnProperty('events')" label="事件">
-          <a-button @click="eventModalFlag = true">设置</a-button>
+          <a-button @click="eventModalFlag = true" style="width: 100%">设置</a-button>
           <a-modal
             v-model="eventModalFlag"
             title="方法"
             @ok="eventModalFlag = false"
+            :maskClosable="false"
+            :width="1200"
           >
-            <h-event
+            <h-form-list
               v-model="options.events"
-              :methods="eventMethods"
-              :maskClosable="false"
-            ></h-event>
+              formComponent="h-event-form"
+              :formOptions="{ methods: formMethods }"
+              labelKey="name"
+              @add="handleEventAdd"
+            ></h-form-list>
           </a-modal>
         </a-form-item>
       </a-form>
@@ -584,7 +475,7 @@
  */
 import KChangeOption from '../../KChangeOption/index.vue';
 import kCheckbox from '../../KCheckbox/index.vue';
-import HEvent from '../../HEvent';
+import HFormList from '../../HFormList';
 
 export default {
   name: 'formItemProperties',
@@ -666,11 +557,6 @@ export default {
   computed: {
     options() {
       return this.selectItem.options || {};
-    },
-    eventMethods() {
-      return this.formMethods.filter(method => {
-        return method.name !== 'mounted';
-      });
     }
   },
   props: {
@@ -692,7 +578,23 @@ export default {
   components: {
     KChangeOption,
     kCheckbox,
-    HEvent
+    HFormList
+  },
+  methods: {
+    handleEventAdd() {
+      this.options.events.push(
+        Object.assign({
+          name: 'event_' + (this.options.events.length + 1),
+          type: 'select',
+          methodName: '',
+          method: {
+            name: '',
+            arguments: '',
+            body: ''
+          }
+        })
+      );
+    }
   }
 };
 </script>
