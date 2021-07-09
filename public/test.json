@@ -31,7 +31,17 @@
 									"required": true,
 									"message": "必填项"
 								}
-							]
+							],
+              "events": [
+                {
+                  "name": "click",
+                  "type": "create",
+                  "method": {
+                    "name": "input_click_1",
+                    "body": "console.log('input-click-1')"
+                  }
+                }
+              ]
 						},
 						{
 							"type": "input",
@@ -510,6 +520,8 @@
 			"xxl": 18
 		},
 		"hideRequiredMark": false,
-		"customStyle": ""
+		"customStyle": "",
+    "lifecycle": [],
+    "methods": []
 	}
 }

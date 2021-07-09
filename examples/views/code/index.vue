@@ -1,45 +1,27 @@
 <template>
-  <test ref="test" v-bind="json"></test>
+  <h-form ref="test" v-model="value" v-bind="json"></h-form>
 </template>
 
 <script>
-import test from '../../../packages/HFormBuilder';
+import testConfig from '../../../public/test.json';
 
 export default {
-  components: {
-    test
-  },
   data() {
     return {
+      value: {
+        cascader_1625624234757: '123'
+      },
       json: {
         formId: '1',
-        config: {
-          config: {
-            lifecycle: [
-              {
-                name: 'mounted',
-                body: "console.log('this', this)"
-              }
-            ],
-            methods: [
-              {
-                name: 'test',
-                arguments: '',
-                body: 'console.log(1)'
-              },
-              {
-                name: 'test2',
-                arguments: 'name',
-                body: 'this.test()'
-              }
-            ]
-          }
-        }
+        config: testConfig
       }
     };
   },
   methods: {
     a() {}
+  },
+  mounted() {
+    // this.$refs.test.test3();
   }
 };
 </script>
