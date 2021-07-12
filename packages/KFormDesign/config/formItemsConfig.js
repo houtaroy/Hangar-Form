@@ -662,11 +662,13 @@ export const layoutList = [
     },
     columns: [
       {
+        type: 'tabPane',
         value: '1',
         label: '选项1',
         list: []
       },
       {
+        type: 'tabPane',
         value: '2',
         label: '选项2',
         list: []
@@ -681,10 +683,12 @@ export const layoutList = [
     icon: 'icon-zhage',
     columns: [
       {
+        type: 'col',
         span: 12,
         list: []
       },
       {
+        type: 'col',
         span: 12,
         list: []
       }

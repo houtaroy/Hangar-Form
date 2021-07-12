@@ -2,9 +2,7 @@
   <div class="option-change-container">
     <a-row v-if="type === 'option' || type === 'tab'" :gutter="8">
       <div class="option-change-box" v-for="(val, index) in value" :key="index">
-        <a-col :span="9"
-          ><a-input v-model="val.label" placeholder="名称"
-        /></a-col>
+        <a-col :span="9"><a-input v-model="val.label" placeholder="名称"/></a-col>
         <a-col :span="9"><a-input v-model="val.value" placeholder="值"/></a-col>
         <a-col :span="6"
           ><div @click="handleDelete(index)" class="option-delete-box">
@@ -36,9 +34,7 @@
           <a-col v-if="val.hasOwnProperty('pattern')" :span="18"
             ><a-input v-model="val.pattern" placeholder="正则表达式pattern"
           /></a-col>
-          <a-col :span="18"
-            ><a-input v-model="val.message" placeholder="提示信息"
-          /></a-col>
+          <a-col :span="18"><a-input v-model="val.message" placeholder="提示信息"/></a-col>
           <a-col :span="6"
             ><div @click="handleDelete(index)" class="option-delete-box">
               <a-icon type="delete" /></div
@@ -46,24 +42,16 @@
         </div>
       </span>
       <a-col :span="12"
-        ><a @click="handleAddRules({ pattern: '', message: '' })"
-          >增加正则校验</a
-        ></a-col
+        ><a @click="handleAddRules({ pattern: '', message: '' })">增加正则校验</a></a-col
       >
       <a-col :span="12"
-        ><a @click="handleAddRules({ min: 0, max: 999, message: '' })"
-          >增加长度校验</a
-        ></a-col
+        ><a @click="handleAddRules({ min: 0, max: 999, message: '' })">增加长度校验</a></a-col
       >
     </a-row>
     <a-row v-else-if="type === 'colspan'" :gutter="8">
       <div class="option-change-box" v-for="(val, index) in value" :key="index">
         <a-col :span="18"
-          ><a-input-number
-            style="width: 100%"
-            :max="24"
-            v-model="val.span"
-            placeholder="名称"
+          ><a-input-number style="width: 100%" :max="24" v-model="val.span" placeholder="名称"
         /></a-col>
         <a-col :span="6"
           ><div @click="handleDelete(index)" class="option-delete-box">
@@ -100,7 +88,8 @@ export default {
         {
           value: `${this.value.length + 1}`,
           label: '选项' + (this.value.length + 1),
-          list: this.type === 'tab' ? [] : undefined
+          list: this.type === 'tab' ? [] : undefined,
+          type: this.type === 'tab' ? 'tabPane' : undefined
         }
       ];
       this.$emit('input', addData);
@@ -110,6 +99,7 @@ export default {
       const addData = [
         ...this.value,
         {
+          type: 'col',
           span: 12,
           list: []
         }

@@ -1,10 +1,13 @@
 {
+  "frame": "ant",
+  "version": "1.0.0",
 	"list": [
 		{
 			"type": "grid",
 			"label": "栅格布局",
 			"columns": [
 				{
+          "type": "col",
 					"span": 12,
 					"list": [
 						{
@@ -38,7 +41,7 @@
                   "type": "create",
                   "method": {
                     "name": "input_click_1",
-                    "body": "console.log('input-click-1')"
+                    "body": "console.log('组件点击事件一, 调用了页面方法三');this.test3();"
                   }
                 }
               ]
@@ -76,6 +79,7 @@
 					]
 				},
 				{
+          "type": "col",
 					"span": 12,
 					"list": [
 						{
@@ -116,6 +120,7 @@
 			"label": "栅格布局",
 			"columns": [
 				{
+          "type": "col",
 					"span": 24,
 					"list": [
 						{
@@ -131,6 +136,7 @@
 							},
 							"columns": [
 								{
+                  "type": "tabPane",
 									"value": "1",
 									"label": "选项1",
 									"list": [
@@ -197,6 +203,7 @@
 									]
 								},
 								{
+                  "type": "tabPane",
 									"value": "2",
 									"label": "选项2",
 									"list": [
@@ -522,6 +529,20 @@
 		"hideRequiredMark": false,
 		"customStyle": "",
     "lifecycle": [],
-    "methods": []
+    "methods": [
+      {
+        "name": "test1",
+        "body": "console.log('页面方法一')"
+      },
+      {
+        "name": "test2",
+        "arguments": "name, age",
+        "body": "console.log('页面方法二: ' + name + '的年龄是' + age)"
+      },
+      {
+        "name": "test3",
+        "body": "console.log('页面方法三, 调用了二');this.test2('我', 999);"
+      }
+    ]
 	}
 }
