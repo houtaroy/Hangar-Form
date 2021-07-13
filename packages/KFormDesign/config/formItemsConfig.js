@@ -368,7 +368,7 @@ export const basicsList = [
       placeholder: '请选择',
       dynamicKey: '',
       dynamic: true,
-      options: [
+      treeData: [
         {
           value: '1',
           label: '选项1',

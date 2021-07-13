@@ -62,7 +62,10 @@
           <a-input v-model="options.dictCode"></a-input>
         </a-form-item>
         <!-- 选项配置及动态数据配置 start -->
-        <a-form-item v-if="typeof options.options !== 'undefined'" label="选项配置">
+        <a-form-item
+          v-if="typeof options.options !== 'undefined' || typeof options.treeData !== 'undefined'"
+          label="选项配置"
+        >
           <a-radio-group buttonStyle="solid" v-model="options.dynamic">
             <a-radio-button :value="false">静态数据</a-radio-button>
             <a-radio-button :value="true">动态数据</a-radio-button>
@@ -74,7 +77,16 @@
             placeholder="动态数据变量名"
           ></a-input>
 
-          <KChangeOption v-show="!options.dynamic" v-model="options.options" />
+          <KChangeOption
+            v-if="typeof options.options !== 'undefined'"
+            v-show="!options.dynamic"
+            v-model="options.options"
+          />
+          <KChangeOption
+            v-if="typeof options.treeData !== 'undefined'"
+            v-show="!options.dynamic"
+            v-model="options.treeData"
+          />
         </a-form-item>
         <!-- 选项配置及动态数据配置 end -->
         <!-- tabs配置 start -->
