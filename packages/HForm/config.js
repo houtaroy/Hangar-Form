@@ -1,4 +1,6 @@
 const antComponentMap = {
+  form: 'a-form-model',
+  formItem: 'a-form-model-item',
   grid: 'a-row',
   col: 'a-col',
   tabs: 'a-tabs',

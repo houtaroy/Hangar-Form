@@ -1,8 +1,10 @@
 import bind from 'lodash/bind';
 import has from 'lodash/has';
+import pick from 'lodash/pick';
+import pickBy from 'lodash/pickBy';
 // import capitalize from 'lodash/capitalize';
 import { version as decoderVersion } from '../../package.json';
-
+import { getPropKeys } from './util';
 import { componentMap, constantComponentMap, childrenKeys, layoutKeys } from './config';
 
 const globalLifecycle = {};
@@ -60,6 +62,19 @@ export default {
     };
   },
   methods: {
+    validate(callback) {
+      this.$refs.form.validate(valid => {
+        callback(valid);
+      });
+    },
+    submit(callback) {
+      this.$refs.form.validate(valid => {
+        callback(valid, this.data);
+      });
+    },
+    resetFields() {
+      this.$refs.form.resetFields();
+    },
     /**
      * @description: 检查json版本是否与解析器匹配
      * @param {*} version json版本
@@ -86,12 +101,12 @@ export default {
       }
       elements.forEach(element => {
         if (element.model) {
-          this.$set(this.data, element.model, 0);
+          this.$set(this.data, element.model, null);
           this.$set(this.elementMap, element.model, element);
         }
         childrenKeys.forEach(key => {
           if (element[key]) {
-            this.decodeData(element[key]);
+            this._decodeData(element[key]);
           }
         });
       });
@@ -104,47 +119,41 @@ export default {
     _renderElements(elements) {
       const result = [];
       elements.forEach(element => {
-        result.push(this._renderElement(element));
+        result.push(
+          layoutKeys.includes(element.type)
+            ? this._renderElement(element)
+            : this._renderFormElement(element)
+        );
       });
       return result;
     },
-    /**
-     * @description: 渲染元素
-     * @param {*} element 元素配置对象
-     * @return {*} 渲染结果
-     */
-    _renderElement(element) {
-      return layoutKeys.includes(element.type)
-        ? this._renderLayout(element)
-        : this._renderFormItem(element);
+    _renderFormElement(element) {
+      const FormTag = this._getTag('formItem');
+      const propKeys = getPropKeys(FormTag);
+      const props = Object.assign({}, pick(element, propKeys));
+      props.prop = element.model;
+      return <FormTag {...{ props: props }}>{this._renderElement(element)}</FormTag>;
     },
-    /**
-     * @description: 渲染布局元素
-     * @param {*} element 布局元素配置对象
-     * @return {*} 渲染结果
-     */
-    _renderLayout(element) {
+    _renderElement(element) {
       const Tag = this._getTag(element.type);
       if (Tag === 'a-tab-pane') {
         return this._renderAntTabPane(element);
       }
-      return <Tag {...{ props: element.options || element }}>{this._renderChildren(element)}</Tag>;
-    },
-    /**
-     * @description: 渲染表单元素
-     * @param {*} element 表单元素配置对象
-     * @return {*} 渲染结果
-     */
-    _renderFormItem(element) {
-      const Tag = this._getTag(element.type);
-      return (
-        <a-form-model-item {...{ props: element }}>
-          <Tag v-model={this.data[element.model]} {...{ props: element.options || element }}>
+      const propKeys = getPropKeys(Tag);
+      const props = pickBy(
+        Object.assign({}, pick(element, propKeys), pick(element.options, propKeys))
+      );
+      delete props['type'];
+      if (element.model) {
+        return (
+          <Tag v-model={this.data[element.model]} {...{ props: props }}>
             {this._renderChildren(element)}
           </Tag>
-        </a-form-model-item>
-      );
+        );
+      }
+      return <Tag {...{ props: props }}>{this._renderChildren(element)}</Tag>;
     },
+
     /**
      * @description: ant-design的a-tab-pane存在问题, 未找到解决办法, 暂时进行特殊处理
      * @param {*} element a-tab-pane配置对象
@@ -185,19 +194,23 @@ export default {
       return <h1 style="text-align: center">{this.decodeError.message}</h1>;
     }
     const { config: formConfig, list: elements } = this.$props.config;
+    const Tag = this._getTag('form');
+    const propKeys = getPropKeys(Tag);
+    const props = Object.assign({}, pick(formConfig, propKeys));
+    props.model = this.data;
     return (
-      <a-form-model v-model={this.data} {...{ props: formConfig }}>
+      <Tag ref="form" {...{ props: props }}>
         {...this._renderElements(elements)}
-      </a-form-model>
+      </Tag>
     );
   },
   created() {
     if (!this._checkVersion(this.config.version)) {
       return;
     }
-    const { frame, config: formConfig } = this.$props.config;
+    const { frame, config: formConfig, list: elements } = this.$props.config;
     this.componentMap = componentMap[frame] || componentMap['ant'];
-    const { lifecycle, methods, list: elements } = formConfig;
+    const { lifecycle, methods } = formConfig;
     lifecycle.forEach(one => {
       globalLifecycle[one.name] = bind(renderMethod(one), this);
     });

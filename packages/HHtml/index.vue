@@ -13,15 +13,17 @@ export default {
   props: {
     value: {
       type: Object,
-      required: true
+      required: function() {
+        return {};
+      }
     },
     hidden: {
       type: Boolean,
-      required: true
+      default: false
     },
     defaultValue: {
       type: String,
-      required: true
+      default: ''
     }
   },
   data() {

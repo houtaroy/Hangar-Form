@@ -295,8 +295,10 @@
 			"label": "表格布局",
 			"trs": [
 				{
+          "type": "tr",
 					"tds": [
 						{
+              "type": "td",
 							"colspan": 1,
 							"rowspan": 1,
 							"list": [
@@ -356,6 +358,7 @@
 							]
 						},
 						{
+              "type": "td",
 							"colspan": 1,
 							"rowspan": 1,
 							"list": [
@@ -456,8 +459,10 @@
 					]
 				},
 				{
+          "type": "tr",
 					"tds": [
 						{
+              "type": "td",
 							"colspan": 1,
 							"rowspan": 1,
 							"list": [
@@ -478,6 +483,7 @@
 							]
 						},
 						{
+              "type": "td",
 							"colspan": 1,
 							"rowspan": 1,
 							"list": [
