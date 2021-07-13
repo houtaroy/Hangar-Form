@@ -1,3 +1,6 @@
+import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
+
+import 'moment/locale/zh-cn';
 import bind from 'lodash/bind';
 import has from 'lodash/has';
 import pick from 'lodash/pick';
@@ -52,6 +55,11 @@ export default {
   },
   data() {
     return {
+      locale,
+      constantRender: {
+        // table: this._renderTable,
+        'a-tab-pane': this._renderAntTabPane
+      },
       decodeError: {
         flag: false,
         code: 500,
@@ -136,13 +144,15 @@ export default {
     },
     _renderElement(element) {
       const Tag = this._getTag(element.type);
-      if (Tag === 'a-tab-pane') {
-        return this._renderAntTabPane(element);
+      if (Object.prototype.hasOwnProperty.call(this.constantRender, Tag)) {
+        console.log(this.constantRender[Tag]);
+        return this.constantRender[Tag](element);
       }
       const propKeys = getPropKeys(Tag);
       const props = pickBy(
         Object.assign({}, pick(element, propKeys), pick(element.options, propKeys))
       );
+      props['locale'] = this.locale;
       delete props['type'];
       if (element.model) {
         return (
@@ -153,7 +163,7 @@ export default {
       }
       return <Tag {...{ props: props }}>{this._renderChildren(element)}</Tag>;
     },
-
+    // _renderTable(element) {},
     /**
      * @description: ant-design的a-tab-pane存在问题, 未找到解决办法, 暂时进行特殊处理
      * @param {*} element a-tab-pane配置对象

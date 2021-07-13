@@ -2,8 +2,8 @@
  * @Description: 日期选择器
  * @Author: kcz
  * @Date: 2020-01-11 15:38:28
- * @LastEditors: kcz
- * @LastEditTime: 2020-03-28 17:37:49
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-13 13:41:19
  -->
 <template>
   <!-- 月份选择 -->
@@ -48,10 +48,10 @@
   />
 </template>
 <script>
-import moment from "moment";
+import moment from 'moment';
 export default {
   // eslint-disable-next-line vue/require-prop-types
-  props: ["record", "value", "parentDisabled"],
+  props: ['record', 'value', 'parentDisabled'],
   data() {
     return {
       // date: undefined
@@ -59,10 +59,7 @@ export default {
   },
   computed: {
     date() {
-      if (
-        !this.value ||
-        (this.record.options.range && this.value.length === 0)
-      ) {
+      if (!this.value || (this.record.options.range && this.value.length === 0)) {
         return undefined;
       } else if (this.record.options.range) {
         return this.value.map(item => moment(item, this.record.options.format));
@@ -75,14 +72,14 @@ export default {
     handleSelectChange(val) {
       let date;
       if (!val || (this.record.options.range && val.length === 0)) {
-        date = "";
+        date = '';
       } else if (this.record.options.range) {
         date = val.map(item => item.format(this.record.options.format));
       } else {
         date = val.format(this.record.options.format);
       }
-      this.$emit("change", date);
-      this.$emit("input", date);
+      this.$emit('change', date);
+      this.$emit('input', date);
     }
   }
 };

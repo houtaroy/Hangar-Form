@@ -107,6 +107,8 @@ Vue.use(DatePicker);
 Vue.use(TimePicker);
 Vue.use(Upload);
 Vue.use(vcolorpicker);
+Vue.use(TreeSelect);
+Vue.use(Cascader);
 Vue.use(HMethodForm);
 Vue.use(HLifecycleForm);
 Vue.use(HEventForm);

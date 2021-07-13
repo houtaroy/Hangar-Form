@@ -13,8 +13,9 @@ const antComponentMap = {
   cascader: 'a-cascader',
   radio: 'a-radio-group',
   checkbox: 'a-checkbox-group',
-  text: 'label',
-  html: 'div'
+  date: 'a-date-picker',
+  dateRange: 'a-range-picker',
+  text: 'label'
 };
 
 export const constantComponentMap = {
@@ -26,4 +27,4 @@ export const componentMap = {
 };
 
 export const childrenKeys = ['columns', 'trs', 'tds', 'list'];
-export const layoutKeys = ['grid', 'col', 'tabs', 'tabPane'];
+export const layoutKeys = ['grid', 'col', 'tabs', 'tabPane', 'table'];

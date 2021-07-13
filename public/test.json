@@ -311,15 +311,11 @@
 										"defaultValue": "",
 										"rangeDefaultValue": [],
 										"range": false,
-										"showTime": false,
+										"showTime": true,
 										"disabled": false,
 										"hidden": false,
 										"clearable": false,
 										"placeholder": "请选择",
-										"rangePlaceholder": [
-											"开始时间",
-											"结束时间"
-										],
 										"format": "YYYY-MM-DD"
 									},
 									"model": "date_1625624222674",
@@ -333,17 +329,19 @@
 									]
 								},
 								{
-									"type": "time",
-									"label": "时间选择框",
-									"icon": "icon-time",
+									"type": "dateRange",
+									"label": "日期范围选择框",
+									"icon": "icon-calendar",
 									"options": {
 										"width": "100%",
 										"defaultValue": "",
+										"rangeDefaultValue": [],
+										"range": false,
+										"showTime": false,
 										"disabled": false,
 										"hidden": false,
 										"clearable": false,
-										"placeholder": "请选择",
-										"format": "HH:mm:ss"
+										"format": "YYYY-MM-DD"
 									},
 									"model": "time_1625624224776",
 									"key": "time_1625624224776",
