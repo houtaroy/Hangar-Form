@@ -8,7 +8,12 @@ import pickBy from 'lodash/pickBy';
 // import capitalize from 'lodash/capitalize';
 import { version as decoderVersion } from '../../package.json';
 import { getPropKeys } from './util';
-import { componentMap, constantComponentMap, childrenKeys, layoutKeys } from './config';
+import {
+  componentMap,
+  constantComponentMap,
+  childrenKeys,
+  excludeFormElementTypes
+} from './config';
 
 const globalLifecycle = {};
 
@@ -57,8 +62,11 @@ export default {
     return {
       locale,
       constantRender: {
-        // table: this._renderTable,
-        'a-tab-pane': this._renderAntTabPane
+        table: this._renderTable,
+        td: this._renderTd,
+        'a-tab-pane': this._renderAntTabPane,
+        text: this._renderText,
+        'h-html': this._renderHtml
       },
       decodeError: {
         flag: false,
@@ -128,7 +136,7 @@ export default {
       const result = [];
       elements.forEach(element => {
         result.push(
-          layoutKeys.includes(element.type)
+          excludeFormElementTypes.includes(element.type)
             ? this._renderElement(element)
             : this._renderFormElement(element)
         );
@@ -145,14 +153,14 @@ export default {
     _renderElement(element) {
       const Tag = this._getTag(element.type);
       if (Object.prototype.hasOwnProperty.call(this.constantRender, Tag)) {
-        console.log(this.constantRender[Tag]);
         return this.constantRender[Tag](element);
       }
       const propKeys = getPropKeys(Tag);
       const props = pickBy(
-        Object.assign({}, pick(element, propKeys), pick(element.options, propKeys))
+        Object.assign({}, pick(element, propKeys), pick(element.options, propKeys), {
+          locale: this.locale
+        })
       );
-      props['locale'] = this.locale;
       delete props['type'];
       if (element.model) {
         return (
@@ -163,7 +171,29 @@ export default {
       }
       return <Tag {...{ props: props }}>{this._renderChildren(element)}</Tag>;
     },
-    // _renderTable(element) {},
+    _renderTable(tableElement) {
+      const attr = {
+        class: pick(tableElement.options, ['bright', 'small', 'bordered']),
+        style: tableElement.options.customStyle
+      };
+      return (
+        <table class="kk-table-9136076486841527" {...attr}>
+          {this._renderElements(tableElement.trs)}
+        </table>
+      );
+    },
+    _renderTd(tdElement) {
+      // const attr = pick(tdElement, ['colspan', 'rowspan']);
+      const attr = {
+        colSpan: tdElement.colspan,
+        rowSpan: tdElement.rowspan
+      };
+      return (
+        <td class="table-td" {...attr}>
+          {this._renderChildren(tdElement)}
+        </td>
+      );
+    },
     /**
      * @description: ant-design的a-tab-pane存在问题, 未找到解决办法, 暂时进行特殊处理
      * @param {*} element a-tab-pane配置对象
@@ -175,6 +205,25 @@ export default {
           {this._renderChildren(element)}
         </a-tab-pane>
       );
+    },
+    _renderText(textElement) {
+      const divAttrs = {
+        style: `text-align: ${textElement.options.textAlign}`
+      };
+      const labelAttrs = {
+        class: { 'ant-form-item-required': textElement.options.showRequiredMark },
+        style: pick(textElement.options, ['fontFamily', 'fontSize', 'color'])
+      };
+      return (
+        <div {...divAttrs}>
+          <label {...labelAttrs}>{textElement.label}</label>
+        </div>
+      );
+    },
+    _renderHtml(htmlElement) {
+      const propKeys = getPropKeys('h-html');
+      const props = pickBy(Object.assign({}, pick(htmlElement.options, propKeys)));
+      return <h-html v-model={this.data} {...{ props: props }}></h-html>;
     },
     /**
      * @description: 渲染子元素

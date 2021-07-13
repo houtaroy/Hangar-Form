@@ -491,7 +491,7 @@
 									"icon": "icon-ai-code",
 									"options": {
 										"hidden": false,
-										"defaultValue": "<strong>HTML</strong>"
+										"defaultValue": "<strong>第一个输入框数据: {{data.input_1625624184608}}</strong>"
 									},
 									"key": "html_1625624243974"
 								}

@@ -50,11 +50,7 @@
       <a-tooltip>
         <span v-text="record.label"></span>
         <span v-if="record.help" slot="title" v-html="record.help"></span>
-        <a-icon
-          v-if="record.help"
-          class="question-circle"
-          type="question-circle-o"
-        />
+        <a-icon v-if="record.help" class="question-circle" type="question-circle-o" />
       </a-tooltip>
     </span>
     <!-- 多行文本 -->
@@ -172,10 +168,7 @@
               rules: [
                 {
                   validator: (rule, value, callback) => {
-                    if (
-                      record.options.step &&
-                      value % record.options.step !== 0
-                    ) {
+                    if (record.options.step && value % record.options.step !== 0) {
                       callback('输入值必须是步长的倍数');
                     }
                     callback();
@@ -191,16 +184,8 @@
       v-else
       :style="`width:${record.options.width}`"
       v-bind="componentOption"
-      :min="
-        record.options.min || record.options.min === 0
-          ? record.options.min
-          : -Infinity
-      "
-      :max="
-        record.options.max || record.options.max === 0
-          ? record.options.max
-          : Infinity
-      "
+      :min="record.options.min || record.options.min === 0 ? record.options.min : -Infinity"
+      :max="record.options.max || record.options.max === 0 ? record.options.max : Infinity"
       :precision="
         record.options.precision > 50 ||
         (!record.options.precision && record.options.precision !== 0)
@@ -341,10 +326,7 @@
     </div>
   </a-form-item>
   <!-- html -->
-  <div
-    v-else-if="record.type === 'html'"
-    v-html="record.options.defaultValue"
-  ></div>
+  <div v-else-if="record.type === 'html'" v-html="record.options.defaultValue"></div>
 
   <!-- 自定义组件 -->
   <customComponent
@@ -359,11 +341,7 @@
   <div v-else>
     <!-- 分割线 -->
     <a-divider
-      v-if="
-        record.type === 'divider' &&
-          record.label !== '' &&
-          record.options.orientation
-      "
+      v-if="record.type === 'divider' && record.label !== '' && record.options.orientation"
       :orientation="record.options.orientation"
       >{{ record.label }}</a-divider
     >
@@ -379,12 +357,12 @@
  * date 2019-11-20
  */
 // import moment from "moment";
-import customComponent from "./customComponent";
-import ComponentArray from "../core/components_use";
-const _ = require("lodash/object");
+import customComponent from './customComponent';
+import ComponentArray from '../core/components_use';
+const _ = require('lodash/object');
 
 export default {
-  name: "KFormItem",
+  name: 'KFormItem',
   props: {
     // 表单数组
     record: {
@@ -430,7 +408,7 @@ export default {
       return ComponentArray[this.record.type];
     },
     componentOption() {
-      return _.omit(this.record.options, ["defaultValue", "disabled"]);
+      return _.omit(this.record.options, ['defaultValue', 'disabled']);
     }
   },
   methods: {
@@ -445,7 +423,7 @@ export default {
         value = e.target.value;
       }
       // 传递change事件
-      this.$emit("change", value, key);
+      this.$emit('change', value, key);
     }
   }
 };

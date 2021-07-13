@@ -14,11 +14,11 @@ const antComponentMap = {
   radio: 'a-radio-group',
   checkbox: 'a-checkbox-group',
   date: 'a-date-picker',
-  dateRange: 'a-range-picker',
-  text: 'label'
+  dateRange: 'a-range-picker'
 };
 
 export const constantComponentMap = {
+  text: 'text',
   html: 'h-html'
 };
 
@@ -27,4 +27,14 @@ export const componentMap = {
 };
 
 export const childrenKeys = ['columns', 'trs', 'tds', 'list'];
-export const layoutKeys = ['grid', 'col', 'tabs', 'tabPane', 'table'];
+export const excludeFormElementTypes = [
+  'grid',
+  'col',
+  'tabs',
+  'tabPane',
+  'table',
+  'tr',
+  'td',
+  'text',
+  'html'
+];
