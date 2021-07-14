@@ -31,9 +31,6 @@ export default {
       component: null
     };
   },
-  created() {
-    console.log('created', this);
-  },
   mounted() {
     this.component = Vue.extend({
       template: `<div>${this.defaultValue}</div>`,

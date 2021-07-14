@@ -539,7 +539,12 @@
     },
     "hideRequiredMark": false,
     "customStyle": "",
-    "lifecycle": [],
+    "lifecycle": [
+      {
+        "name": "mounted",
+        "body": "this.test1();"
+      }
+    ],
     "methods": [
       {
         "name": "test1",

@@ -18,7 +18,14 @@ export default {
       },
       json: {
         formId: '1',
-        config: testConfig
+        config: testConfig,
+        extendConfigs: [
+          {
+            textarea_1625624188841: {
+              disabled: true
+            }
+          }
+        ]
       }
     };
   },

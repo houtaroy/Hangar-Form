@@ -1,13 +1,14 @@
 import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
-
 import 'moment/locale/zh-cn';
+
 import bind from 'lodash/bind';
 import has from 'lodash/has';
 import pick from 'lodash/pick';
 import pickBy from 'lodash/pickBy';
-// import capitalize from 'lodash/capitalize';
+
 import { version as decoderVersion } from '../../package.json';
-import { getPropKeys } from './util';
+
+import { getPropKeys, renderMethod } from './util';
 import {
   componentMap,
   constantComponentMap,
@@ -16,14 +17,6 @@ import {
 } from './config';
 
 const globalLifecycle = {};
-
-const renderMethod = function(method) {
-  if (method.arguments) {
-    return new Function(...method.arguments.split(','), method.body);
-  } else {
-    return new Function(method.body);
-  }
-};
 
 const runLifecycle = function(name) {
   if (has(globalLifecycle, name)) {
@@ -231,20 +224,10 @@ export default {
      */
     _renderElement(element) {
       const Tag = this._getTag(element.type);
-      if (Object.prototype.hasOwnProperty.call(this.constantRender, Tag)) {
+      if (has(this.constantRender, Tag)) {
         return this.constantRender[Tag](element);
       }
-      const propKeys = getPropKeys(Tag);
-      const props = pickBy(
-        Object.assign({}, pick(element, propKeys), pick(element.options, propKeys), {
-          locale: this.locale
-        })
-      );
-      delete props['type'];
-      const attrs = {
-        props: props,
-        on: element.listeners
-      };
+      const attrs = this._renderTagAttrs(Tag, element);
       if (element.model) {
         return (
           <Tag v-model={this.data[element.model]} {...attrs}>
@@ -253,6 +236,43 @@ export default {
         );
       }
       return <Tag {...attrs}>{this._renderChildren(element)}</Tag>;
+    },
+    /**
+     * @description: 渲染组件参数
+     * @param {*} Tag 组件标签名称
+     * @param {*} element 元素配置json
+     * @return {*} 参数对象, 包含[props, on]
+     */
+    _renderTagAttrs(Tag, element) {
+      return {
+        props: this._renderTagProps(Tag, element),
+        on: element.listeners
+      };
+    },
+    /**
+     * @description: 渲染组件props
+     * @param {*} Tag 组件标签名称
+     * @param {*} element 元素配置json
+     * @return {*} 组件props对象
+     */
+    _renderTagProps(Tag, element) {
+      const propKeys = getPropKeys(Tag);
+      const options = [
+        pick(element, propKeys),
+        pick(element.options, propKeys),
+        {
+          locale: this.locale
+        }
+      ];
+      this.extendConfigs.forEach(extendConfig => {
+        const key = element.model || element.key;
+        if (has(extendConfig, key)) {
+          options.push(pick(extendConfig[key], propKeys));
+        }
+      });
+      const result = pickBy(Object.assign({}, ...options));
+      delete result['type'];
+      return result;
     },
     /**
      * @description: 渲染表格元素
@@ -323,9 +343,7 @@ export default {
      * @return {*} 渲染结果
      */
     _renderHtml(htmlElement) {
-      const propKeys = getPropKeys('h-html');
-      const props = pickBy(Object.assign({}, pick(htmlElement.options, propKeys)));
-      return <h-html v-model={this.data} {...{ props: props }}></h-html>;
+      return <h-html v-model={this.data} {...this._renderTagAttrs('h-html', htmlElement)}></h-html>;
     },
     /**
      * @description: 渲染子元素
@@ -372,7 +390,6 @@ export default {
     this.componentMap = componentMap[frame] || componentMap['ant'];
     if (frame === 'ant') {
       this.antFormModalItemAttrs = this._decodeAntFormModalItemAttrs(formConfig);
-      console.log('ant表单元素', this.antFormModalItemAttrs);
     }
     const { lifecycle, methods } = formConfig;
     lifecycle.forEach(one => {
