@@ -1,20 +1,18 @@
 import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
 import 'moment/locale/zh-cn';
 
-import bind from 'lodash/bind';
-import has from 'lodash/has';
-import pick from 'lodash/pick';
-import pickBy from 'lodash/pickBy';
+import { bind, has, keys, pick, pickBy } from 'lodash';
 
 import { version as decoderVersion } from '../../package.json';
 
-import { getPropKeys, renderMethod } from './util';
 import {
   componentMap,
   constantComponentMap,
   childrenKeys,
   excludeFormElementTypes
 } from './config';
+import { getDefaultValueDecoders } from './defaultValue';
+import { getPropKeys, renderMethod } from './util';
 
 const globalLifecycle = {};
 
@@ -54,6 +52,13 @@ export default {
   data() {
     return {
       locale,
+      decodeError: {
+        flag: false,
+        code: 500,
+        message: '解析错误'
+      },
+      antFormModalItemAttrs: {},
+      defaultValueDecoders: getDefaultValueDecoders(),
       constantRender: {
         table: this._renderTable,
         td: this._renderTd,
@@ -61,12 +66,6 @@ export default {
         text: this._renderText,
         'h-html': this._renderHtml
       },
-      decodeError: {
-        flag: false,
-        code: 500,
-        message: '解析错误'
-      },
-      antFormModalItemAttrs: {},
       data: {},
       elementMap: {}
     };
@@ -136,8 +135,24 @@ export default {
      * @return {*}
      */
     _decodeModel(element) {
-      this.$set(this.data, element.model, null);
+      this.$set(this.data, element.model, element.options.defaultValue || undefined);
       this.$set(this.elementMap, element.model, element);
+    },
+    _decodeDefaultValues(data) {
+      keys(data).forEach(key => {
+        if (key !== undefined) {
+          data[key] = this._decodeDefaultValue(data[key]);
+        }
+      });
+      return data;
+    },
+    _decodeDefaultValue(defaultValue) {
+      for (const decoder of this.defaultValueDecoders) {
+        if (decoder.test(defaultValue)) {
+          return decoder.decode(defaultValue, this);
+        }
+      }
+      return defaultValue;
     },
     /**
      * @description: 解析json的events属性, 生成方法和用于绑定的事件参数
@@ -387,20 +402,20 @@ export default {
       return;
     }
     const { frame, config: formConfig, list: elements } = this.$props.config;
-    this.componentMap = componentMap[frame] || componentMap['ant'];
-    if (frame === 'ant') {
-      this.antFormModalItemAttrs = this._decodeAntFormModalItemAttrs(formConfig);
-    }
     const { lifecycle, methods } = formConfig;
     lifecycle.forEach(one => {
       globalLifecycle[one.name] = bind(renderMethod(one), this);
     });
+    runLifecycle('created');
     methods.forEach(method => {
       this[method.name] = bind(renderMethod(method), this);
     });
+    this.componentMap = componentMap[frame] || componentMap['ant'];
+    if (frame === 'ant') {
+      this.antFormModalItemAttrs = this._decodeAntFormModalItemAttrs(formConfig);
+    }
     this._decodeData(elements);
-    this.data = Object.assign({}, this.data, this.value);
-    runLifecycle('created');
+    this.data = this._decodeDefaultValues(Object.assign({}, this.data, this.value));
   },
   mounted() {
     runLifecycle('mounted');

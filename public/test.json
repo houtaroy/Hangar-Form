@@ -17,7 +17,7 @@
               "options": {
                 "type": "text",
                 "width": "100%",
-                "defaultValue": "",
+                "defaultValue": "1",
                 "placeholder": "请输入",
                 "clearable": true,
                 "maxLength": null,
@@ -53,7 +53,7 @@
               "options": {
                 "type": "text",
                 "width": "100%",
-                "defaultValue": "",
+                "defaultValue": "$store.user/name",
                 "placeholder": "请输入",
                 "clearable": false,
                 "maxLength": null,
@@ -98,7 +98,7 @@
                 "minRows": 4,
                 "maxRows": 6,
                 "maxLength": null,
-                "defaultValue": "",
+                "defaultValue": "${aaa[0].a.b}",
                 "clearable": false,
                 "hidden": false,
                 "disabled": false,
@@ -195,7 +195,8 @@
                             "label": "下拉框2"
                           }
                         ],
-                        "showSearch": false
+                        "showSearch": false,
+                        "defaultValue": "1"
                       },
                       "model": "select_1625624204295",
                       "key": "select_1625624204295",
@@ -221,7 +222,7 @@
                       "options": {
                         "disabled": false,
                         "hidden": false,
-                        "defaultValue": [],
+                        "defaultValue": ["1", "2"],
                         "dynamicKey": "",
                         "dynamic": false,
                         "options": [
@@ -256,7 +257,7 @@
                       "options": {
                         "disabled": false,
                         "hidden": false,
-                        "defaultValue": "",
+                        "defaultValue": "1",
                         "dynamicKey": "",
                         "dynamic": false,
                         "options": [
@@ -315,7 +316,7 @@
                   "icon": "icon-calendar",
                   "options": {
                     "width": "100%",
-                    "defaultValue": "",
+                    "defaultValue": "1626233658360",
                     "rangeDefaultValue": [],
                     "range": false,
                     "showTime": true,
@@ -323,7 +324,8 @@
                     "hidden": false,
                     "clearable": false,
                     "placeholder": "请选择",
-                    "format": "YYYY-MM-DD"
+                    "format": "YYYY-MM-DD HH:mm:ss",
+                    "valueFormat": "x"
                   },
                   "model": "date_1625624222674",
                   "key": "date_1625624222674",
@@ -341,14 +343,14 @@
                   "icon": "icon-calendar",
                   "options": {
                     "width": "100%",
-                    "defaultValue": "",
-                    "rangeDefaultValue": [],
+                    "defaultValue": ["1992-01-01", "1993-01-01"],
                     "range": false,
                     "showTime": false,
                     "disabled": false,
                     "hidden": false,
                     "clearable": false,
-                    "format": "YYYY-MM-DD"
+                    "format": "YYYY-MM-DD",
+                    "valueFormat": "x"
                   },
                   "model": "time_1625624224776",
                   "key": "time_1625624224776",
@@ -402,7 +404,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "defaultValue": "1"
                   },
                   "model": "treeSelect_1625624232141",
                   "key": "treeSelect_1625624232141",
@@ -447,7 +450,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "defaultValue": ["1", "11"]
                   },
                   "model": "cascader_1625624234757",
                   "key": "cascader_1625624234757",
@@ -540,6 +544,10 @@
     "hideRequiredMark": false,
     "customStyle": "",
     "lifecycle": [
+      {
+        "name": "created",
+        "body": "this.aaa = [ { a: { b: 'test2' } } ];"
+      },
       {
         "name": "mounted",
         "body": "this.test1();"
