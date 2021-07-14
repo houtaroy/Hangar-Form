@@ -1,7 +1,7 @@
 import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
 import 'moment/locale/zh-cn';
 
-import { bind, has, keys, pick, pickBy } from 'lodash';
+import { bind, has, keys, pick } from 'lodash';
 
 import { version as decoderVersion } from '../../package.json';
 
@@ -11,8 +11,9 @@ import {
   childrenKeys,
   excludeFormElementTypes
 } from './config';
-import { getDefaultValueDecoders } from './defaultValue';
-import { getPropKeys, renderMethod } from './util';
+import { getDefaultValueDecoders } from './modules/DefaultValueDecoder';
+import { generateProps } from './modules/ComponentProp';
+import { renderMethod } from './modules/Util';
 
 const globalLifecycle = {};
 
@@ -219,15 +220,14 @@ export default {
      */
     _renderFormElement(element) {
       const FormTag = this._getTag('formItem');
-      const propKeys = getPropKeys(FormTag);
-      const props = Object.assign(
-        {},
-        pick(element, propKeys),
-        { prop: element.model },
-        this.antFormModalItemAttrs
-      );
       return (
-        <FormTag {...{ props: props }} style={this.antFormModalItemAttrs.style}>
+        <FormTag
+          {...{
+            props: generateProps(FormTag, element, this.antFormModalItemAttrs, {
+              prop: element.model
+            })
+          }}
+          style={this.antFormModalItemAttrs.style}>
           {this._renderElement(element)}
         </FormTag>
       );
@@ -271,21 +271,14 @@ export default {
      * @return {*} 组件props对象
      */
     _renderTagProps(Tag, element) {
-      const propKeys = getPropKeys(Tag);
-      const options = [
-        pick(element, propKeys),
-        pick(element.options, propKeys),
-        {
-          locale: this.locale
-        }
-      ];
+      const options = [element, element.options];
       this.extendConfigs.forEach(extendConfig => {
         const key = element.model || element.key;
         if (has(extendConfig, key)) {
-          options.push(pick(extendConfig[key], propKeys));
+          options.push(extendConfig[key]);
         }
       });
-      const result = pickBy(Object.assign({}, ...options));
+      const result = Object.assign(generateProps(Tag, ...options), { locale: this.locale });
       delete result['type'];
       return result;
     },
@@ -389,10 +382,11 @@ export default {
     }
     const { config: formConfig, list: elements } = this.$props.config;
     const Tag = this._getTag('form');
-    const propKeys = getPropKeys(Tag);
-    const props = Object.assign({}, pick(formConfig, propKeys), { model: this.data });
     return (
-      <Tag class="k-form-build-9136076486841527" ref="form" {...{ props: props }}>
+      <Tag
+        class="k-form-build-9136076486841527"
+        ref="form"
+        {...{ props: generateProps(Tag, formConfig, { model: this.data }) }}>
         {...this._renderElements(elements)}
       </Tag>
     );

@@ -53,7 +53,6 @@ import HMethodForm from '../HMethodForm';
 import HLifecycleForm from '../HLifecycleForm';
 import HEventForm from '../HEventForm';
 import HForm from '../HForm';
-import HFormDecoder from '../HForm/FormDecoder';
 import HHtml from '../HHtml';
 
 export default {
@@ -113,7 +112,6 @@ Vue.use(HMethodForm);
 Vue.use(HLifecycleForm);
 Vue.use(HEventForm);
 Vue.use(HForm);
-Vue.use(HFormDecoder);
 Vue.use(HHtml);
 
 Vue.prototype.$confirm = Modal.confirm;
