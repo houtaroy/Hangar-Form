@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Vue from 'vue/dist/vue.esm.js';
+import Vue from 'vue';
 
 export default {
   name: 'h-html',
@@ -35,13 +35,9 @@ export default {
     console.log('created', this);
   },
   mounted() {
-    console.log(this);
     this.component = Vue.extend({
       template: `<div>${this.defaultValue}</div>`,
-      props: ['data'],
-      mounted() {
-        console.log(this.data);
-      }
+      props: ['data']
     });
   }
 };
