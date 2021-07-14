@@ -1,55 +1,41 @@
-# 表单设计器 k-form-design
+# 表单定制 Hangar-Form
 
 <p align="center">
   <a href="https://github.com/vuejs/vue">
     <img src="https://img.shields.io/badge/vue-2.6.10-brightgreen.svg" alt="vue">
-  </a>
-  <a href="https://github.com/vueComponent/ant-design-vue">
-    <img src="https://img.shields.io/badge/Ant%20Design%20Vue-1.5.1-blue" alt="ant-design-vue">
   </a>
   <a href="https://github.com/Kchengz/k-form-design/blob/master/LICENSE">
     <img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license">
   </a>
 </p>
 
-![](http://cdn.kcz66.com/demo.gif)
-
 ## 简介
 
-设计器布局参考form-generator项目，基于vue和ant-design-vue实现的表单设计器，样式使用less作为开发语言，主要功能是能通过简单操作来生成配置表单，生成可保存的JSON数据，并能将JSON还原成表单，使表单开发更简单更快速
+本代码基于K-Form-Design项目, 对其中部分源码进行大胆修改, 并增加了例如HHtml等组件处理特殊元素
 
-注：该项目不兼容vue3.0项目，暂无后续兼容vue3.0的计划
+项目内容分为表单设计器(Designer)和表单解析器(Decoder)
 
-- [github](https://github.com/Kchengz/k-form-design)
-- [码云](https://gitee.com/kcz66/k-form-design)
-- [项目预览](http://cdn.kcz66.com/k-form-design.html)
-- [项目文档 Github Pages](https://kchengz.github.io/k-form-design/)
-- [项目文档 Gitee Pages 较快](http://kcz66.gitee.io/k-form-design/#/)
+设计器大部分延用K-Form-Design, 仅对属性面板和json格式进行一定程度的封装修改, 增加Vue生命周期/方法/事件的配置
+
+在解析器方面, 我们舍弃了K-Form-Design的方式, 创建HForm(名称暂定), 理论上支持多前端框架, 支持对设计器中新增的配置, 详细的使用方式会在后续进行文档说明
+
+本质上, 项目沿用K-Form-Design根据json生成表单的核心业务逻辑, 完全重构解析器, 希望能支持更多更完善的功能
+
+注：该项目不兼容vue3.0项目，兼容vue3.0的计划正在商讨中
+
+- [码云](https://gitee.com/houtaroy/k-form-design)
 
 ## 特性
-- 可视化配置页面
-- 提供栅格、表格等布局
-- 布局嵌套使用
-- 提供预览、保存、生成json、生成可执行代码等操作
-- 支持表单验证
-- 快速获取表单数据
-- 自定义组件插入
-- 自定义主题色
+
 
 ## 组件
 - KFormDesign 表单设计器（基于可视化操作快速设计出表单页面，生成配置json或页面）
-- KFormBuild 表单构建器（根据设计器中获取的配置json数据，快速构建出表单页面）
+- HForm 表单解析器（根据设计器中获取的配置json数据，快速构建出表单页面）
 
 
 
 ## 安装
-```cmd
-# 使用yarn 
-yarn add k-form-design
 
-# 使用npm 
-npm i k-form-design --save
-```
 
 ## 引入组件
 ``` javascript
@@ -70,13 +56,5 @@ Vue.use(KFormDesign)
 ```
 
 ## 交流
-点击链接加入qq群聊，可以直接提问及反馈bug
 
-- [【k-form-desgin交流群：1020643215】](https://jq.qq.com/?_wv=1027&k=5BeoFAr) （满人）
-- [【k-form-desgin交流二群：727396923】](https://jq.qq.com/?_wv=1027&k=uYyqQPlQ)
-
-License
----
-[MIT](https://github.com/Kchengz/k-form-design/blob/master/LICENSE)
-Copyright (c) 2019 Kchengz
 
