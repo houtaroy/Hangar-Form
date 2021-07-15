@@ -3,7 +3,7 @@
  * @Author: kcz
  * @Date: 2021-05-02 16:04:02
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-12 12:19:45
+ * @LastEditTime: 2021-07-14 13:47:04
  */
 // 引入@babel/polyfill处理兼容
 import '@babel/polyfill';
@@ -11,6 +11,7 @@ import '@babel/polyfill';
 import Vue from 'vue';
 import App from './App.vue';
 import router from './router/';
+import store from './store/';
 
 import KFormDesign from '../packages/index';
 // import Cmp from './components/CustomComponent/index.vue';
@@ -92,5 +93,6 @@ Vue.config.productionTip = false;
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app');

@@ -29,5 +29,6 @@ module.exports = {
     if (debug) {
       config.devtool = 'source-map';
     }
+    config.resolve.alias.vue$ = 'vue/dist/vue.esm.js';
   }
 };
