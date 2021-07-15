@@ -14,7 +14,8 @@ const antComponentMap = {
   radio: 'a-radio-group',
   checkbox: 'a-checkbox-group',
   date: 'a-date-picker',
-  dateRange: 'a-range-picker'
+  dateRange: 'a-range-picker',
+  hUpload: 'h-uploader'
 };
 
 export const constantComponentMap = {

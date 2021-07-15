@@ -595,38 +595,41 @@ export const basicsList = [
 // 高级控件
 // export const highList = [];
 
-// import { Alert } from "ant-design-vue";
+import HUploader from '../../customeComponents/uploadFile/SimpleUploader';
 
 // 自定义组件
 export const customComponents = {
   title: '自定义组件',
   list: [
-    // {
-    //   label: "测试",
-    //   type: "jkjksdf",
-    //   component: Alert,
-    //   options: {
-    //     multiple: false,
-    //     disabled: false,
-    //     width: "100%",
-    //     data: "{}",
-    //     limit: 3,
-    //     placeholder: "上传",
-    //     action: "",
-    //     listType: "picture-card"
-    //   },
-    //   model: "",
-    //   key: "",
-    //   rules: [
-    //     {
-    //       required: false,
-    //       message: "必填项"
-    //     }
-    //   ]
-    // }
+    {
+      type: 'hUpload', // 表单类型
+      label: '自定义上传', // 标题文字
+      icon: 'icon-upload',
+      component: HUploader,
+      options: {
+        defaultValue: undefined,
+        disabled: false,
+        width: '100%',
+        text: '',
+        uploadOptions: {
+          headers: {}
+        },
+        downloadUrl: '',
+        openPdfUrl: '',
+        uploadMergeFileUrl: ''
+      },
+      model: '',
+      key: '',
+      rules: [
+        {
+          required: false,
+          message: '必填项'
+        }
+      ]
+    }
   ]
 };
-// window.$customComponentList = customComponents.list;
+window.$customComponentList = customComponents.list;
 
 // 布局控件
 export const layoutList = [

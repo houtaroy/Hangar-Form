@@ -508,7 +508,24 @@
 				"customStyle": ""
 			},
 			"key": "table_1625624180057"
-		}
+		},
+    {
+      "type": "hUpload",
+      "label": "自定义上传",
+      "options": {
+        "disabled": false,
+        "width": "100%",
+        "text": "这是一个标题"
+      },
+      "model": "hUpload_1626248479423",
+      "key": "hUpload_1626248479423",
+      "rules": [
+        {
+          "required": false,
+          "message": "必填项"
+        }
+      ]
+    }
 	],
 	"config": {
 		"layout": "horizontal",
