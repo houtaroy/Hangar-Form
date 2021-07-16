@@ -54,6 +54,8 @@ import HLifecycleForm from '../HLifecycleForm';
 import HEventForm from '../HEventForm';
 import HForm from '../HForm';
 import HHtml from '../HHtml';
+import HUploader from '../customeComponents/uploadFile/SimpleUploader';
+import uploader from 'vue-simple-uploader';
 
 export default {
   input: Input,
@@ -113,6 +115,8 @@ Vue.use(HLifecycleForm);
 Vue.use(HEventForm);
 Vue.use(HForm);
 Vue.use(HHtml);
+Vue.component('h-uploader', HUploader);
+Vue.component('uploader', uploader);
 
 Vue.prototype.$confirm = Modal.confirm;
 Vue.prototype.$message = message;
