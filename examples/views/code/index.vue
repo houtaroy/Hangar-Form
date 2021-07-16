@@ -13,7 +13,7 @@ export default {
   data() {
     return {
       value: {
-        input_1625624184608: '123',
+        // input_1625624184608: '123',
         number_1625624195507: 0
       },
       json: {
