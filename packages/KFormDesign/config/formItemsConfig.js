@@ -97,6 +97,7 @@ export const basicsList = [
       clearable: false, // 是否显示清除按钮
       hidden: false, // 是否隐藏，false显示，true隐藏
       placeholder: '请选择', // 默认提示文字
+      dataKey: 'options',
       dynamicKey: '',
       dynamic: false,
       options: [
@@ -132,6 +133,7 @@ export const basicsList = [
       hidden: false, // 是否隐藏，false显示，true隐藏
       defaultValue: [],
       dynamicKey: '',
+      dataKey: 'options',
       dynamic: false,
       options: [
         {
@@ -167,6 +169,7 @@ export const basicsList = [
       disabled: false, //是否禁用
       hidden: false, // 是否隐藏，false显示，true隐藏
       defaultValue: '', // 默认值
+      dataKey: 'options',
       dynamicKey: '',
       dynamic: false,
       options: [
@@ -366,6 +369,7 @@ export const basicsList = [
       showSearch: false, // 是否显示搜索框，搜索选择的项的值，而不是文字
       treeCheckable: false,
       placeholder: '请选择',
+      dataKey: 'options',
       dynamicKey: '',
       dynamic: true,
       treeData: [
@@ -413,6 +417,7 @@ export const basicsList = [
       showSearch: false, // 是否显示搜索框，搜索选择的项的值，而不是文字
       placeholder: '请选择',
       clearable: false, // 是否显示清除按钮
+      dataKey: 'options',
       dynamicKey: '',
       dynamic: true,
       options: [

@@ -183,7 +183,8 @@
                         "clearable": false,
                         "hidden": false,
                         "placeholder": "请选择",
-                        "dynamicKey": "",
+                        "dynamicKey": "selectDynamicData",
+                        "dataKey": "options",
                         "dynamic": false,
                         "options": [
                           {
@@ -223,7 +224,8 @@
                         "disabled": false,
                         "hidden": false,
                         "defaultValue": ["1", "2"],
-                        "dynamicKey": "",
+                        "dynamicKey": "selectDynamicData",
+                        "dataKey": "options",
                         "dynamic": false,
                         "options": [
                           {
@@ -258,7 +260,8 @@
                         "disabled": false,
                         "hidden": false,
                         "defaultValue": "1",
-                        "dynamicKey": "",
+                        "dynamicKey": "selectDynamicData",
+                        "dataKey": "options",
                         "dynamic": false,
                         "options": [
                           {
@@ -381,8 +384,9 @@
                     "showSearch": false,
                     "treeCheckable": false,
                     "placeholder": "请选择",
-                    "dynamicKey": "",
-                    "dynamic": true,
+                    "dynamicKey": "selectDynamicData",
+                    "dataKey": "treeData",
+                    "dynamic": false,
                     "treeData": [
                       {
                         "value": "1",
@@ -427,8 +431,9 @@
                     "showSearch": false,
                     "placeholder": "请选择",
                     "clearable": false,
-                    "dynamicKey": "",
-                    "dynamic": true,
+                    "dataKey": "options",
+                    "dynamicKey": "selectDynamicData",
+                    "dynamic": false,
                     "options": [
                       {
                         "value": "1",
@@ -493,33 +498,33 @@
             },
             {
               "type": "td",
-							"colspan": 1,
-							"rowspan": 1,
-							"list": [
-								{
-									"type": "html",
-									"label": "HTML",
-									"icon": "icon-ai-code",
-									"options": {
-										"hidden": false,
-										"defaultValue": "<strong>第一个输入框数据: {{data.input_1625624184608}}</strong>"
-									},
-									"key": "html_1625624243974"
-								}
-							]
-						}
-					]
-				}
-			],
-			"options": {
-				"width": "100%",
-				"bordered": true,
-				"bright": false,
-				"small": true,
-				"customStyle": ""
-			},
-			"key": "table_1625624180057"
-		},
+              "colspan": 1,
+              "rowspan": 1,
+              "list": [
+                {
+                  "type": "html",
+                  "label": "HTML",
+                  "icon": "icon-ai-code",
+                  "options": {
+                    "hidden": false,
+                    "defaultValue": "<strong>第一个输入框数据: {{data.input_1625624184608}}</strong>"
+                  },
+                  "key": "html_1625624243974"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "options": {
+        "width": "100%",
+        "bordered": true,
+        "bright": false,
+        "small": true,
+        "customStyle": ""
+      },
+      "key": "table_1625624180057"
+    },
     {
       "type": "hUpload",
       "label": "自定义上传",
@@ -537,7 +542,7 @@
         }
       ]
     }
-	],
+  ],
   "config": {
     "layout": "horizontal",
     "labelCol": {
@@ -563,7 +568,7 @@
     "lifecycle": [
       {
         "name": "created",
-        "body": "this.aaa = [ { a: { b: 'test2' } } ];"
+        "body": "this.aaa = [ { a: { b: 'test2' } } ];this.selectDynamicData = [ { label: '动态数据1', value: '1' }, { label: '动态数据2', value: '2' } ];"
       },
       {
         "name": "mounted",
