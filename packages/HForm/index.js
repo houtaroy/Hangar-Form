@@ -1,3 +1,6 @@
+import postcss from 'postcss';
+import postcssPrefixer from 'postcss-prefixer';
+
 import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
 import 'moment/locale/zh-cn';
 
@@ -205,6 +208,14 @@ export default {
       };
     },
     /**
+     * @description: 渲染css, 为所有选择器增加表单唯一id, 例如: test => form-1-test
+     * @param {String} css内容
+     * @return {String} 渲染结果
+     */
+    _renderCss(css) {
+      return postcss([postcssPrefixer({ prefix: `form-${this.formId}-` })]).process(css).css;
+    },
+    /**
      * @description: 批量渲染元素
      * @param {Array} elements 树形结构元素配置json
      * @return {*} 渲染结果
@@ -268,9 +279,26 @@ export default {
     _renderTagAttrs(Tag, element) {
       return {
         ref: element.key,
+        class: this._renderClass(element.class),
+        style: element.style,
         props: this._renderTagProps(Tag, element),
         on: element.listeners
       };
+    },
+    /**
+     * @description: 渲染元素样式类名, 增加表单唯一标识后的类名, 例如: test => form-1-test
+     * @param {String} classes 样式类名, 如果多个则以逗号分隔
+     * @return {String} 渲染结果
+     */
+    _renderClass(classes) {
+      let result = '';
+      if (!classes) {
+        return result;
+      }
+      classes.split(',').forEach(className => {
+        result += `form-${this.formId}-${className} `;
+      });
+      return result.substring(0, result.length - 1);
     },
     /**
      * @description: 渲染组件props
@@ -402,12 +430,16 @@ export default {
     const { config: formConfig, list: elements } = this.$props.config;
     const Tag = this._getTag('form');
     return (
-      <Tag
-        class="k-form-build-9136076486841527"
-        ref="form"
-        {...{ props: generateProps(Tag, formConfig, { model: this.data }) }}>
-        {...this._renderElements(elements)}
-      </Tag>
+      <section>
+        <Tag
+          class="k-form-build-9136076486841527"
+          class={this.formId}
+          ref="form"
+          {...{ props: generateProps(Tag, formConfig, { model: this.data }) }}>
+          {...this._renderElements(elements)}
+        </Tag>
+        <style>{this._renderCss(formConfig.customStyle)}</style>
+      </section>
     );
   },
   created() {
@@ -419,7 +451,6 @@ export default {
     lifecycle.forEach(one => {
       globalLifecycle[one.name] = bind(renderMethod(one), this);
     });
-    runLifecycle('created');
     methods.forEach(method => {
       this[method.name] = bind(renderMethod(method), this);
     });
@@ -429,6 +460,7 @@ export default {
     }
     this._decodeData(elements);
     this.data = this._decodeDefaultValues(Object.assign({}, this.data, this.value));
+    runLifecycle('created');
   },
   mounted() {
     runLifecycle('mounted');

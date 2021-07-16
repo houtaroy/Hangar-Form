@@ -1,7 +1,7 @@
 <template>
   <div>
     <h-form ref="test" v-model="value" v-bind="json"></h-form>
-    <button @click="submit">提交</button>
+    <button @click="submit" class="test">提交</button>
     <button @click="reset">重置</button>
   </div>
 </template>

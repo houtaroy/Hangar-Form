@@ -14,6 +14,8 @@
               "type": "input",
               "label": "输入框",
               "icon": "icon-write",
+              "class": "test,test2",
+              "style": "",
               "options": {
                 "type": "text",
                 "width": "100%",
@@ -564,7 +566,7 @@
       "xxl": 18
     },
     "hideRequiredMark": false,
-    "customStyle": "",
+    "customStyle": ".test { color: red } .test2{ color: blue }",
     "lifecycle": [
       {
         "name": "created",
