@@ -601,6 +601,7 @@ export const basicsList = [
 // export const highList = [];
 
 import HUploader from '../../customeComponents/uploadFile/SimpleUploader';
+import hCommentOptions from '../../customeComponents/commonOptions/commonOptions';
 
 // 自定义组件
 export const customComponents = {
@@ -622,6 +623,41 @@ export const customComponents = {
         downloadUrl: '',
         openPdfUrl: '',
         uploadMergeFileUrl: ''
+      },
+      model: '',
+      key: '',
+      rules: [
+        {
+          required: false,
+          message: '必填项'
+        }
+      ]
+    },
+    {
+      type: 'hCommentOptions', // 表单类型
+      label: '常用意见', // 标题文字
+      icon: 'icon-edit',
+      component: hCommentOptions,
+      options: {
+        defaultValue: undefined,
+        disabled: false,
+        width: '100%',
+        listData: [
+          {
+            value: '1',
+            label: '第一条意见'
+          },
+          {
+            value: '2',
+            label: '第二条意见'
+          }
+        ],
+        clearable: false, // 是否显示清除按钮
+        hidden: false, // 是否隐藏，false显示，true隐藏
+        placeholder: '请输入', // 默认提示文字
+        dynamicKey: '',
+        dynamic: false,
+        events: []
       },
       model: '',
       key: '',

@@ -323,6 +323,32 @@
         </a-form-item>
 
 
+        <!-- 自定义常用意见-->
+        <a-form-item v-if="selectItem.type === 'hCommentOptions'" label="默认值">
+          <a-input v-model="options.defaultValue" />
+        </a-form-item>
+        <a-form-item
+          v-if="typeof options.listData !== 'undefined'"
+          label="列表数据"
+        >
+          <a-radio-group buttonStyle="solid" v-model="options.dynamic">
+            <a-radio-button :value="false">静态数据</a-radio-button>
+            <a-radio-button :value="true">动态数据</a-radio-button>
+          </a-radio-group>
+
+          <a-input
+            v-show="options.dynamic"
+            v-model="options.dynamicKey"
+            placeholder="动态数据变量名"
+          ></a-input>
+
+          <KChangeOption
+            v-show="!options.dynamic"
+            v-model="options.listData"
+          />
+        </a-form-item>
+
+
 
         <!-- 文字对齐方式 -->
         <a-form-item v-if="selectItem.type === 'text'" label="文字对齐方式">

@@ -56,6 +56,7 @@ import HForm from '../HForm';
 import HHtml from '../HHtml';
 import HUploader from '../customeComponents/uploadFile/SimpleUploader';
 import uploader from 'vue-simple-uploader';
+import HCommentOptions from '../customeComponents/commonOptions/commonOptions';
 
 export default {
   input: Input,
@@ -115,6 +116,7 @@ Vue.use(HLifecycleForm);
 Vue.use(HEventForm);
 Vue.use(HForm);
 Vue.use(HHtml);
+Vue.use(HCommentOptions);
 Vue.component('h-uploader', HUploader);
 Vue.component('uploader', uploader);
 
