@@ -74,7 +74,7 @@ export default {
   methods: {
     /**
      * @description: 表单校验, 调用表单自身方法(目前仅支持ant)
-     * @param {*} callback 回调函数, 参数为验证结果
+     * @param {Function} callback 回调函数, 参数为验证结果
      */
     validate(callback) {
       this.$refs.form.validate((valid, result) => {
@@ -83,7 +83,7 @@ export default {
     },
     /**
      * @description: 表单提交, 先校验再提交(目前仅支持ant)
-     * @param {*} callback 回调函数, 参数为[校验结果, 表单数据]
+     * @param {Function} callback 回调函数, 参数为[校验结果, 表单数据]
      */
     submit(callback) {
       this.$refs.form.validate((valid, object) => {
@@ -98,7 +98,7 @@ export default {
     },
     /**
      * @description: 检查json版本是否与解析器匹配
-     * @param {*} version json版本
+     * @param {String} version json版本
      * @return {Boolean} true 匹配 false 不匹配
      */
     _checkVersion(version) {
@@ -113,8 +113,7 @@ export default {
     },
     /**
      * @description: 根据json配置
-     * @param {*} elements 树形结构元素配置json
-     * @return {*} 无
+     * @param {Array} elements 树形结构元素配置json
      */
     _decodeData(elements) {
       if (!elements) {
@@ -132,13 +131,17 @@ export default {
     },
     /**
      * @description: 解析json的model属性, 包括表单数据对象和元素Map
-     * @param {*} element 元素配置json
-     * @return {*}
+     * @param {Object} element 元素配置json
      */
     _decodeModel(element) {
       this.$set(this.data, element.model, element.options.defaultValue || undefined);
       this.$set(this.elementMap, element.model, element);
     },
+    /**
+     * @description: 解析表单数据对象默认值
+     * @param {Object} data 表单数据对象
+     * @return {Object} 默认值解析结果
+     */
     _decodeDefaultValues(data) {
       keys(data).forEach(key => {
         if (key !== undefined) {
@@ -147,6 +150,11 @@ export default {
       });
       return data;
     },
+    /**
+     * @description: 解析数据默认值, 按解析器顺序进行解析, 如果命中则立即返回, 无命中则返回原值
+     * @param {*} defaultValue 表单数据对象某一属性内容
+     * @return {*} 默认值解析结果
+     */
     _decodeDefaultValue(defaultValue) {
       for (const decoder of this.defaultValueDecoders) {
         if (decoder.test(defaultValue)) {
@@ -157,8 +165,8 @@ export default {
     },
     /**
      * @description: 解析json的events属性, 生成方法和用于绑定的事件参数
-     * @param {*} events 事件数组
-     * @return {*} 事件参数Map, key为事件名称(如click, 不需要增加on前缀), value为方法实体
+     * @param {Array} events 事件数组
+     * @return {Object} 事件参数Map, key为事件名称(如click, 不需要增加on前缀), value为方法实体
      */
     _decodeEvents(events) {
       const result = {};
@@ -174,8 +182,7 @@ export default {
     },
     /**
      * @description: 解析ant design中a-form-model-item样式, 适配KFormDesign编辑器
-     * @param {*} formConfig 表单配置
-     * @return {*} 样式对象
+     * @param {Object} formConfig 表单配置
      */
     _decodeAntFormModalItemAttrs(formConfig) {
       return {
@@ -199,7 +206,7 @@ export default {
     },
     /**
      * @description: 批量渲染元素
-     * @param {*} elements 树形结构元素配置json
+     * @param {Array} elements 树形结构元素配置json
      * @return {*} 渲染结果
      */
     _renderElements(elements) {
@@ -215,7 +222,7 @@ export default {
     },
     /**
      * @description: 渲染表单元素
-     * @param {*} element 表单元素配置json
+     * @param {Object} element 表单元素配置json
      * @return {*} 渲染结果
      */
     _renderFormElement(element) {
@@ -234,7 +241,7 @@ export default {
     },
     /**
      * @description: 渲染元素
-     * @param {*} element 元素配置json
+     * @param {Object} element 元素配置json
      * @return {*} 渲染结果
      */
     _renderElement(element) {
@@ -254,37 +261,49 @@ export default {
     },
     /**
      * @description: 渲染组件参数
-     * @param {*} Tag 组件标签名称
-     * @param {*} element 元素配置json
-     * @return {*} 参数对象, 包含[props, on]
+     * @param {String} Tag 组件标签名称
+     * @param {Object} element 元素配置json
+     * @return {Object} 参数对象, 包含[props, on]
      */
     _renderTagAttrs(Tag, element) {
       return {
+        ref: element.key,
         props: this._renderTagProps(Tag, element),
         on: element.listeners
       };
     },
     /**
      * @description: 渲染组件props
-     * @param {*} Tag 组件标签名称
-     * @param {*} element 元素配置json
-     * @return {*} 组件props对象
+     * @param {String} Tag 组件标签名称
+     * @param {Object} element 元素配置json
+     * @return {Object} 组件props对象
      */
     _renderTagProps(Tag, element) {
-      const options = [element, element.options];
+      const options = [element, element.options, { locale: this.locale }];
       this.extendConfigs.forEach(extendConfig => {
         const key = element.model || element.key;
         if (has(extendConfig, key)) {
           options.push(extendConfig[key]);
         }
       });
-      const result = Object.assign(generateProps(Tag, ...options), { locale: this.locale });
+      const result = generateProps(Tag, ...options);
+      if (element.options && element.options.dynamic) {
+        result[element.options.dataKey] = this._renderDynamicData(element.options);
+      }
       delete result['type'];
       return result;
     },
     /**
+     * @description: 解析动态数据
+     * @param {Object} options 元素配置
+     * @return {*} 动态数据结果
+     */
+    _renderDynamicData(options) {
+      return this[options.dynamicKey];
+    },
+    /**
      * @description: 渲染表格元素
-     * @param {*} tableElement 表格元素配置json
+     * @param {Object} tableElement 表格元素配置json
      * @return {*} 渲染结果
      */
     _renderTable(tableElement) {
@@ -300,7 +319,7 @@ export default {
     },
     /**
      * @description: 渲染表单列元素
-     * @param {*} tdElement 表单列元素配置json
+     * @param {Object} tdElement 表单列元素配置json
      * @return {*} 渲染结果
      */
     _renderTd(tdElement) {
@@ -316,7 +335,7 @@ export default {
     },
     /**
      * @description: ant-design的a-tab-pane存在问题, 未找到解决办法, 暂时进行特殊处理
-     * @param {*} element a-tab-pane配置对象
+     * @param {Object} element a-tab-pane配置对象
      * @return {*} 渲染结果
      */
     _renderAntTabPane(element) {
@@ -328,7 +347,7 @@ export default {
     },
     /**
      * @description: 渲染文本元素
-     * @param {*} tdElement 文本元素配置json
+     * @param {Object} textElement 文本元素配置json
      * @return {*} 渲染结果
      */
     _renderText(textElement) {
@@ -347,7 +366,7 @@ export default {
     },
     /**
      * @description: 渲染html元素
-     * @param {*} tdElement html元素配置json
+     * @param {Object} htmlElement html元素配置json
      * @return {*} 渲染结果
      */
     _renderHtml(htmlElement) {
@@ -355,8 +374,8 @@ export default {
     },
     /**
      * @description: 渲染子元素
-     * @param {*} element 子元素配置数组
-     * @return {*} 渲染结果
+     * @param {Object} element 元素配置数组
+     * @return {Array} 所有子元素渲染结果
      */
     _renderChildren(element) {
       let result = [];
@@ -369,8 +388,8 @@ export default {
     },
     /**
      * @description: 根据元素类型获取组件标签, 如不存在则使用原值
-     * @param {*} type 元素类型
-     * @return {*} 组件标签名称
+     * @param {String} type 元素类型
+     * @return {String} 组件标签名称
      */
     _getTag(type) {
       return constantComponentMap[type] || this.componentMap[type] || type;
