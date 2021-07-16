@@ -94,7 +94,7 @@
 <script>
 import axios from 'axios';
 import qs from 'qs';
-import uploader from 'vue-simple-uploader';
+// import uploader from 'vue-simple-uploader';
 // import storage from 'store';
 // import { ACCESS_TOKEN } from '@/store/mutation-types';
 export default {

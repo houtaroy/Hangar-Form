@@ -518,33 +518,6 @@
 					]
 				}
 			],
-			"options": {
-				"width": "100%",
-				"bordered": true,
-				"bright": false,
-				"small": true,
-				"customStyle": ""
-			},
-			"key": "table_1625624180057"
-		},
-              "colspan": 1,
-              "rowspan": 1,
-              "list": [
-                {
-                  "type": "html",
-                  "label": "HTML",
-                  "icon": "icon-ai-code",
-                  "options": {
-                    "hidden": false,
-                    "defaultValue": "<strong>第一个输入框数据: {{data.input_1625624184608}}</strong>"
-                  },
-                  "key": "html_1625624243974"
-                }
-              ]
-            }
-          ]
-        }
-      ],
       "options": {
         "width": "100%",
         "bordered": true,
@@ -572,30 +545,6 @@
       ]
     }
 	],
-	"config": {
-		"layout": "horizontal",
-		"labelCol": {
-			"xs": 4,
-			"sm": 4,
-			"md": 4,
-			"lg": 4,
-			"xl": 4,
-			"xxl": 4
-		},
-		"labelWidth": 100,
-		"labelLayout": "flex",
-		"wrapperCol": {
-			"xs": 18,
-			"sm": 18,
-			"md": 18,
-			"lg": 18,
-			"xl": 18,
-			"xxl": 18
-		},
-		"hideRequiredMark": false,
-		"customStyle": "",
-    "lifecycle": [],
-  ],
   "config": {
     "layout": "horizontal",
     "labelCol": {
