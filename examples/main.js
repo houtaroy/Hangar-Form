@@ -3,7 +3,7 @@
  * @Author: kcz
  * @Date: 2021-05-02 16:04:02
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-14 13:47:04
+ * @LastEditTime: 2021-07-16 16:32:14
  */
 // 引入@babel/polyfill处理兼容
 import '@babel/polyfill';
@@ -16,6 +16,7 @@ import store from './store/';
 import KFormDesign from '../packages/index';
 // import Cmp from './components/CustomComponent/index.vue';
 import uploader from 'vue-simple-uploader';
+import * as api from './apis';
 // import HUploader from './components/uploadFile/SimpleUploader';
 // const Cmp = {
 //   name: "cmp",
@@ -89,6 +90,7 @@ Vue.use(uploader);
 //     ]
 //   }
 // });
+Vue.prototype.$api = api;
 Vue.config.productionTip = false;
 
 new Vue({

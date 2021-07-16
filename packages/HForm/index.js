@@ -148,7 +148,18 @@ export default {
     _decodeDefaultValues(data) {
       keys(data).forEach(key => {
         if (key !== undefined) {
-          data[key] = this._decodeDefaultValue(data[key]);
+          const result = this._decodeDefaultValue(data[key]);
+          if (result instanceof Promise) {
+            result
+              .then(res => {
+                data[key] = res;
+              })
+              .catch(() => {
+                data[key] = undefined;
+              });
+          } else {
+            data[key] = result;
+          }
         }
       });
       return data;
@@ -291,14 +302,13 @@ export default {
      * @return {String} 渲染结果
      */
     _renderClass(classes) {
-      let result = '';
-      if (!classes) {
-        return result;
+      const result = [];
+      if (classes) {
+        classes.split(',').forEach(className => {
+          result.push(`form-${this.formId}-${className}`);
+        });
       }
-      classes.split(',').forEach(className => {
-        result += `form-${this.formId}-${className} `;
-      });
-      return result.substring(0, result.length - 1);
+      return result.join(' ');
     },
     /**
      * @description: 渲染组件props
@@ -454,13 +464,13 @@ export default {
     methods.forEach(method => {
       this[method.name] = bind(renderMethod(method), this);
     });
+    runLifecycle('created');
     this.componentMap = componentMap[frame] || componentMap['ant'];
     if (frame === 'ant') {
       this.antFormModalItemAttrs = this._decodeAntFormModalItemAttrs(formConfig);
     }
     this._decodeData(elements);
     this.data = this._decodeDefaultValues(Object.assign({}, this.data, this.value));
-    runLifecycle('created');
   },
   mounted() {
     runLifecycle('mounted');
