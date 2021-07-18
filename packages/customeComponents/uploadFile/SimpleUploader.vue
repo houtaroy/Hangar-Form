@@ -94,9 +94,8 @@
 <script>
 import axios from 'axios';
 import qs from 'qs';
-// import uploader from 'vue-simple-uploader';
-// import storage from 'store';
-// import { ACCESS_TOKEN } from '@/store/mutation-types';
+import storage from 'store';
+import { ACCESS_TOKEN } from '../../../examples/store/mutation-types';
 export default {
   props: {
     disabled: {
@@ -148,7 +147,7 @@ export default {
         chunkSize: 10 * 1024 * 1024,
         singleFile: false,
         headers: {
-          // Authorization: 'Bearer ' + storage.get(ACCESS_TOKEN)
+          Authorization: 'Bearer ' + storage.get(ACCESS_TOKEN)
         }
       }, // 附件配置
       attrs: {

@@ -301,7 +301,7 @@
         </a-form-item>
 
         <!--上传请求头配置-->
-        <a-form-item v-if="typeof options.uploadOptions !== 'undefined'" label="上传请求头配置">
+        <!--<a-form-item v-if="typeof options.uploadOptions !== 'undefined'" label="上传请求头配置">
           <a-input v-model="options.uploadOptions.target" placeholder="/api/fileInfos/chunk"></a-input>
           <kCheckbox
             v-model="options.uploadOptions.singleFile"
@@ -309,18 +309,18 @@
           />
           <a-input v-model="options.uploadOptions.headers.Authorization" placeholder="headers.Authorization"></a-input>
         </a-form-item>
-        <!--下载路径配置-->
+        &lt;!&ndash;下载路径配置&ndash;&gt;
         <a-form-item v-if="typeof options.downloadUrl !== 'undefined'" label="下载路径配置">
           <a-input v-model="options.downloadUrl" placeholder="请输入"></a-input>
         </a-form-item>
-        <!--查看pdf路径配置-->
+        &lt;!&ndash;查看pdf路径配置&ndash;&gt;
         <a-form-item v-if="typeof options.openPdfUrl !== 'undefined'" label="查看pdf路径配置">
           <a-input v-model="options.openPdfUrl" placeholder="请输入"></a-input>
         </a-form-item>
-        <!--合并文件路径配置-->
+        &lt;!&ndash;合并文件路径配置&ndash;&gt;
         <a-form-item v-if="typeof options.uploadMergeFileUrl !== 'undefined'" label="合并文件路径配置">
           <a-input v-model="options.uploadMergeFileUrl" placeholder="请输入"></a-input>
-        </a-form-item>
+        </a-form-item>-->
 
 
         <!-- 自定义常用意见-->
