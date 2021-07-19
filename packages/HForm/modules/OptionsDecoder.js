@@ -1,4 +1,6 @@
-import { has } from 'lodash';
+import { has, pick, keys, values } from 'lodash';
+
+import { deconstructionMethodString } from './Util';
 
 /**
  * 所有选项解析器的父类
@@ -46,6 +48,61 @@ class StaticOptionsDecoder extends BaseOptionsDecoder {
 }
 
 /**
+ * 从接口中获取数据进行选项解析
+ *
+ * @class 接口选项解析器
+ */
+class ApiOptionsDecoder extends BaseOptionsDecoder {
+  constructor() {
+    super('api');
+  }
+  decode(element, context) {
+    return this.decodeByApi(context, element.optionsConfig);
+  }
+  /**
+   * @description: 从接口请求数据进行解析
+   * @param {Object} config 选项解析配置
+   * @param {Object} context 当前组件上下文
+   * @return {Promise} 解析结果
+   */
+  decodeByApi(config, context) {
+    const method = deconstructionMethodString(config.name);
+    if (!has(context.$api, method.name)) {
+      return [];
+    }
+    context.loadingCount += 1;
+    return new Promise(resolve => {
+      context.$api[method.name](method.arguments)
+        .then(res => {
+          resolve(this.decodeApiResultByOptions(res.data, config.options));
+        })
+        .catch(() => {
+          resolve([]);
+        })
+        .finally(() => {
+          context.loadingCount -= 1;
+        });
+    });
+  }
+  /**
+   * @description: 根据配置处理接口请求数据结果
+   * @param {Array} apiResult 接口请求数据结果
+   * @param {Object} options 数据键值映射处理配置, 例如{ code: 'value' }, 会将结果中的键值code修改为value
+   * @return {Array} 处理后的结果
+   */
+  decodeApiResultByOptions(apiResult, options) {
+    const result = [];
+    apiResult.forEach(data => {
+      keys(options).forEach(key => {
+        data[options[key]] = data[key];
+      });
+      result.push(pick(data, values(options)));
+    });
+    return result;
+  }
+}
+
+/**
  * 读取页面data中的变量
  *
  * @class 动态选项解析器
@@ -65,33 +122,32 @@ class DynamicOptionsDecoder extends BaseOptionsDecoder {
  *
  * @class 字典选项解析器
  */
-class DictionaryOptionsDecoder extends BaseOptionsDecoder {
+class DictionaryOptionsDecoder extends ApiOptionsDecoder {
+  #type;
   constructor() {
-    super('dictionary');
+    super();
+    this.#type = 'dictionary';
   }
+  test(type) {
+    return type === this.#type;
+  }
+  /**
+   * @description: 将字典配置转换为接口配置并解析
+   * @param {Object} element 元素json配置
+   * @param {Object} context 当前组件上下文
+   * @return {Promise} 解析结果
+   */
   decode(element, context) {
     const { optionsConfig: config } = element;
-    if (!super.test(config.type)) {
+    if (!this.test(config.type)) {
       return [];
     }
-    return new Promise(resolve => {
-      context.loadingCount += 1;
-      context.$api
-        .dictionary({ type: config.name })
-        .then(res => {
-          const result = [];
-          res.data.forEach(data => {
-            result.push({ value: data.code, label: data.name });
-          });
-          resolve(result);
-        })
-        .catch(() => {
-          resolve([]);
-        })
-        .finally(() => {
-          context.loadingCount -= 1;
-        });
-    });
+    config.name = `listDictionaryTypesByCode({ codes: '${config.name}' })`;
+    config.options = {
+      code: 'value',
+      name: 'label'
+    };
+    return this.decodeByApi(config, context);
   }
 }
 
@@ -127,6 +183,7 @@ class EnumOptionsDecoder extends BaseOptionsDecoder {
 const optionsDecoderMap = {
   static: new StaticOptionsDecoder(),
   dynamic: new DynamicOptionsDecoder(),
+  api: new ApiOptionsDecoder(),
   dictionary: new DictionaryOptionsDecoder(),
   enum: new EnumOptionsDecoder()
 };
