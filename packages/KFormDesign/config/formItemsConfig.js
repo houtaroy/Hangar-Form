@@ -617,9 +617,7 @@ export const customComponents = {
         disabled: false,
         width: '100%',
         text: '',
-        uploadOptions: {
-          headers: {}
-        },
+        uploadOptions: {},
         downloadUrl: '',
         openPdfUrl: '',
         uploadMergeFileUrl: ''
