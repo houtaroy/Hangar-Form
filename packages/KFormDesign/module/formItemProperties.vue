@@ -300,6 +300,10 @@
           <a-input v-model="options.text" placeholder="请输入"></a-input>
         </a-form-item>
 
+        <a-form-item v-if="typeof options.uploadOptions !== 'undefined'" label="上传地址配置">
+          <a-input v-model="options.uploadOptions.target" placeholder="/api/fileInfos/chunk"></a-input>
+        </a-form-item>
+
         <!--上传请求头配置-->
         <!--<a-form-item v-if="typeof options.uploadOptions !== 'undefined'" label="上传请求头配置">
           <a-input v-model="options.uploadOptions.target" placeholder="/api/fileInfos/chunk"></a-input>
