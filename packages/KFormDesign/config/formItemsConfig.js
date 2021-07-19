@@ -241,14 +241,10 @@ export const basicsList = [
       placeholder: '请选择',
       rangePlaceholder: ['开始时间', '结束时间'],
       format: 'YYYY-MM-DD', // 展示格式  （请按照这个规则写 YYYY-MM-DD HH:mm:ss，区分大小写）
-<<<<<<< HEAD
       events: [],
       style: '',
-      class: ''
-=======
-      valueFormat: 'x',
-      events: []
->>>>>>> 157973c7950d188e7b3565a1208c9b9d084c0365
+      class: '',
+      valueFormat: 'x'
     },
     model: '',
     key: '',
