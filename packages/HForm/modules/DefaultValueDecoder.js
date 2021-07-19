@@ -118,8 +118,8 @@ export const getDefaultValueDecoders = function() {
 
 /**
  * @description: 新增默认值解析器
- * @param {*} name 默认值解析器名称
- * @param {*} decoder 解析器, 需继承DefaultValueDecoder
+ * @param {String} name 默认值解析器名称
+ * @param {Object} decoder 解析器, 需继承DefaultValueDecoder
  */
 export const addDefaultValueDecoder = function(name, decoder) {
   if (!(decoder instanceof BaseDefaultValueDecoder)) {
@@ -131,7 +131,7 @@ export const addDefaultValueDecoder = function(name, decoder) {
 
 /**
  * @description: 移除默认值解析器
- * @param {*} name 默认值解析器名称
+ * @param {String} name 默认值解析器名称
  */
 export const removeDefaultValueDecoder = function(name) {
   if (has(defaultValueDecoderMap, name)) {

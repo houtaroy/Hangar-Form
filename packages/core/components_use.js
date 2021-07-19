@@ -38,7 +38,8 @@ import {
   FormModel,
   Collapse,
   Cascader,
-  TreeSelect
+  TreeSelect,
+  Spin
 } from 'ant-design-vue';
 import vcolorpicker from 'vcolorpicker';
 
@@ -111,6 +112,7 @@ Vue.use(Upload);
 Vue.use(vcolorpicker);
 Vue.use(TreeSelect);
 Vue.use(Cascader);
+Vue.use(Spin);
 Vue.use(HMethodForm);
 Vue.use(HLifecycleForm);
 Vue.use(HEventForm);

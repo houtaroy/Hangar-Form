@@ -122,6 +122,11 @@ export const basicsList = [
       style: '',
       class: ''
     },
+    optionsConfig: {
+      type: 'static',
+      name: '',
+      key: 'options'
+    },
     model: '',
     key: '',
     help: '',
@@ -161,6 +166,11 @@ export const basicsList = [
       style: '',
       class: ''
     },
+    optionsConfig: {
+      type: 'static',
+      name: '',
+      key: 'options'
+    },
     model: '',
     key: '',
     help: '',
@@ -199,6 +209,11 @@ export const basicsList = [
       events: [],
       style: '',
       class: ''
+    },
+    optionsConfig: {
+      type: 'static',
+      name: '',
+      key: 'options'
     },
     model: '',
     key: '',
@@ -414,6 +429,11 @@ export const basicsList = [
       style: '',
       class: ''
     },
+    optionsConfig: {
+      type: 'static',
+      name: '',
+      key: 'treeData'
+    },
     model: '',
     key: '',
     help: '',
@@ -463,6 +483,11 @@ export const basicsList = [
       events: [],
       style: '',
       class: ''
+    },
+    optionsConfig: {
+      type: 'static',
+      name: '',
+      key: 'treeData'
     },
     model: '',
     key: '',
