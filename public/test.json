@@ -185,9 +185,6 @@
                         "clearable": false,
                         "hidden": false,
                         "placeholder": "请选择",
-                        "dynamicKey": "selectDynamicData",
-                        "dataKey": "options",
-                        "dynamic": false,
                         "options": [
                           {
                             "value": "1",
@@ -200,6 +197,11 @@
                         ],
                         "showSearch": false,
                         "defaultValue": "1"
+                      },
+                      "optionsConfig": {
+                        "type": "static",
+                        "name": "",
+                        "key": "options"
                       },
                       "model": "select_1625624204295",
                       "key": "select_1625624204295",
@@ -226,9 +228,6 @@
                         "disabled": false,
                         "hidden": false,
                         "defaultValue": ["1", "2"],
-                        "dynamicKey": "selectDynamicData",
-                        "dataKey": "options",
-                        "dynamic": false,
                         "options": [
                           {
                             "value": "1",
@@ -243,6 +242,11 @@
                             "label": "选项3"
                           }
                         ]
+                      },
+                      "optionsConfig": {
+                        "type": "dynamic",
+                        "name": "selectDynamicData",
+                        "key": "options"
                       },
                       "model": "checkbox_1625624211475",
                       "key": "checkbox_1625624211475",
@@ -262,9 +266,6 @@
                         "disabled": false,
                         "hidden": false,
                         "defaultValue": "1",
-                        "dynamicKey": "selectDynamicData",
-                        "dataKey": "options",
-                        "dynamic": false,
                         "options": [
                           {
                             "value": "1",
@@ -279,6 +280,11 @@
                             "label": "选项3"
                           }
                         ]
+                      },
+                      "optionsConfig": {
+                        "type": "enum",
+                        "name": "test",
+                        "key": "options"
                       },
                       "model": "radio_1625624213358",
                       "key": "radio_1625624213358",

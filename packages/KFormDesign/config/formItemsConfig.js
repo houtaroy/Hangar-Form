@@ -114,6 +114,11 @@ export const basicsList = [
       showSearch: false, // 是否显示搜索框，搜索选择的项的值，而不是文字
       events: []
     },
+    optionsConfig: {
+      type: 'static',
+      name: '',
+      key: 'options'
+    },
     model: '',
     key: '',
     help: '',
@@ -151,6 +156,11 @@ export const basicsList = [
       ],
       events: []
     },
+    optionsConfig: {
+      type: 'static',
+      name: '',
+      key: 'options'
+    },
     model: '',
     key: '',
     help: '',
@@ -187,6 +197,11 @@ export const basicsList = [
         }
       ],
       events: []
+    },
+    optionsConfig: {
+      type: 'static',
+      name: '',
+      key: 'options'
     },
     model: '',
     key: '',
@@ -396,6 +411,11 @@ export const basicsList = [
       ],
       events: []
     },
+    optionsConfig: {
+      type: 'static',
+      name: '',
+      key: 'treeData'
+    },
     model: '',
     key: '',
     help: '',
@@ -443,6 +463,11 @@ export const basicsList = [
         }
       ],
       events: []
+    },
+    optionsConfig: {
+      type: 'static',
+      name: '',
+      key: 'treeData'
     },
     model: '',
     key: '',

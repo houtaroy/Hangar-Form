@@ -15,6 +15,7 @@ import {
   excludeFormElementTypes
 } from './config';
 import { getDefaultValueDecoders } from './modules/DefaultValueDecoder';
+import { decodeOptions } from './modules/OptionsDecoder';
 import { generateProps } from './modules/ComponentProp';
 import { renderMethod } from './modules/Util';
 
@@ -61,6 +62,7 @@ export default {
         code: 500,
         message: '解析错误'
       },
+      loadingCount: 0,
       antFormModalItemAttrs: {},
       defaultValueDecoders: getDefaultValueDecoders(),
       constantRender: {
@@ -71,8 +73,14 @@ export default {
         'h-html': this._renderHtml
       },
       data: {},
-      elementMap: {}
+      elementMap: {},
+      optionsMap: {}
     };
+  },
+  computed: {
+    loading: function() {
+      return this.loadingCount > 0;
+    }
   },
   methods: {
     /**
@@ -124,6 +132,7 @@ export default {
       }
       elements.forEach(element => {
         if (element.model) this._decodeModel(element);
+        if (element.optionsConfig) this._decodeOptions(element);
         if (element.events) element.listeners = this._decodeEvents(element.events);
         childrenKeys.forEach(key => {
           if (element[key]) {
@@ -141,6 +150,31 @@ export default {
       this.$set(this.elementMap, element.model, element);
     },
     /**
+     * @description: 解析json的events属性, 生成方法和用于绑定的事件参数
+     * @param {Array} events 事件数组
+     * @return {Object} 事件参数Map, key为事件名称(如click, 不需要增加on前缀), value为方法实体
+     */
+    _decodeEvents(events) {
+      const result = {};
+      events.forEach(event => {
+        if (event.type === 'create') {
+          this[event.method.name] = bind(renderMethod(event.method), this);
+          result[event.name] = this[event.method.name];
+        } else {
+          result[event.name] = this[event.methodName];
+        }
+      });
+      return result;
+    },
+    _decodeOptions(element) {
+      const decodeResult = decodeOptions(element, this);
+      if (decodeResult instanceof Promise) {
+        decodeResult.then(res => this.$set(this.optionsMap, element.key, res));
+      } else {
+        this.$set(this.optionsMap, element.key, decodeResult);
+      }
+    },
+    /**
      * @description: 解析表单数据对象默认值
      * @param {Object} data 表单数据对象
      * @return {Object} 默认值解析结果
@@ -150,12 +184,16 @@ export default {
         if (key !== undefined) {
           const result = this._decodeDefaultValue(data[key]);
           if (result instanceof Promise) {
+            this.loadingCount += 1;
             result
               .then(res => {
                 data[key] = res;
               })
               .catch(() => {
                 data[key] = undefined;
+              })
+              .finally(() => {
+                this.loadingCount -= 1;
               });
           } else {
             data[key] = result;
@@ -176,23 +214,6 @@ export default {
         }
       }
       return defaultValue;
-    },
-    /**
-     * @description: 解析json的events属性, 生成方法和用于绑定的事件参数
-     * @param {Array} events 事件数组
-     * @return {Object} 事件参数Map, key为事件名称(如click, 不需要增加on前缀), value为方法实体
-     */
-    _decodeEvents(events) {
-      const result = {};
-      events.forEach(event => {
-        if (event.type === 'create') {
-          this[event.method.name] = bind(renderMethod(event.method), this);
-          result[event.name] = this[event.method.name];
-        } else {
-          result[event.name] = this[event.methodName];
-        }
-      });
-      return result;
     },
     /**
      * @description: 解析ant design中a-form-model-item样式, 适配KFormDesign编辑器
@@ -325,19 +346,11 @@ export default {
         }
       });
       const result = generateProps(Tag, ...options);
-      if (element.options && element.options.dynamic) {
-        result[element.options.dataKey] = this._renderDynamicData(element.options);
+      if (element.optionsConfig) {
+        result[element.optionsConfig.key] = this.optionsMap[element.key];
       }
       delete result['type'];
       return result;
-    },
-    /**
-     * @description: 解析动态数据
-     * @param {Object} options 元素配置
-     * @return {*} 动态数据结果
-     */
-    _renderDynamicData(options) {
-      return this[options.dynamicKey];
     },
     /**
      * @description: 渲染表格元素
@@ -441,18 +454,20 @@ export default {
     const Tag = this._getTag('form');
     return (
       <section>
-        <Tag
-          class="k-form-build-9136076486841527"
-          class={this.formId}
-          ref="form"
-          {...{ props: generateProps(Tag, formConfig, { model: this.data }) }}>
-          {...this._renderElements(elements)}
-        </Tag>
+        <a-spin spinning={this.loading} size="large">
+          <Tag
+            class={['k-form-build-9136076486841527', this.formId]}
+            ref="form"
+            {...{ props: generateProps(Tag, formConfig, { model: this.data }) }}>
+            {...this._renderElements(elements)}
+          </Tag>
+        </a-spin>
         <style>{this._renderCss(formConfig.customStyle)}</style>
       </section>
     );
   },
   created() {
+    this.loadingCount += 1;
     if (!this._checkVersion(this.config.version)) {
       return;
     }
@@ -474,5 +489,6 @@ export default {
   },
   mounted() {
     runLifecycle('mounted');
+    this.loadingCount -= 1;
   }
 };
