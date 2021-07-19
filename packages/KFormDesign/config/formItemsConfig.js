@@ -20,7 +20,9 @@ export const basicsList = [
       addonAfter: '',
       hidden: false, // 是否隐藏，false显示，true隐藏
       disabled: false, // 是否禁用，false不禁用，true禁用
-      events: []
+      events: [],
+      style: '',
+      class: ''
     },
     model: '', // 数据字段
     key: '',
@@ -47,7 +49,9 @@ export const basicsList = [
       hidden: false, // 是否隐藏，false显示，true隐藏
       disabled: false,
       placeholder: '请输入',
-      events: []
+      events: [],
+      style: '',
+      class: ''
     },
     model: '', // 数据字段
     key: '',
@@ -73,7 +77,9 @@ export const basicsList = [
       hidden: false, // 是否隐藏，false显示，true隐藏
       disabled: false, //是否禁用
       placeholder: '请输入',
-      events: []
+      events: [],
+      style: '',
+      class: ''
     },
     model: '', // 数据字段
     key: '',
@@ -112,7 +118,9 @@ export const basicsList = [
         }
       ],
       showSearch: false, // 是否显示搜索框，搜索选择的项的值，而不是文字
-      events: []
+      events: [],
+      style: '',
+      class: ''
     },
     optionsConfig: {
       type: 'static',
@@ -154,7 +162,9 @@ export const basicsList = [
           label: '选项3'
         }
       ],
-      events: []
+      events: [],
+      style: '',
+      class: ''
     },
     optionsConfig: {
       type: 'static',
@@ -196,7 +206,9 @@ export const basicsList = [
           label: '选项3'
         }
       ],
-      events: []
+      events: [],
+      style: '',
+      class: ''
     },
     optionsConfig: {
       type: 'static',
@@ -229,7 +241,9 @@ export const basicsList = [
       placeholder: '请选择',
       rangePlaceholder: ['开始时间', '结束时间'],
       format: 'YYYY-MM-DD', // 展示格式  （请按照这个规则写 YYYY-MM-DD HH:mm:ss，区分大小写）
-      events: []
+      events: [],
+      style: '',
+      class: ''
     },
     model: '',
     key: '',
@@ -253,7 +267,9 @@ export const basicsList = [
       clearable: false, // 是否显示清除按钮
       placeholder: '请选择',
       format: 'HH:mm:ss', // 展示格式
-      events: []
+      events: [],
+      style: '',
+      class: ''
     },
     model: '',
     key: '',
@@ -409,7 +425,9 @@ export const basicsList = [
           ]
         }
       ],
-      events: []
+      events: [],
+      style: '',
+      class: ''
     },
     optionsConfig: {
       type: 'static',
@@ -462,7 +480,9 @@ export const basicsList = [
           ]
         }
       ],
-      events: []
+      events: [],
+      style: '',
+      class: ''
     },
     optionsConfig: {
       type: 'static',
@@ -605,7 +625,9 @@ export const basicsList = [
       color: 'rgb(0, 0, 0)',
       fontFamily: 'SimHei',
       fontSize: '16pt',
-      events: []
+      events: [],
+      style: '',
+      class: ''
     },
     key: ''
   },
@@ -616,7 +638,9 @@ export const basicsList = [
     options: {
       hidden: false, // 是否隐藏，false显示，true隐藏
       defaultValue: '<strong>HTML</strong>',
-      events: []
+      events: [],
+      style: '',
+      class: ''
     },
     key: ''
   }
@@ -645,7 +669,9 @@ export const customComponents = {
         uploadOptions: {},
         downloadUrl: '',
         openPdfUrl: '',
-        uploadMergeFileUrl: ''
+        uploadMergeFileUrl: '',
+        style: '',
+        class: ''
       },
       model: '',
       key: '',
@@ -680,7 +706,9 @@ export const customComponents = {
         placeholder: '请输入', // 默认提示文字
         dynamicKey: '',
         dynamic: false,
-        events: []
+        events: [],
+        style: '',
+        class: ''
       },
       model: '',
       key: '',

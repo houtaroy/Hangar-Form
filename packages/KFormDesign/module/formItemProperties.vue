@@ -517,6 +517,18 @@
         <a-form-item label="后缀" v-if="typeof options.addonAfter !== 'undefined'">
           <a-input v-model="options.addonAfter" placeholder="请输入" />
         </a-form-item>
+
+        <!--class选择-->
+        <a-form-item label="class name" v-if="typeof options.class !== 'undefined'">
+          <a-input v-model="options.class" placeholder="请输入" />
+        </a-form-item>
+
+        <!--style-->
+        <a-form-item label="style" v-if="typeof options.style !== 'undefined'">
+          <a-textarea v-model="options.style" placeholder="请输入" :auto-size="{ minRows: 2 }" />
+        </a-form-item>
+
+        <!--自定义事件-->
         <a-form-item v-if="options.hasOwnProperty('events')" label="事件">
           <a-button @click="eventModalFlag = true" style="width: 100%">设置</a-button>
           <a-modal
