@@ -8,9 +8,9 @@ export const getFieldInfo = function(params) {
   });
 };
 
-export const dictionary = function(params) {
+export const listDictionaryTypesByCode = function(params) {
   console.log('调用接口dictionary');
-  console.log('字典类型', params.type);
+  console.log('字典类型', params.codes);
   return new Promise(resolve => {
     setTimeout(() => {
       resolve({

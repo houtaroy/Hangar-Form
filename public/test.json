@@ -282,7 +282,7 @@
                         ]
                       },
                       "optionsConfig": {
-                        "type": "enum",
+                        "type": "dictionary",
                         "name": "test",
                         "key": "options"
                       },
