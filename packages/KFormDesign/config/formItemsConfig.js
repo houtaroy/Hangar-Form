@@ -127,11 +127,6 @@ export const basicsList = [
       name: '',
       key: 'options'
     },
-    optionsConfig: {
-      type: 'static',
-      name: '',
-      key: 'options'
-    },
     model: '',
     key: '',
     help: '',
@@ -176,11 +171,6 @@ export const basicsList = [
       name: '',
       key: 'options'
     },
-    optionsConfig: {
-      type: 'static',
-      name: '',
-      key: 'options'
-    },
     model: '',
     key: '',
     help: '',
@@ -219,11 +209,6 @@ export const basicsList = [
       events: [],
       style: '',
       class: ''
-    },
-    optionsConfig: {
-      type: 'static',
-      name: '',
-      key: 'options'
     },
     optionsConfig: {
       type: 'static',
@@ -449,11 +434,6 @@ export const basicsList = [
       name: '',
       key: 'treeData'
     },
-    optionsConfig: {
-      type: 'static',
-      name: '',
-      key: 'treeData'
-    },
     model: '',
     key: '',
     help: '',
@@ -503,11 +483,6 @@ export const basicsList = [
       events: [],
       style: '',
       class: ''
-    },
-    optionsConfig: {
-      type: 'static',
-      name: '',
-      key: 'treeData'
     },
     optionsConfig: {
       type: 'static',
