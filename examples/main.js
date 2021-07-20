@@ -15,7 +15,7 @@ import store from './store/';
 
 import KFormDesign from '../packages/index';
 // import Cmp from './components/CustomComponent/index.vue';
-import uploader from 'vue-simple-uploader';
+// import uploader from 'vue-simple-uploader';
 import * as api from './apis';
 // import HUploader from './components/uploadFile/SimpleUploader';
 // const Cmp = {
@@ -81,7 +81,7 @@ import * as api from './apis';
   uploadImageHeaders: { data: 1545 }
 });*/
 Vue.use(KFormDesign);
-Vue.use(uploader);
+// Vue.use(uploader);
 // KFormDesign.setFormBuildConfig({
 //   dynamicData: {
 //     test: [

@@ -59,6 +59,7 @@ import HUploader from '../customeComponents/uploadFile/SimpleUploader';
 import uploader from 'vue-simple-uploader';
 import HCommentOptions from '../customeComponents/commonOptions/commonOptions';
 
+
 export default {
   input: Input,
   number: InputNumber,
@@ -120,7 +121,7 @@ Vue.use(HForm);
 Vue.use(HHtml);
 Vue.use(HCommentOptions);
 Vue.component('h-uploader', HUploader);
-Vue.component('uploader', uploader);
+Vue.use(uploader);
 
 Vue.prototype.$confirm = Modal.confirm;
 Vue.prototype.$message = message;
