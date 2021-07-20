@@ -58,6 +58,7 @@ import HHtml from '../HHtml';
 import HUploader from '../customeComponents/uploadFile/SimpleUploader';
 import uploader from 'vue-simple-uploader';
 import HCommentOptions from '../customeComponents/commonOptions/commonOptions';
+import HAceEditor from '../customeComponents/ace-editor';
 
 
 export default {
@@ -122,6 +123,7 @@ Vue.use(HHtml);
 Vue.use(HCommentOptions);
 Vue.component('h-uploader', HUploader);
 Vue.use(uploader);
+Vue.use(HAceEditor);
 
 Vue.prototype.$confirm = Modal.confirm;
 Vue.prototype.$message = message;
