@@ -6,18 +6,17 @@ import 'moment/locale/zh-cn';
 
 import { bind, has, keys, pick } from 'lodash';
 
-import { version as decoderVersion } from '../../package.json';
-
 import {
   componentMap,
   constantComponentMap,
   childrenKeys,
-  excludeFormElementTypes
+  excludeFormElementTypes,
+  jsonMinimumVersion
 } from './config';
 import { getDefaultValueDecoders } from './modules/DefaultValueDecoder';
 import { decodeOptions } from './modules/OptionsDecoder';
 import { generateProps } from './modules/ComponentProp';
-import { renderMethod } from './modules/Util';
+import { renderMethod, checkVersion } from './modules/Util';
 
 const globalLifecycle = {};
 
@@ -113,11 +112,10 @@ export default {
      * @return {Boolean} true 匹配 false 不匹配
      */
     _checkVersion(version) {
-      let result = true;
-      if (decoderVersion !== version) {
-        result = false;
+      const result = checkVersion(version);
+      if (!result) {
         this.decodeError.flag = true;
-        this.decodeError.message = `版本不匹配: json版本[${version}], 解析器版本[${decoderVersion}]`;
+        this.decodeError.message = `Json配置版本不匹配: 当前版本[${version}], 解析器支持最低版本[${jsonMinimumVersion}]`;
         console.error(this.decodeError.message);
       }
       return result;

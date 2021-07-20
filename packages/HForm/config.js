@@ -54,3 +54,5 @@ export const excludeFormElementTypes = [
   'text',
   'html'
 ];
+
+export const jsonMinimumVersion = '1.0.0';
