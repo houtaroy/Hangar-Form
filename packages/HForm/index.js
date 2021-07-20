@@ -4,7 +4,7 @@ import postcssPrefixer from 'postcss-prefixer';
 import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
 import 'moment/locale/zh-cn';
 
-import { bind, has, keys, pick } from 'lodash';
+import { bind, has, pick } from 'lodash';
 
 import {
   componentMap,
@@ -13,8 +13,12 @@ import {
   excludeFormElementTypes,
   jsonMinimumVersion
 } from './config';
-import { getDefaultValueDecoders } from './modules/DefaultValueDecoder';
-import { decodeOptions } from './modules/OptionsDecoder';
+import {
+  getDefaultValueDecoders,
+  addDefaultValueDecoder,
+  removeDefaultValueDecoder
+} from './modules/DefaultValueDecoder';
+import { decodeOptions, addOptionsDecoder, removeOptionsDecoder } from './modules/OptionsDecoder';
 import { generateProps } from './modules/ComponentProp';
 import { renderMethod, checkVersion } from './modules/Util';
 
@@ -26,7 +30,11 @@ const runLifecycle = function(name) {
   }
 };
 
-export default {
+function install(Vue) {
+  Vue.component('h-form', HForm);
+}
+
+const HForm = {
   name: 'h-form',
   install: function(Vue) {
     Vue.component(this.name, this);
@@ -71,6 +79,7 @@ export default {
         text: this._renderText,
         'h-html': this._renderHtml
       },
+      originalData: {},
       data: {},
       elementMap: {},
       optionsMap: {}
@@ -79,6 +88,11 @@ export default {
   computed: {
     loading: function() {
       return this.loadingCount > 0;
+    }
+  },
+  watch: {
+    loadingCount: function(newVal) {
+      if (newVal === 0) this.resetFields();
     }
   },
   methods: {
@@ -101,10 +115,10 @@ export default {
       });
     },
     /**
-     * @description: 表单重置, 调用表单自身方法(目前仅支持ant)
+     * @description: 表单重置
      */
     resetFields() {
-      this.$refs.form.resetFields();
+      this.data = Object.assign({}, this.originalData);
     },
     /**
      * @description: 检查json版本是否与解析器匹配
@@ -144,8 +158,52 @@ export default {
      * @param {Object} element 元素配置json
      */
     _decodeModel(element) {
-      this.$set(this.data, element.model, element.options.defaultValue || undefined);
-      this.$set(this.elementMap, element.model, element);
+      const key = element.model;
+      has(this.value, key)
+        ? this.$set(this.originalData, key, this.value[key])
+        : this._decodeDefaultValue(key, element.options.defaultValue);
+      this.$set(this.elementMap, key, element);
+    },
+    /**
+     * @description: 解析默认值
+     * @param {String} key 默认值对应属性名称
+     * @param {String} defaultValue 默认值表达式
+     */
+    _decodeDefaultValue(key, defaultValue) {
+      let result = defaultValue;
+      for (const decoder of this.defaultValueDecoders) {
+        if (decoder.test(defaultValue)) {
+          result = decoder.decode(defaultValue, this);
+          break;
+        }
+      }
+      if (result instanceof Promise) {
+        this.loadingCount += 1;
+        result
+          .then(res => {
+            this.$set(this.originalData, key, res.data);
+          })
+          .catch(() => {
+            this.$set(this.originalData, key, undefined);
+          })
+          .finally(() => {
+            this.loadingCount -= 1;
+          });
+      } else {
+        this.$set(this.originalData, key, result);
+      }
+    },
+    /**
+     * @description: 解析选项配置
+     * @param {Object} element 表单元素Json
+     */
+    _decodeOptions(element) {
+      const decodeResult = decodeOptions(element, this);
+      if (decodeResult instanceof Promise) {
+        decodeResult.then(res => this.$set(this.optionsMap, element.key, res));
+      } else {
+        this.$set(this.optionsMap, element.key, decodeResult);
+      }
     },
     /**
      * @description: 解析json的events属性, 生成方法和用于绑定的事件参数
@@ -163,55 +221,6 @@ export default {
         }
       });
       return result;
-    },
-    _decodeOptions(element) {
-      const decodeResult = decodeOptions(element, this);
-      if (decodeResult instanceof Promise) {
-        decodeResult.then(res => this.$set(this.optionsMap, element.key, res));
-      } else {
-        this.$set(this.optionsMap, element.key, decodeResult);
-      }
-    },
-    /**
-     * @description: 解析表单数据对象默认值
-     * @param {Object} data 表单数据对象
-     * @return {Object} 默认值解析结果
-     */
-    _decodeDefaultValues(data) {
-      keys(data).forEach(key => {
-        if (key !== undefined) {
-          const result = this._decodeDefaultValue(data[key]);
-          if (result instanceof Promise) {
-            this.loadingCount += 1;
-            result
-              .then(res => {
-                data[key] = res;
-              })
-              .catch(() => {
-                data[key] = undefined;
-              })
-              .finally(() => {
-                this.loadingCount -= 1;
-              });
-          } else {
-            data[key] = result;
-          }
-        }
-      });
-      return data;
-    },
-    /**
-     * @description: 解析数据默认值, 按解析器顺序进行解析, 如果命中则立即返回, 无命中则返回原值
-     * @param {*} defaultValue 表单数据对象某一属性内容
-     * @return {*} 默认值解析结果
-     */
-    _decodeDefaultValue(defaultValue) {
-      for (const decoder of this.defaultValueDecoders) {
-        if (decoder.test(defaultValue)) {
-          return decoder.decode(defaultValue, this);
-        }
-      }
-      return defaultValue;
     },
     /**
      * @description: 解析ant design中a-form-model-item样式, 适配KFormDesign编辑器
@@ -242,7 +251,7 @@ export default {
      * @param {String} css内容
      * @return {String} 渲染结果
      */
-    _renderCss(css) {
+    _renderCSS(css) {
       return postcss([postcssPrefixer({ prefix: `form-${this.formId}-` })]).process(css).css;
     },
     /**
@@ -460,7 +469,7 @@ export default {
             {...this._renderElements(elements)}
           </Tag>
         </a-spin>
-        <style>{this._renderCss(formConfig.customStyle)}</style>
+        <style>{this._renderCSS(formConfig.customStyle)}</style>
       </section>
     );
   },
@@ -483,10 +492,26 @@ export default {
       this.antFormModalItemAttrs = this._decodeAntFormModalItemAttrs(formConfig);
     }
     this._decodeData(elements);
-    this.data = this._decodeDefaultValues(Object.assign({}, this.data, this.value));
   },
   mounted() {
     runLifecycle('mounted');
     this.loadingCount -= 1;
   }
+};
+
+export {
+  HForm,
+  addDefaultValueDecoder,
+  removeDefaultValueDecoder,
+  addOptionsDecoder,
+  removeOptionsDecoder
+};
+
+export default {
+  install,
+  HForm,
+  addDefaultValueDecoder,
+  removeDefaultValueDecoder,
+  addOptionsDecoder,
+  removeOptionsDecoder
 };
