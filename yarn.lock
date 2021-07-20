@@ -2073,6 +2073,11 @@ brace-expansion@^1.1.7:
     balanced-match "^1.0.0"
     concat-map "0.0.1"
 
+brace@^0.11.0:
+  version "0.11.1"
+  resolved "http://43.239.120.231:11381/repository/npm/brace/-/brace-0.11.1.tgz#4896fcc9d544eef45f4bb7660db320d3b379fe58"
+  integrity sha1-SJb8ydVE7vRfS7dmDbMg07N5/lg=
+
 braces@^2.3.1, braces@^2.3.2:
   version "2.3.2"
   resolved "https://registry.nlark.com/braces/download/braces-2.3.2.tgz#5979fd3f14cd531565e5fa2df1abfff1dfaee729"
@@ -8998,6 +9003,13 @@ vue-template-es2015-compiler@^1.9.0:
   version "1.9.1"
   resolved "https://registry.npm.taobao.org/vue-template-es2015-compiler/download/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha1-HuO8mhbsv1EYvjNLsV+cRvgvWCU=
+
+vue2-ace-editor@^0.0.15:
+  version "0.0.15"
+  resolved "http://43.239.120.231:11381/repository/npm/vue2-ace-editor/-/vue2-ace-editor-0.0.15.tgz#569b208e54ae771ae1edd3b8902ac42f0edc74e3"
+  integrity sha1-VpsgjlSudxrh7dO4kCrELw7cdOM=
+  dependencies:
+    brace "^0.11.0"
 
 vue@^2.5.17, vue@^2.6.10:
   version "2.6.14"
