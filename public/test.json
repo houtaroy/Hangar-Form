@@ -583,6 +583,29 @@
         "body": "this.test1();"
       }
     ],
+    "computed": [
+      {
+        "name": "loadingCountPlus",
+        "get": "return this.loadingCount + 1"
+      },
+      {
+        "name": "loadingCountPlus2",
+        "get": "return this.loadingCount + 1",
+        "set": "console.log('给计算属性设置值', newValue)"
+      }
+    ],
+    "watch": [
+      {
+        "name": "data",
+        "body": "console.log('data新值', newValue);console.log('旧值', oldValue);"
+      }
+    ],
+    "filter": [
+      {
+        "name": "testFilter",
+        "body": "console.log('过滤的值', value);return value;"
+      }
+    ],
     "methods": [
       {
         "name": "test1",

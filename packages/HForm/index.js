@@ -20,7 +20,8 @@ import {
 } from './modules/DefaultValueDecoder';
 import { decodeOptions, addOptionsDecoder, removeOptionsDecoder } from './modules/OptionsDecoder';
 import { generateProps } from './modules/ComponentProp';
-import { renderMethod, checkVersion } from './modules/Util';
+import { parseMethod, parseOptions } from './modules/VueParser';
+import { checkVersion } from './modules/Util';
 
 const globalLifecycle = {};
 
@@ -64,11 +65,8 @@ const HForm = {
   data() {
     return {
       locale,
-      decodeError: {
-        flag: false,
-        code: 500,
-        message: '解析错误'
-      },
+      error: false,
+      errorMessage: '解析过程中出现错误',
       loadingCount: 0,
       antFormModalItemAttrs: {},
       defaultValueDecoders: getDefaultValueDecoders(),
@@ -95,6 +93,7 @@ const HForm = {
       if (newVal === 0) this.resetFields();
     }
   },
+  filter: {},
   methods: {
     /**
      * @description: 表单校验, 调用表单自身方法(目前仅支持ant)
@@ -119,20 +118,6 @@ const HForm = {
      */
     resetFields() {
       this.data = Object.assign({}, this.originalData);
-    },
-    /**
-     * @description: 检查json版本是否与解析器匹配
-     * @param {String} version json版本
-     * @return {Boolean} true 匹配 false 不匹配
-     */
-    _checkVersion(version) {
-      const result = checkVersion(version);
-      if (!result) {
-        this.decodeError.flag = true;
-        this.decodeError.message = `Json配置版本不匹配: 当前版本[${version}], 解析器支持最低版本[${jsonMinimumVersion}]`;
-        console.error(this.decodeError.message);
-      }
-      return result;
     },
     /**
      * @description: 根据json配置
@@ -214,7 +199,7 @@ const HForm = {
       const result = {};
       events.forEach(event => {
         if (event.type === 'create') {
-          this[event.method.name] = bind(renderMethod(event.method), this);
+          this[event.method.name] = bind(parseMethod(event.method), this);
           result[event.name] = this[event.method.name];
         } else {
           result[event.name] = this[event.methodName];
@@ -452,8 +437,8 @@ const HForm = {
     }
   },
   render() {
-    if (this.decodeError.flag) {
-      return <h1 style="text-align: center">{this.decodeError.message}</h1>;
+    if (this.error) {
+      return <h1 style="text-align: center">{this.errorMessage}</h1>;
     }
     const { config: formConfig, list: elements } = this.$props.config;
     const Tag = this._getTag('form');
@@ -471,18 +456,30 @@ const HForm = {
       </section>
     );
   },
-  created() {
-    this.loadingCount += 1;
-    if (!this._checkVersion(this.config.version)) {
+  beforeCreate() {
+    console.log('vue组件配置', this.$options);
+    const { version } = this.$options.propsData.config;
+    if (!checkVersion(version)) {
+      const errorMessage = `Json配置版本不匹配: 当前版本[${version}], 解析器支持最低版本[${jsonMinimumVersion}]`;
+      console.error(errorMessage);
+      this.$options.data = function() {
+        return {
+          error: true,
+          errorMessage: errorMessage
+        };
+      };
+      this.$options.created = undefined;
+      this.$options.mounted = undefined;
       return;
     }
+    parseOptions(this.$options, this.$options.propsData.config.config);
+  },
+  created() {
+    this.loadingCount += 1;
     const { frame, config: formConfig, list: elements } = this.$props.config;
-    const { lifecycle, methods } = formConfig;
+    const { lifecycle } = formConfig;
     lifecycle.forEach(one => {
-      globalLifecycle[one.name] = bind(renderMethod(one), this);
-    });
-    methods.forEach(method => {
-      this[method.name] = bind(renderMethod(method), this);
+      globalLifecycle[one.name] = bind(parseMethod(one), this);
     });
     runLifecycle('created');
     this.componentMap = componentMap[frame] || componentMap['ant'];
