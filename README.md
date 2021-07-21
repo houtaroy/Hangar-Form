@@ -1,4 +1,4 @@
-# 表单定制 Hangar-Form
+# 表单定制 hangar-form
 
 <p align="center">
   <a href="https://github.com/vuejs/vue">
@@ -56,6 +56,7 @@ Vue.use(HForm)
 ```
 
 ## 使用组件
+
 ```html
 <template>
   <div>

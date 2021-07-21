@@ -381,15 +381,13 @@ const HForm = {
      * @return {*} 渲染结果
      */
     _renderTd(tdElement) {
-      const attr = {
-        colSpan: tdElement.colspan,
-        rowSpan: tdElement.rowspan
-      };
-      return (
-        <td class="table-td" {...attr}>
-          {this._renderChildren(tdElement)}
-        </td>
-      );
+      if (tdElement.colspan && tdElement.rowspan) {
+        return (
+          <td class="table-td" colSpan={tdElement.colspan} rowSpan={tdElement.rowspan}>
+            {this._renderChildren(tdElement)}
+          </td>
+        );
+      }
     },
     /**
      * @description: ant-design的a-tab-pane存在问题, 未找到解决办法, 暂时进行特殊处理
