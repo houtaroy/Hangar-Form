@@ -485,7 +485,7 @@
           "tds": [
             {
               "type": "td",
-              "colspan": 1,
+              "colspan": 2,
               "rowspan": 1,
               "list": [
                 {
@@ -506,7 +506,7 @@
             },
             {
               "type": "td",
-							"colspan": 1,
+							"colspan": 0,
 							"rowspan": 1,
 							"list": [
 								{

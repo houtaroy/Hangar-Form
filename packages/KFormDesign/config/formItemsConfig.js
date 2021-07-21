@@ -20,10 +20,10 @@ export const basicsList = [
       addonAfter: '',
       hidden: false, // 是否隐藏，false显示，true隐藏
       disabled: false, // 是否禁用，false不禁用，true禁用
-      events: [],
-      style: '',
-      class: ''
+      events: []
     },
+    style: '',
+    class: '',
     model: '', // 数据字段
     key: '',
     help: '',
@@ -49,10 +49,10 @@ export const basicsList = [
       hidden: false, // 是否隐藏，false显示，true隐藏
       disabled: false,
       placeholder: '请输入',
-      events: [],
-      style: '',
-      class: ''
+      events: []
     },
+    style: '',
+    class: '',
     model: '', // 数据字段
     key: '',
     help: '',
@@ -77,10 +77,10 @@ export const basicsList = [
       hidden: false, // 是否隐藏，false显示，true隐藏
       disabled: false, //是否禁用
       placeholder: '请输入',
-      events: [],
-      style: '',
-      class: ''
+      events: []
     },
+    style: '',
+    class: '',
     model: '', // 数据字段
     key: '',
     help: '',
@@ -118,10 +118,10 @@ export const basicsList = [
         }
       ],
       showSearch: false, // 是否显示搜索框，搜索选择的项的值，而不是文字
-      events: [],
-      style: '',
-      class: ''
+      events: []
     },
+    style: '',
+    class: '',
     optionsConfig: {
       type: 'static',
       name: '',
@@ -162,10 +162,10 @@ export const basicsList = [
           label: '选项3'
         }
       ],
-      events: [],
-      style: '',
-      class: ''
+      events: []
     },
+    style: '',
+    class: '',
     optionsConfig: {
       type: 'static',
       name: '',
@@ -206,10 +206,10 @@ export const basicsList = [
           label: '选项3'
         }
       ],
-      events: [],
-      style: '',
-      class: ''
+      events: []
     },
+    style: '',
+    class: '',
     optionsConfig: {
       type: 'static',
       name: '',
@@ -242,10 +242,10 @@ export const basicsList = [
       rangePlaceholder: ['开始时间', '结束时间'],
       format: 'YYYY-MM-DD', // 展示格式  （请按照这个规则写 YYYY-MM-DD HH:mm:ss，区分大小写）
       valueFormat: 'x',
-      events: [],
-      style: '',
-      class: ''
+      events: []
     },
+    style: '',
+    class: '',
     model: '',
     key: '',
     help: '',
@@ -268,10 +268,10 @@ export const basicsList = [
       clearable: false, // 是否显示清除按钮
       placeholder: '请选择',
       format: 'HH:mm:ss', // 展示格式
-      events: [],
-      style: '',
-      class: ''
+      events: []
     },
+    style: '',
+    class: '',
     model: '',
     key: '',
     help: '',
@@ -426,10 +426,10 @@ export const basicsList = [
           ]
         }
       ],
-      events: [],
-      style: '',
-      class: ''
+      events: []
     },
+    style: '',
+    class: '',
     optionsConfig: {
       type: 'static',
       name: '',
@@ -459,7 +459,7 @@ export const basicsList = [
       dataKey: 'options',
       dynamicKey: '',
       dynamic: true,
-      options: [
+      treeData: [
         {
           value: '1',
           label: '选项1',
@@ -481,10 +481,10 @@ export const basicsList = [
           ]
         }
       ],
-      events: [],
-      style: '',
-      class: ''
+      events: []
     },
+    style: '',
+    class: '',
     optionsConfig: {
       type: 'static',
       name: '',
@@ -626,11 +626,11 @@ export const basicsList = [
       color: 'rgb(0, 0, 0)',
       fontFamily: 'SimHei',
       fontSize: '16pt',
-      events: [],
-      style: '',
-      class: ''
+      events: []
     },
-    key: ''
+    key: '',
+    style: '',
+    class: ''
   },
   {
     type: 'html',
@@ -639,11 +639,11 @@ export const basicsList = [
     options: {
       hidden: false, // 是否隐藏，false显示，true隐藏
       defaultValue: '<strong>HTML</strong>',
-      events: [],
-      style: '',
-      class: ''
+      events: []
     },
-    key: ''
+    key: '',
+    style: '',
+    class: ''
   }
 ];
 
@@ -670,10 +670,10 @@ export const customComponents = {
         uploadOptions: {},
         downloadUrl: '',
         openPdfUrl: '',
-        uploadMergeFileUrl: '',
-        style: '',
-        class: ''
+        uploadMergeFileUrl: ''
       },
+      style: '',
+      class: '',
       model: '',
       key: '',
       rules: [
@@ -707,10 +707,10 @@ export const customComponents = {
         placeholder: '请输入', // 默认提示文字
         dynamicKey: '',
         dynamic: false,
-        events: [],
-        style: '',
-        class: ''
+        events: []
       },
+      style: '',
+      class: '',
       model: '',
       key: '',
       rules: [

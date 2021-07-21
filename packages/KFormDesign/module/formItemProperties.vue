@@ -66,27 +66,56 @@
           v-if="typeof options.options !== 'undefined' || typeof options.treeData !== 'undefined'"
           label="选项配置"
         >
-          <a-radio-group buttonStyle="solid" v-model="options.dynamic">
-            <a-radio-button :value="false">静态数据</a-radio-button>
-            <a-radio-button :value="true">动态数据</a-radio-button>
+          <a-radio-group buttonStyle="solid" v-model="selectItem.optionsConfig.type" size="small">
+            <a-radio-button value="static">静态数据</a-radio-button>
+            <a-radio-button value="dynamic">动态数据</a-radio-button>
+            <a-radio-button value="dictionary">字典</a-radio-button>
+            <a-radio-button value="enum">枚举</a-radio-button>
           </a-radio-group>
 
           <a-input
-            v-show="options.dynamic"
-            v-model="options.dynamicKey"
+            v-show="selectItem.optionsConfig.type === 'dynamic'"
+            v-model="selectItem.optionsConfig.name"
             placeholder="动态数据变量名"
+          ></a-input>
+
+          <a-input
+            v-show="selectItem.optionsConfig.type === 'dictionary'"
+            v-model="selectItem.optionsConfig.name"
+            placeholder="字典变量名"
+          ></a-input>
+
+          <a-input
+            v-show="selectItem.optionsConfig.type === 'enum'"
+            v-model="selectItem.optionsConfig.name"
+            placeholder="枚举变量名"
           ></a-input>
 
           <KChangeOption
             v-if="typeof options.options !== 'undefined'"
-            v-show="!options.dynamic"
+            v-show="selectItem.optionsConfig.type === 'static'"
             v-model="options.options"
           />
-          <KChangeOption
+          <a
             v-if="typeof options.treeData !== 'undefined'"
-            v-show="!options.dynamic"
+            v-show="selectItem.optionsConfig.type === 'static'"
+            @click="treeDataEditModalVisiable = true"
+          >添加treeData</a>
+
+          <a-modal
+            v-model="treeDataEditModalVisiable"
+            title="treeData JSON"
+            @ok="treeDataEditModalVisiable = false"
+            :maskClosable="false"
+            :width="1200"
+          >
+            <h-ace-editor v-model="options.treeData" />
+          </a-modal>
+          <!--<KChangeOption
+            v-if="typeof options.treeData !== 'undefined'"
+            v-show="selectItem.optionsConfig.type === 'static'"
             v-model="options.treeData"
-          />
+          />-->
         </a-form-item>
         <!-- 选项配置及动态数据配置 end -->
         <!-- tabs配置 start -->
@@ -470,7 +499,7 @@
             v-model="options.treeCheckable"
             label="可勾选"
           />
-          <kCheckbox
+          <kCheckbox选项配置
             v-if="typeof options.animated !== 'undefined'"
             v-model="options.animated"
             label="动画切换"
@@ -519,13 +548,13 @@
         </a-form-item>
 
         <!--class选择-->
-        <a-form-item label="class name" v-if="typeof options.class !== 'undefined'">
-          <a-input v-model="options.class" placeholder="请输入" />
+        <a-form-item label="class name" v-if="typeof selectItem.class !== 'undefined'">
+          <a-input v-model="selectItem.class" placeholder="请输入" />
         </a-form-item>
 
         <!--style-->
-        <a-form-item label="style" v-if="typeof options.style !== 'undefined'">
-          <a-textarea v-model="options.style" placeholder="请输入" :auto-size="{ minRows: 2 }" />
+        <a-form-item label="style" v-if="typeof selectItem.style !== 'undefined'">
+          <a-textarea v-model="selectItem.style" placeholder="请输入" :auto-size="{ minRows: 2 }" />
         </a-form-item>
 
         <!--自定义事件-->
@@ -550,6 +579,7 @@
       </a-form>
     </div>
   </div>
+
 </template>
 <script>
 /*
@@ -635,7 +665,8 @@ export default {
           label: '小五'
         }
       ],
-      eventModalFlag: false
+      eventModalFlag: false,
+      treeDataEditModalVisiable: false
     };
   },
   computed: {
