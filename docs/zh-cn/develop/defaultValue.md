@@ -4,10 +4,10 @@
 
 表单解析器提供了两种基础的默认值解析器:
 
-- BaseDefaultValueDecoder: 默认值解析器基类
-- BaseRegexpDefaultValueDecoder: 正则默认值解析器基类
+- BaseDefaultValueParser: 默认值解析器基类
+- BaseRegexpDefaultValueParser: 正则默认值解析器基类
 
-所有默认值解析器全部为二者的继承, 并实现test和decode方法
+所有默认值解析器全部为二者的继承, 并实现test和parse方法
 
 <table>
   <thead>
@@ -26,7 +26,7 @@
       <td>boolean</td>
     </tr>
     <tr>
-      <td>decode</td>
+      <td>parse</td>
       <td>解析默认值</td>
       <td>defaultValue: string, context: 组件运行上下文</td>
       <td>Promise | 基本型</td>
@@ -46,25 +46,25 @@
 
 ```js
 import HForm from 'HForm'
-import { BaseDefaultValueDecoder, BaseRegexpDefaultValueDecoder } from 'HForm/models'
+import { BaseDefaultValueParser, BaseRegexpDefaultValueParser } from 'HForm/models'
 
-class MyDecoder extends BaseDefaultValueDecoder {
+class MyParser extends BaseDefaultValueParser {
   test(defaultValue) {
 
   }
-  decode(defaultValue, context) {
+  parse(defaultValue, context) {
 
   }
 }
 
-class MyRegexpDecoder extends BaseRegexpDefaultValueDecoder {
-  decode(defaultValue, context) {
+class MyRegexpParser extends BaseRegexpDefaultValueParser {
+  parse(defaultValue, context) {
 
   }
 }
 
-HForm.addDefaultValueDecoder('myDecoder', new MyDecoder());
-HForm.addDefaultValueDecoder('myRegexpDecoder', new MyRegexpDecoder(/^\$my.data$/));
+HForm.addDefaultValueParser('myParser', new MyParser());
+HForm.addDefaultValueParser('myRegexpParser', new MyRegexpParser(/^\$my.data$/));
 ```
 
 ## 移除解析器
@@ -72,6 +72,6 @@ HForm.addDefaultValueDecoder('myRegexpDecoder', new MyRegexpDecoder(/^\$my.data$
 ```js
 import HForm from 'HForm'
 
-HForm.removeDefaultValueDecoder('myDecoder');
-HForm.removeDefaultValueDecoder('store');
+HForm.removeDefaultValueParser('myParser');
+HForm.removeDefaultValueParser('store');
 ```

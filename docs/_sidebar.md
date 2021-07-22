@@ -5,8 +5,9 @@
   * [兼容ie](zh-cn/vue-cli-ie)
 - 组件
   * [form-designer](zh-cn/components/formDesigner)
-  * [form-decoder](zh-cn/components/formDecoder)
+  * [form-parser](zh-cn/components/formParser)
   * [特殊组件](zh-cn/components/special)
 - 二次开发
+  * [Json配置说明](zh-cn/develop/jsonConfig)
   * [默认值解析](zh-cn/develop/defaultValue)
   * [选项配置解析](zh-cn/develop/optionsConfig)

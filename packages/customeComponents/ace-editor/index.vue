@@ -64,7 +64,9 @@ export default {
       try {
         value1 = JSON.parse(this.content);
         this.$emit('input', value1);
-      } catch (e) {}
+      } catch (e) {
+        console.log(e);
+      }
     }
   },
   filter: {},

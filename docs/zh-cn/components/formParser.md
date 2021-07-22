@@ -1,4 +1,4 @@
-# form-decoder
+# form-parser
 
 表单解析器实现了对Json配置的校验和解析, 同时对组件本身产生一定程度干涉
 
@@ -66,7 +66,7 @@
       <td>Object</td>
     </tr>
     <tr>
-      <td>elementMap</td>
+      <td>elementConfigs</td>
       <td>表单元素配置Map, key: 表单数据属性 value: 表单元素Json配置</td>
       <td>Object</td>
     </tr>

@@ -4,9 +4,9 @@
 
 表单解析器提供了基础的选项配置解析器:
 
-- BaseOptionsDecoder: 选项配置解析器基类
+- BaseOptionsParser: 选项配置解析器基类
 
-所有选项配置解析器全部为基类的继承, 需实现decode方法
+所有选项配置解析器全部为基类的继承, 需实现parse方法
 
 <table>
   <thead>
@@ -25,7 +25,7 @@
       <td>-</td>
     </tr>
     <tr>
-      <td>decode</td>
+      <td>parse</td>
       <td>解析选项配置</td>
       <td>element: 表单元素Json配置, context: 组件运行上下文</td>
       <td>Promise | 基本型</td>
@@ -45,16 +45,16 @@
 
 ```js
 import HForm from 'HForm'
-import { BaseOptionsDecoder } from 'HForm/models'
+import { BaseOptionsParser } from 'HForm/models'
 
-class MyDecoder extends BaseOptionsDecoder {
-  decode(defaultValue, context) {
+class MyParser extends BaseOptionsParser {
+  parse(defaultValue, context) {
 
   }
 }
 
 const type = 'my'
-HForm.addOptionsDecoder(type, new MyDecoder(type));
+HForm.addOptionsParser(type, new MyParser(type));
 ```
 
 ## 移除解析器
@@ -62,6 +62,6 @@ HForm.addOptionsDecoder(type, new MyDecoder(type));
 ```js
 import HForm from 'HForm'
 
-HForm.removeOptionsDecoder('my');
-HForm.removeOptionsDecoder('dictionary');
+HForm.removeOptionsParser('my');
+HForm.removeOptionsParser('dictionary');
 ```
