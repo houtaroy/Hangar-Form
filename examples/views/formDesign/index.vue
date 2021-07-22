@@ -17,7 +17,7 @@ export default {
         'date',
         'time',
         'treeSelect',
-        'batch',
+        'cascader',
         'text',
         'html',
         'hUpload',

@@ -548,12 +548,12 @@
         </a-form-item>
 
         <!--class选择-->
-        <a-form-item label="class name" v-if="typeof selectItem.class !== 'undefined'">
+        <a-form-item label="类名" v-if="typeof selectItem.class !== 'undefined'">
           <a-input v-model="selectItem.class" placeholder="请输入" />
         </a-form-item>
 
         <!--style-->
-        <a-form-item label="style" v-if="typeof selectItem.style !== 'undefined'">
+        <a-form-item label="控件CSS" v-if="typeof selectItem.style !== 'undefined'">
           <a-textarea v-model="selectItem.style" placeholder="请输入" :auto-size="{ minRows: 2 }" />
         </a-form-item>
 
