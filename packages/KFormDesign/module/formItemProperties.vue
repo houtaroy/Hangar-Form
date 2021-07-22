@@ -561,6 +561,7 @@
         <a-form-item v-if="options.hasOwnProperty('events')" label="事件">
           <a-button @click="eventModalFlag = true" style="width: 100%">设置</a-button>
           <a-modal
+            class="event-modal"
             v-model="eventModalFlag"
             title="方法"
             @ok="eventModalFlag = false"
@@ -713,3 +714,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.event-modal /deep/ .ant-modal-body {
+  min-height: 500px;
+}
+</style>

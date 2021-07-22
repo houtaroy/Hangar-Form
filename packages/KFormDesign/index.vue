@@ -58,12 +58,12 @@
             <!-- 基础控件 end -->
             <!-- 自定义控件 start -->
             <a-collapse-panel
-              v-if="customComponents.list.length > 0"
+              v-if="customComponentArray.length > 0"
               :header="customComponents.title"
               key="3"
             >
               <collapseItem
-                :list="customComponents.list"
+                :list="customComponentArray"
                 @generateKey="generateKey"
                 @handleListPush="handleListPush"
                 @start="handleStart"
@@ -256,7 +256,9 @@ export default {
         'card',
         'tabs',
         'grid',
-        'table'
+        'table',
+        'hUpload',
+        'hCommentOptions'
       ]
     },
     hideModel: {
@@ -350,6 +352,10 @@ export default {
     layoutArray() {
       // 计算需要显示的布局字段
       return layoutList.filter(item => this.fields.includes(item.type));
+    },
+    customComponentArray() {
+      // 计算需要显示的自定义字段
+      return customComponents.list.filter(item => this.fields.includes(item.type));
     },
     collapseDefaultActiveKey() {
       // 计算当前展开的控件列表

@@ -1,6 +1,32 @@
 <template>
   <div>
-    <k-form-design hideResetHint />
+    <k-form-design hideResetHint title="表单设计器" :fields="fields" />
   </div>
 </template>
-<script></script>
+<script>
+export default {
+  data() {
+    return {
+      fields: [
+        'input',
+        'textarea',
+        'number',
+        'select',
+        'checkbox',
+        'radio',
+        'date',
+        'time',
+        'treeSelect',
+        'batch',
+        'text',
+        'html',
+        'hUpload',
+        'hCommentOptions',
+        'tabs',
+        'grid',
+        'table'
+      ]
+    };
+  }
+};
+</script>

@@ -93,6 +93,7 @@
         <a-form-item label="生命周期">
           <a-button @click="lifecycleModalFlag = true" style="width: 100%">设置</a-button>
           <a-modal
+            class="event-modal"
             v-model="lifecycleModalFlag"
             title="生命周期"
             @ok="lifecycleModalFlag = false"
@@ -111,6 +112,7 @@
         <a-form-item label="方法">
           <a-button @click="methodModalFlag = true" style="width: 100%">设置</a-button>
           <a-modal
+            class="event-modal"
             v-model="methodModalFlag"
             title="方法"
             @ok="methodModalFlag = false"
@@ -191,5 +193,8 @@ export default {
       width: 45px;
     }
   }
+}
+.event-modal /deep/ .ant-modal-body {
+  min-height: 500px;
 }
 </style>

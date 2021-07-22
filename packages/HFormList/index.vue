@@ -1,25 +1,36 @@
 <template>
-  <a-row>
+  <a-row :gutter="20">
     <a-col :span="6">
       <a-row v-if="addButton">
         <a-col :span="6">
-          <button @click="$emit('add')">新增</button>
+          <a-button type="primary" @click="$emit('add')"> 新增 </a-button>
         </a-col>
       </a-row>
-      <div
+
+      <a-list :data-source="data">
+        <a-list-item slot="renderItem" slot-scope="item, index">
+          <a-list-item-meta>
+            <a slot="title" @click="handleSelect(index)">{{ item[labelKey] }}</a>
+          </a-list-item-meta>
+          <a-button v-if="deleteButton" slot="actions" type="danger" @click.stop="handleDelete(index)"> 删除 </a-button>
+        </a-list-item>
+      </a-list>
+<!--      <div
         v-for="(one, index) in data"
         :key="index"
         @click="handleSelect(index)"
       >
+
         <a-row>
           <a-col :span="20">
             {{ one[labelKey] }}
           </a-col>
           <a-col v-if="deleteButton" :span="4">
-            <button @click.stop="handleDelete(index)">删除</button>
+&lt;!&ndash;            <button @click.stop="handleDelete(index)">删除</button>&ndash;&gt;
+            <a-button type="danger" @click.stop="handleDelete(index)"> 删除 </a-button>
           </a-col>
         </a-row>
-      </div>
+      </div>-->
     </a-col>
     <a-col :span="18">
       <component
@@ -28,6 +39,7 @@
         v-model="selected"
         v-bind="formOptions"
       ></component>
+      <h4 v-else class="right-tip">请点击左侧列表选择</h4>
     </a-col>
   </a-row>
 </template>
@@ -76,10 +88,8 @@ export default {
   },
   methods: {
     handleSelect(index) {
-      console.log('我选中了');
       this.selectedIndex = index;
       this.selected = this.data[index];
-      console.log('选中对象', this.selected);
     },
     handleDelete(index) {
       if (index === this.selectedIndex) {
@@ -92,4 +102,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.right-tip {
+  text-align: center;
+  margin-top: 20px;
+}
+</style>
