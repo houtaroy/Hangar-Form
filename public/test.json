@@ -55,7 +55,7 @@
               "options": {
                 "type": "text",
                 "width": "100%",
-                "defaultValue": "$store.user/name",
+                "defaultValue": "$store.user/info.name",
                 "placeholder": "请输入",
                 "clearable": false,
                 "maxLength": null,

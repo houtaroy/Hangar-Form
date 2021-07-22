@@ -7,7 +7,7 @@ import { deconstructionMethodString } from './Util';
  *
  * @class 基础选项解析器
  */
-export class BaseOptionsDecoder {
+export class BaseOptionsParser {
   // 解析器类型
   #type;
   /**
@@ -30,7 +30,7 @@ export class BaseOptionsDecoder {
    * @param {Object} element 元素json配置
    * @return {Array} 解析结果
    */
-  decode(element) {
+  parse(element) {
     return element.options[element.optionsConfig.key];
   }
 }
@@ -41,7 +41,7 @@ export class BaseOptionsDecoder {
  *
  * @class 静态选项解析器
  */
-class StaticOptionsDecoder extends BaseOptionsDecoder {
+class StaticOptionsParser extends BaseOptionsParser {
   constructor() {
     super('static');
   }
@@ -52,12 +52,12 @@ class StaticOptionsDecoder extends BaseOptionsDecoder {
  *
  * @class 接口选项解析器
  */
-class ApiOptionsDecoder extends BaseOptionsDecoder {
+class ApiOptionsParser extends BaseOptionsParser {
   constructor() {
     super('api');
   }
-  decode(element, context) {
-    return this.decodeByApi(context, element.optionsConfig);
+  parse(element, context) {
+    return this.parseByApi(context, element.optionsConfig);
   }
   /**
    * @description: 从接口请求数据进行解析
@@ -65,7 +65,7 @@ class ApiOptionsDecoder extends BaseOptionsDecoder {
    * @param {Object} context 当前组件上下文
    * @return {Promise} 解析结果
    */
-  decodeByApi(config, context) {
+  parseByApi(config, context) {
     const method = deconstructionMethodString(config.name);
     if (!has(context.$api, method.name)) {
       return [];
@@ -74,7 +74,7 @@ class ApiOptionsDecoder extends BaseOptionsDecoder {
     return new Promise(resolve => {
       context.$api[method.name](method.arguments)
         .then(res => {
-          resolve(this.decodeApiResultByOptions(res.data, config.options));
+          resolve(this.parseApiResultByOptions(res.data, config.options));
         })
         .catch(() => {
           resolve([]);
@@ -90,7 +90,7 @@ class ApiOptionsDecoder extends BaseOptionsDecoder {
    * @param {Object} options 数据键值映射处理配置, 例如{ code: 'value' }, 会将结果中的键值code修改为value
    * @return {Array} 处理后的结果
    */
-  decodeApiResultByOptions(apiResult, options) {
+  parseApiResultByOptions(apiResult, options) {
     const result = [];
     apiResult.forEach(data => {
       keys(options).forEach(key => {
@@ -107,13 +107,13 @@ class ApiOptionsDecoder extends BaseOptionsDecoder {
  *
  * @class 动态选项解析器
  */
-class DynamicOptionsDecoder extends BaseOptionsDecoder {
+class DynamicOptionsParser extends BaseOptionsParser {
   constructor() {
     super('dynamic');
   }
-  decode(element, context) {
+  parse(element, context) {
     const { optionsConfig: config } = element;
-    return super.test(config.type) ? context[config.name] : super.decode(element);
+    return super.test(config.type) ? context[config.name] : super.parser(element);
   }
 }
 
@@ -122,7 +122,7 @@ class DynamicOptionsDecoder extends BaseOptionsDecoder {
  *
  * @class 字典选项解析器
  */
-class DictionaryOptionsDecoder extends ApiOptionsDecoder {
+class DictionaryOptionsParser extends ApiOptionsParser {
   #type;
   constructor() {
     super();
@@ -137,7 +137,7 @@ class DictionaryOptionsDecoder extends ApiOptionsDecoder {
    * @param {Object} context 当前组件上下文
    * @return {Promise} 解析结果
    */
-  decode(element, context) {
+  parse(element, context) {
     const { optionsConfig: config } = element;
     if (!this.test(config.type)) {
       return [];
@@ -147,7 +147,7 @@ class DictionaryOptionsDecoder extends ApiOptionsDecoder {
       code: 'value',
       name: 'label'
     };
-    return this.decodeByApi(config, context);
+    return this.parseByApi(config, context);
   }
 }
 
@@ -156,11 +156,11 @@ class DictionaryOptionsDecoder extends ApiOptionsDecoder {
  *
  * @class 枚举选项解析器
  */
-class EnumOptionsDecoder extends BaseOptionsDecoder {
+class EnumOptionsParser extends BaseOptionsParser {
   constructor() {
     super('enum');
   }
-  decode(element, context) {
+  parse(element, context) {
     const { optionsConfig: config } = element;
     const result = [];
     if (!super.test(config.type)) {
@@ -180,20 +180,20 @@ class EnumOptionsDecoder extends BaseOptionsDecoder {
  * 选项解析器Map
  * key为解析器类型, value为解析器实体
  */
-const optionsDecoderMap = {
-  static: new StaticOptionsDecoder(),
-  dynamic: new DynamicOptionsDecoder(),
-  api: new ApiOptionsDecoder(),
-  dictionary: new DictionaryOptionsDecoder(),
-  enum: new EnumOptionsDecoder()
+const optionsParsers = {
+  static: new StaticOptionsParser(),
+  dynamic: new DynamicOptionsParser(),
+  api: new ApiOptionsParser(),
+  dictionary: new DictionaryOptionsParser(),
+  enum: new EnumOptionsParser()
 };
 
 /**
  * @description: 获取选项解析器Map
  * @return {Map} 选项解析器Map
  */
-export const decodeOptions = function(element, context) {
-  return (optionsDecoderMap[element.optionsConfig.type] || optionsDecoderMap.static).decode(
+export const parseOptionsConfig = function(element, context) {
+  return (optionsParsers[element.optionsConfig.type] || optionsParsers.static).parse(
     element,
     context
   );
@@ -202,29 +202,28 @@ export const decodeOptions = function(element, context) {
 /**
  * @description: 新增选项解析器
  * @param {String} name 选项解析器名称
- * @param {Object} decoder 选项解析器, 需继承BaseOptionsDecoder
+ * @param {Object} parser 选项解析器, 需继承BaseOptionsParser
  */
-export const addOptionsDecoder = function(name, decoder) {
-  if (!(decoder instanceof BaseOptionsDecoder)) {
-    console.error('[HForm Error]: 选项解析器需继承BaseOptionsDecoder');
+export const addOptionsConfigParser = function(name, parser) {
+  if (!(parser instanceof BaseOptionsParser)) {
+    console.error('[HForm Error]: 选项解析器需继承BaseOptionsParser');
     return;
   }
-  optionsDecoderMap[name] = decoder;
+  optionsParsers[name] = parser;
 };
 
 /**
  * @description: 移除选项解析器
  * @param {String} name 选项解析器名称
  */
-export const removeOptionsDecoder = function(name) {
-  if (has(optionsDecoderMap, name)) {
-    delete optionsDecoderMap[name];
+export const removeOptionsConfigParser = function(name) {
+  if (has(optionsParsers, name)) {
+    delete optionsParsers[name];
   }
 };
 
 export default {
-  BaseOptionsDecoder,
-  decodeOptions,
-  addOptionsDecoder,
-  removeOptionsDecoder
+  parseOptionsConfig,
+  addOptionsConfigParser,
+  removeOptionsConfigParser
 };

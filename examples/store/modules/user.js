@@ -1,12 +1,14 @@
 const user = {
   namespaced: true,
   state: {
-    name: 'test'
+    info: {
+      name: '张三'
+    }
   },
   mutations: {},
   getters: {
-    name: state => {
-      return state.name;
+    info: state => {
+      return state.info;
     }
   },
   actions: {

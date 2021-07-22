@@ -1,13 +1,13 @@
 import {
-  BaseDefaultValueDecoder,
-  BaseRegexpDefaultValueDecoder
-} from '../modules/DefaultValueDecoder';
-import { BaseOptionsDecoder } from '../modules/OptionsDecoder';
+  BaseDefaultValueParser,
+  BaseRegexpDefaultValueParser
+} from '../modules/DefaultValueParser';
+import { BaseOptionsParser } from '../modules/OptionsParser';
 
-export { BaseDefaultValueDecoder, BaseRegexpDefaultValueDecoder, BaseOptionsDecoder };
+export { BaseDefaultValueParser, BaseRegexpDefaultValueParser, BaseOptionsParser };
 
 export default {
-  BaseDefaultValueDecoder,
-  BaseRegexpDefaultValueDecoder,
-  BaseOptionsDecoder
+  BaseDefaultValueParser,
+  BaseRegexpDefaultValueParser,
+  BaseOptionsParser
 };

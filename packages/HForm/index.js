@@ -14,11 +14,15 @@ import {
   jsonMinimumVersion
 } from './config';
 import {
-  getDefaultValueDecoders,
-  addDefaultValueDecoder,
-  removeDefaultValueDecoder
-} from './modules/DefaultValueDecoder';
-import { decodeOptions, addOptionsDecoder, removeOptionsDecoder } from './modules/OptionsDecoder';
+  getDefaultValueParsers,
+  addDefaultValueParser,
+  removeDefaultValueParser
+} from './modules/DefaultValueParser';
+import {
+  parseOptionsConfig,
+  addOptionsConfigParser,
+  removeOptionsConfigParser
+} from './modules/OptionsParser';
 import { generateProps } from './modules/ComponentProp';
 import { parseMethod, parseOptions } from './modules/VueParser';
 import { checkVersion } from './modules/Util';
@@ -69,7 +73,7 @@ const HForm = {
       errorMessage: '解析过程中出现错误',
       loadingCount: 0,
       antFormModalItemAttrs: {},
-      defaultValueDecoders: getDefaultValueDecoders(),
+      defaultValueParsers: getDefaultValueParsers(),
       constantRender: {
         table: this._renderTable,
         td: this._renderTd,
@@ -79,7 +83,7 @@ const HForm = {
       },
       originalData: {},
       data: {},
-      elementMap: {},
+      elementConfigs: {},
       optionsMap: {}
     };
   },
@@ -123,17 +127,17 @@ const HForm = {
      * @description: 根据json配置
      * @param {Array} elements 树形结构元素配置json
      */
-    _decodeData(elements) {
+    _parseData(elements) {
       if (!elements) {
         return;
       }
       elements.forEach(element => {
-        if (element.model) this._decodeModel(element);
-        if (element.optionsConfig) this._decodeOptions(element);
-        if (element.events) element.listeners = this._decodeEvents(element.events);
+        if (element.model) this._parseModel(element);
+        if (element.optionsConfig) this._parseOptions(element);
+        if (element.events) element.listeners = this._parseEvents(element.events);
         childrenKeys.forEach(key => {
           if (element[key]) {
-            this._decodeData(element[key]);
+            this._parseData(element[key]);
           }
         });
       });
@@ -142,23 +146,23 @@ const HForm = {
      * @description: 解析json的model属性, 包括表单数据对象和元素Map
      * @param {Object} element 元素配置json
      */
-    _decodeModel(element) {
+    _parseModel(element) {
       const key = element.model;
       has(this.value, key)
         ? this.$set(this.originalData, key, this.value[key])
-        : this._decodeDefaultValue(key, element.options.defaultValue);
-      this.$set(this.elementMap, key, element);
+        : this._parseDefaultValue(key, element.options.defaultValue);
+      this.$set(this.elementConfigs, key, element);
     },
     /**
      * @description: 解析默认值
      * @param {String} key 默认值对应属性名称
      * @param {String} defaultValue 默认值表达式
      */
-    _decodeDefaultValue(key, defaultValue) {
+    _parseDefaultValue(key, defaultValue) {
       let result = defaultValue;
-      for (const decoder of this.defaultValueDecoders) {
-        if (decoder.test(defaultValue)) {
-          result = decoder.decode(defaultValue, this);
+      for (const parser of this.defaultValueParsers) {
+        if (parser.test(defaultValue)) {
+          result = parser.parse(defaultValue, this);
           break;
         }
       }
@@ -182,8 +186,8 @@ const HForm = {
      * @description: 解析选项配置
      * @param {Object} element 表单元素Json
      */
-    _decodeOptions(element) {
-      const decodeResult = decodeOptions(element, this);
+    _parseOptions(element) {
+      const decodeResult = parseOptionsConfig(element, this);
       if (decodeResult instanceof Promise) {
         decodeResult.then(res => this.$set(this.optionsMap, element.key, res));
       } else {
@@ -195,7 +199,7 @@ const HForm = {
      * @param {Array} events 事件数组
      * @return {Object} 事件参数Map, key为事件名称(如click, 不需要增加on前缀), value为方法实体
      */
-    _decodeEvents(events) {
+    _parseEvents(events) {
       const result = {};
       events.forEach(event => {
         if (event.type === 'create') {
@@ -211,7 +215,7 @@ const HForm = {
      * @description: 解析ant design中a-form-model-item样式, 适配KFormDesign编辑器
      * @param {Object} formConfig 表单配置
      */
-    _decodeAntFormModalItemAttrs(formConfig) {
+    _parseAntFormModalItemAttrs(formConfig) {
       return {
         labelCol:
           formConfig.layout === 'horizontal'
@@ -457,7 +461,6 @@ const HForm = {
     );
   },
   beforeCreate() {
-    console.log('vue组件配置', this.$options);
     const { version } = this.$options.propsData.config;
     if (!checkVersion(version)) {
       const errorMessage = `Json配置版本不匹配: 当前版本[${version}], 解析器支持最低版本[${jsonMinimumVersion}]`;
@@ -481,12 +484,12 @@ const HForm = {
     lifecycle.forEach(one => {
       globalLifecycle[one.name] = bind(parseMethod(one), this);
     });
-    runLifecycle('created');
     this.componentMap = componentMap[frame] || componentMap['ant'];
     if (frame === 'ant') {
-      this.antFormModalItemAttrs = this._decodeAntFormModalItemAttrs(formConfig);
+      this.antFormModalItemAttrs = this._parseAntFormModalItemAttrs(formConfig);
     }
-    this._decodeData(elements);
+    runLifecycle('created');
+    this._parseData(elements);
   },
   mounted() {
     runLifecycle('mounted');
@@ -496,17 +499,17 @@ const HForm = {
 
 export {
   HForm,
-  addDefaultValueDecoder,
-  removeDefaultValueDecoder,
-  addOptionsDecoder,
-  removeOptionsDecoder
+  addDefaultValueParser,
+  removeDefaultValueParser,
+  addOptionsConfigParser,
+  removeOptionsConfigParser
 };
 
 export default {
   install,
   HForm,
-  addDefaultValueDecoder,
-  removeDefaultValueDecoder,
-  addOptionsDecoder,
-  removeOptionsDecoder
+  addDefaultValueParser,
+  removeDefaultValueParser,
+  addOptionsConfigParser,
+  removeOptionsConfigParser
 };

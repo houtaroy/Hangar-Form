@@ -5,7 +5,7 @@ import { values, has, get } from 'lodash';
  *
  * @class 默认值解析器抽象类
  */
-export class BaseDefaultValueDecoder {
+export class BaseDefaultValueParser {
   constructor() {}
   /**
    * @description: 检测是否符合解析器规则
@@ -20,7 +20,7 @@ export class BaseDefaultValueDecoder {
    * @param {String} 默认值表达式
    * @return {*} 解析结果
    */
-  decode() {
+  parse() {
     return undefined;
   }
 }
@@ -31,7 +31,7 @@ export class BaseDefaultValueDecoder {
  *
  * @class 正则表达式默认值解析器抽象类
  */
-export class BaseRegexpDefaultValueDecoder {
+export class BaseRegexpDefaultValueParser {
   #regexp = undefined;
   /**
    * @description: 构造方法
@@ -43,7 +43,7 @@ export class BaseRegexpDefaultValueDecoder {
   test(defaultValue) {
     return this.#regexp ? this.#regexp.test(defaultValue) : false;
   }
-  decode() {
+  parse() {
     return undefined;
   }
 }
@@ -54,12 +54,12 @@ export class BaseRegexpDefaultValueDecoder {
  *
  * @class vuex默认值解析器
  */
-class StoreDecoder extends BaseRegexpDefaultValueDecoder {
+class StoreParser extends BaseRegexpDefaultValueParser {
   constructor() {
-    super(/^\$store\.[a-zA-Z0-9]*\/?[a-zA-Z0-9]*$/);
+    super(/^\$store\.[a-zA-Z0-9]*\/?[a-zA-Z0-9]*[a-zA-Z0-9.[\]'"]*$/);
   }
-  decode(defaultValue, context) {
-    return context.$store.getters[defaultValue.replace('$store.', '')];
+  parse(defaultValue, context) {
+    return get(context.$store.getters, defaultValue.replace('$store.', ''));
   }
 }
 
@@ -69,11 +69,11 @@ class StoreDecoder extends BaseRegexpDefaultValueDecoder {
  *
  * @class 组件data默认值解析器
  */
-class DataDecoder extends BaseRegexpDefaultValueDecoder {
+class DataParser extends BaseRegexpDefaultValueParser {
   constructor() {
     super(/^\${[a-zA-Z0-9.[\]'"]*}$/);
   }
-  decode(defaultValue, context) {
+  parse(defaultValue, context) {
     return get(context, defaultValue.substring(2, defaultValue.length - 1));
   }
 }
@@ -84,64 +84,63 @@ class DataDecoder extends BaseRegexpDefaultValueDecoder {
  *
  * @class 接口默认值解析器
  */
-class ApiDecoder extends BaseRegexpDefaultValueDecoder {
+class ApiParser extends BaseRegexpDefaultValueParser {
   constructor() {
-    super(/^\$api\.[a-zA-Z0-9]*(.*)$/);
+    super(/^\$api\.[a-zA-Z0-9.]*(.*)$/);
   }
-  decode(defaultValue, context) {
+  parse(defaultValue, context) {
     const exp = defaultValue.replace(/this\./g, 'context.');
     const name = exp.substring(5, exp.indexOf('('));
     if (!has(context.$api, name)) {
       return undefined;
     }
     const params = eval(exp.substring(exp.indexOf('('), exp.length));
-    return context.$api[name](params);
+    return get(context.$api, name)(params);
   }
 }
 
 /**
  * 默认值解析器Map, key为解析器名称, value为解析器实体
  */
-const defaultValueDecoderMap = {
-  store: new StoreDecoder(),
-  data: new DataDecoder(),
-  api: new ApiDecoder()
+const defaultValueParsers = {
+  store: new StoreParser(),
+  data: new DataParser(),
+  api: new ApiParser()
 };
 
 /**
  * @description: 获取默认值解析器数组
  * @return {Array} 默认值解析器数组
  */
-export const getDefaultValueDecoders = function() {
-  return values(defaultValueDecoderMap);
+export const getDefaultValueParsers = function() {
+  return values(defaultValueParsers);
 };
 
 /**
  * @description: 新增默认值解析器
  * @param {String} name 默认值解析器名称
- * @param {Object} decoder 解析器, 需继承DefaultValueDecoder
+ * @param {Object} parser 解析器, 需继承DefaultValueParser
  */
-export const addDefaultValueDecoder = function(name, decoder) {
-  if (!(decoder instanceof BaseDefaultValueDecoder)) {
-    console.error('[HForm Error]: 解析器需继承BaseDefaultValueDecoder');
+export const addDefaultValueParser = function(name, parser) {
+  if (!(parser instanceof BaseDefaultValueParser)) {
+    console.error('[HForm Error]: 解析器需继承BaseDefaultValueParser');
     return;
   }
-  defaultValueDecoderMap[name] = decoder;
+  defaultValueParsers[name] = parser;
 };
 
 /**
  * @description: 移除默认值解析器
  * @param {String} name 默认值解析器名称
  */
-export const removeDefaultValueDecoder = function(name) {
-  if (has(defaultValueDecoderMap, name)) {
-    delete defaultValueDecoderMap[name];
+export const removeDefaultValueParser = function(name) {
+  if (has(defaultValueParsers, name)) {
+    delete defaultValueParsers[name];
   }
 };
 
 export default {
-  BaseDefaultValueDecoder,
-  getDefaultValueDecoders,
-  addDefaultValueDecoder,
-  removeDefaultValueDecoder
+  getDefaultValueParsers,
+  addDefaultValueParser,
+  removeDefaultValueParser
 };
