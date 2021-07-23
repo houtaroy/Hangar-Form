@@ -172,6 +172,7 @@
  */
 import kHeader from './module/header';
 import operatingArea from './module/operatingArea';
+import { jsonMinimumVersion } from '../HForm/config'
 
 // import kFooter from "./module/footer";
 import kFormComponentPanel from './module/formComponentPanel';
@@ -290,6 +291,8 @@ export default {
         'html'
       ],
       data: {
+        frame: 'ant',
+        version: jsonMinimumVersion,
         list: [],
         config: {
           layout: 'horizontal',

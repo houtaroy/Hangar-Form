@@ -99,26 +99,25 @@
             placeholder="枚举变量名"
           ></a-input>
 
-          <KChangeOption
-            v-if="typeof options.options !== 'undefined'"
+<!--          <KChangeOption
+            v-if="typeof options.options !== 'undefined' && selectItem.type !== 'cascader'"
             v-show="selectItem.optionsConfig.type === 'static'"
             v-model="options.options"
-          />
+          />-->
           <a
-            v-if="typeof options.treeData !== 'undefined'"
+            v-if="(typeof options.treeData !== 'undefined') || (typeof options.options !== 'undefined')"
             v-show="selectItem.optionsConfig.type === 'static'"
-            @click="treeDataEditModalVisiable = true"
-            >添加treeData</a
-          >
+            @click="staticEditModalVisible = true"
+          >添加静态数据</a>
 
           <a-modal
-            v-model="treeDataEditModalVisiable"
-            title="treeData JSON"
-            @ok="treeDataEditModalVisiable = false"
+            v-model="staticEditModalVisible"
+            title="静态数据JSON"
+            @ok="staticEditModalVisible = false"
             :maskClosable="false"
             :width="1200"
           >
-            <h-ace-editor v-model="options.treeData" />
+            <h-ace-editor v-model="aceEditorValue" />
           </a-modal>
           <!--<KChangeOption
             v-if="typeof options.treeData !== 'undefined'"
@@ -669,12 +668,25 @@ export default {
         }
       ],
       eventModalFlag: false,
-      treeDataEditModalVisiable: false
+      staticEditModalVisible: false
     };
   },
   computed: {
     options() {
       return this.selectItem.options || {};
+    },
+    aceEditorValue: {
+      get() {
+        return this.selectItem.options.options || this.selectItem.options.treeData || {};
+      },
+      set(val) {
+        if (this.selectItem.options.options) {
+          this.selectItem.options.options = val
+        }
+        if (this.selectItem.options.treeData) {
+          this.selectItem.options.treeData = val
+        }
+      }
     }
   },
   props: {

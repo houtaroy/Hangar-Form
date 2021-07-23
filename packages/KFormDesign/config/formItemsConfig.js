@@ -461,7 +461,7 @@ export const basicsList = [
       dataKey: 'options',
       dynamicKey: '',
       dynamic: true,
-      treeData: [
+      options: [
         {
           value: '1',
           label: '选项1',
@@ -490,7 +490,7 @@ export const basicsList = [
     optionsConfig: {
       type: 'static',
       name: '',
-      key: 'treeData'
+      key: 'options'
     },
     model: '',
     key: '',
@@ -626,8 +626,8 @@ export const basicsList = [
       hidden: false, // 是否隐藏，false显示，true隐藏
       showRequiredMark: false,
       color: 'rgb(0, 0, 0)',
-      fontFamily: 'SimHei',
-      fontSize: '16pt',
+      fontFamily: 'PingFangSC-Regular',
+      fontSize: '10.5pt',
       events: []
     },
     key: '',
