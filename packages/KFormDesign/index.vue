@@ -312,6 +312,9 @@ export default {
               body: ''
             }
           ],
+          computed: [],
+          watch: [],
+          filter: [],
           methods: []
         }
       },
