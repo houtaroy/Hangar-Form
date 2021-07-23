@@ -21,7 +21,7 @@
                 "width": "100%",
                 "defaultValue": "$api.getFieldInfo({ databaseTable: 't_user', field: 'name', infoId: this.formId })",
                 "placeholder": "请输入",
-                "clearable": true,
+                "allowClear": true,
                 "maxLength": null,
                 "addonBefore": "",
                 "addonAfter": "",
@@ -97,8 +97,10 @@
               "icon": "icon-edit",
               "options": {
                 "width": "100%",
-                "minRows": 4,
-                "maxRows": 6,
+                "autoSize": {
+                  "minRows": 4,
+                  "maxRows": 6
+                },
                 "maxLength": null,
                 "defaultValue": "${aaa[0].a.b}",
                 "clearable": false,
@@ -153,6 +155,7 @@
                       "type": "number",
                       "label": "数字输入框",
                       "icon": "icon-number",
+                      "style": "",
                       "options": {
                         "width": "100%",
                         "defaultValue": 0,
@@ -325,6 +328,7 @@
                   "type": "date",
                   "label": "日期选择框",
                   "icon": "icon-calendar",
+                  "style": "",
                   "options": {
                     "width": "100%",
                     "defaultValue": "1626233658360",
@@ -352,6 +356,7 @@
                   "type": "dateRange",
                   "label": "日期范围选择框",
                   "icon": "icon-calendar",
+                  "style": "",
                   "options": {
                     "width": "100%",
                     "defaultValue": ["1992-01-01", "1993-01-01"],
@@ -572,7 +577,7 @@
       "xxl": 18
     },
     "hideRequiredMark": false,
-    "customStyle": ".test { color: red } .test2{ color: blue }",
+    "customStyle": ".ant-input { color: red } .ant-select{ color: blue }",
     "lifecycle": [
       {
         "name": "created",

@@ -3,6 +3,8 @@
     <h-form ref="test" v-model="value" v-bind="json"></h-form>
     <button @click="submit" class="test">提交</button>
     <button @click="reset">重置</button>
+    <a-input></a-input>
+    <a-select></a-select>
   </div>
 </template>
 

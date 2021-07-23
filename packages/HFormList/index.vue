@@ -12,10 +12,17 @@
           <a-list-item-meta>
             <a slot="title" @click="handleSelect(index)">{{ item[labelKey] }}</a>
           </a-list-item-meta>
-          <a-button v-if="deleteButton" slot="actions" type="danger" @click.stop="handleDelete(index)"> 删除 </a-button>
+          <a-button
+            v-if="deleteButton"
+            slot="actions"
+            type="danger"
+            @click.stop="handleDelete(index)"
+          >
+            删除
+          </a-button>
         </a-list-item>
       </a-list>
-<!--      <div
+      <!--      <div
         v-for="(one, index) in data"
         :key="index"
         @click="handleSelect(index)"
@@ -77,9 +84,13 @@ export default {
   data() {
     return {
       data: this.value,
-      selected: null,
-      selectedIndex: null
+      selected: null
     };
+  },
+  computed: {
+    selectedId: function() {
+      return this.selected ? this.data.indexOf(this.selected) : null;
+    }
   },
   watch: {
     value(newVal) {
@@ -88,12 +99,10 @@ export default {
   },
   methods: {
     handleSelect(index) {
-      this.selectedIndex = index;
       this.selected = this.data[index];
     },
     handleDelete(index) {
-      if (index === this.selectedIndex) {
-        this.selectedIndex = null;
+      if (index === this.selectedId) {
         this.selected = null;
       }
       this.data.splice(index, 1);

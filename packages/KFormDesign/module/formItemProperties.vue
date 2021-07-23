@@ -31,8 +31,16 @@
           <a-input placeholder="请输入" v-model="options.placeholder" />
         </a-form-item>
         <a-form-item v-if="selectItem.type === 'textarea'" label="自适应内容高度">
-          <a-input-number style="width: 100%" v-model="options.minRows" placeholder="最小高度" />
-          <a-input-number style="width: 100%" v-model="options.maxRows" placeholder="最大高度" />
+          <a-input-number
+            style="width: 100%"
+            v-model="options.autoSize.minRows"
+            placeholder="最小高度"
+          />
+          <a-input-number
+            style="width: 100%"
+            v-model="options.autoSize.maxRows"
+            placeholder="最大高度"
+          />
         </a-form-item>
         <a-form-item v-if="typeof options.width !== 'undefined'" label="宽度">
           <a-input placeholder="请输入" v-model="options.width" />
@@ -100,7 +108,8 @@
             v-if="typeof options.treeData !== 'undefined'"
             v-show="selectItem.optionsConfig.type === 'static'"
             @click="treeDataEditModalVisiable = true"
-          >添加treeData</a>
+            >添加treeData</a
+          >
 
           <a-modal
             v-model="treeDataEditModalVisiable"
@@ -330,7 +339,10 @@
         </a-form-item>
 
         <a-form-item v-if="typeof options.uploadOptions !== 'undefined'" label="上传地址配置">
-          <a-input v-model="options.uploadOptions.target" placeholder="/api/fileInfos/chunk"></a-input>
+          <a-input
+            v-model="options.uploadOptions.target"
+            placeholder="/api/fileInfos/chunk"
+          ></a-input>
         </a-form-item>
 
         <!--上传请求头配置-->
@@ -355,15 +367,11 @@
           <a-input v-model="options.uploadMergeFileUrl" placeholder="请输入"></a-input>
         </a-form-item>-->
 
-
         <!-- 自定义常用意见-->
         <a-form-item v-if="selectItem.type === 'hCommentOptions'" label="默认值">
           <a-input v-model="options.defaultValue" />
         </a-form-item>
-        <a-form-item
-          v-if="typeof options.listData !== 'undefined'"
-          label="列表数据"
-        >
+        <a-form-item v-if="typeof options.listData !== 'undefined'" label="列表数据">
           <a-radio-group buttonStyle="solid" v-model="options.dynamic">
             <a-radio-button :value="false">静态数据</a-radio-button>
             <a-radio-button :value="true">动态数据</a-radio-button>
@@ -375,13 +383,8 @@
             placeholder="动态数据变量名"
           ></a-input>
 
-          <KChangeOption
-            v-show="!options.dynamic"
-            v-model="options.listData"
-          />
+          <KChangeOption v-show="!options.dynamic" v-model="options.listData" />
         </a-form-item>
-
-
 
         <!-- 文字对齐方式 -->
         <a-form-item v-if="selectItem.type === 'text'" label="文字对齐方式">
@@ -414,7 +417,7 @@
             typeof options.hidden !== 'undefined' ||
               typeof options.disabled !== 'undefined' ||
               typeof options.readonly !== 'undefined' ||
-              typeof options.clearable !== 'undefined' ||
+              typeof options.allowClear !== 'undefined' ||
               typeof options.multiple !== 'undefined' ||
               typeof options.range !== 'undefined' ||
               typeof options.showTime !== 'undefined' ||
@@ -440,8 +443,8 @@
             label="只读"
           />
           <kCheckbox
-            v-if="typeof options.clearable !== 'undefined'"
-            v-model="options.clearable"
+            v-if="typeof options.allowClear !== 'undefined'"
+            v-model="options.allowClear"
             label="可清除"
           />
           <kCheckbox
@@ -580,7 +583,6 @@
       </a-form>
     </div>
   </div>
-
 </template>
 <script>
 /*

@@ -1,5 +1,5 @@
 import postcss from 'postcss';
-import postcssPrefixer from 'postcss-prefixer';
+import postcssPrefixSelector from 'postcss-prefix-selector';
 
 import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
 import 'moment/locale/zh-cn';
@@ -241,7 +241,13 @@ const HForm = {
      * @return {String} 渲染结果
      */
     _renderCSS(css) {
-      return postcss([postcssPrefixer({ prefix: `form-${this.formId}-` })]).process(css).css;
+      return postcss()
+        .use(
+          postcssPrefixSelector({
+            prefix: `.form-${this.formId}`
+          })
+        )
+        .process(css).css;
     },
     /**
      * @description: 批量渲染元素
@@ -307,25 +313,19 @@ const HForm = {
     _renderTagAttrs(Tag, element) {
       return {
         ref: element.key,
-        class: this._renderClass(element.class),
-        style: element.style,
+        class: element.class ? element.class.split(',') : '',
+        style: this._renderStyle(element),
         props: this._renderTagProps(Tag, element),
         on: element.listeners
       };
     },
-    /**
-     * @description: 渲染元素样式类名, 增加表单唯一标识后的类名, 例如: test => form-1-test
-     * @param {String} classes 样式类名, 如果多个则以逗号分隔
-     * @return {String} 渲染结果
-     */
-    _renderClass(classes) {
-      const result = [];
-      if (classes) {
-        classes.split(',').forEach(className => {
-          result.push(`form-${this.formId}-${className}`);
-        });
+    _renderStyle(element) {
+      if (element.type === 'number') {
+        console.log(element.style + `width: ${element.options.width};`);
       }
-      return result.join(' ');
+      return element.options && element.options.width
+        ? element.style + `width: ${element.options.width};`
+        : element.style;
     },
     /**
      * @description: 渲染组件props
@@ -450,7 +450,7 @@ const HForm = {
       <section>
         <a-spin spinning={this.loading} size="large">
           <Tag
-            class={['k-form-build-9136076486841527', this.formId]}
+            class={['k-form-build-9136076486841527', `form-${this.formId}`]}
             ref="form"
             {...{ props: generateProps(Tag, formConfig, { model: this.data }) }}>
             {...this._renderElements(elements)}

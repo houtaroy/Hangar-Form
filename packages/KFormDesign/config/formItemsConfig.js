@@ -14,7 +14,7 @@ export const basicsList = [
       width: '100%', // 宽度
       defaultValue: '', // 默认值
       placeholder: '请输入', // 没有输入时，提示文字
-      clearable: false,
+      allowClear: false,
       maxLength: null,
       addonBefore: '',
       addonAfter: '',
@@ -41,11 +41,13 @@ export const basicsList = [
     icon: 'icon-edit',
     options: {
       width: '100%', // 宽度
-      minRows: 4,
-      maxRows: 6,
+      autoSize: {
+        minRows: 4,
+        maxRows: 6
+      },
       maxLength: null,
       defaultValue: '',
-      clearable: false,
+      allowClear: false,
       hidden: false, // 是否隐藏，false显示，true隐藏
       disabled: false,
       placeholder: '请输入',
@@ -100,7 +102,7 @@ export const basicsList = [
       defaultValue: undefined, // 下拉选框请使用undefined为默认值
       multiple: false, // 是否允许多选
       disabled: false, // 是否禁用
-      clearable: false, // 是否显示清除按钮
+      allowClear: false, // 是否显示清除按钮
       hidden: false, // 是否隐藏，false显示，true隐藏
       placeholder: '请选择', // 默认提示文字
       dataKey: 'options',
@@ -237,7 +239,7 @@ export const basicsList = [
       showTime: false, // 是否显示时间选择器
       disabled: false, // 是否禁用
       hidden: false, // 是否隐藏，false显示，true隐藏
-      clearable: false, // 是否显示清除按钮
+      allowClear: false, // 是否显示清除按钮
       placeholder: '请选择',
       rangePlaceholder: ['开始时间', '结束时间'],
       format: 'YYYY-MM-DD', // 展示格式  （请按照这个规则写 YYYY-MM-DD HH:mm:ss，区分大小写）
@@ -265,7 +267,7 @@ export const basicsList = [
       defaultValue: '', // 默认值，字符串 12:00:00
       disabled: false, // 是否禁用
       hidden: false, // 是否隐藏，false显示，true隐藏
-      clearable: false, // 是否显示清除按钮
+      allowClear: false, // 是否显示清除按钮
       placeholder: '请选择',
       format: 'HH:mm:ss', // 展示格式
       events: []
@@ -397,7 +399,7 @@ export const basicsList = [
       defaultValue: undefined, // 默认值
       multiple: false,
       hidden: false, // 是否隐藏，false显示，true隐藏
-      clearable: false, // 是否显示清除按钮
+      allowClear: false, // 是否显示清除按钮
       showSearch: false, // 是否显示搜索框，搜索选择的项的值，而不是文字
       treeCheckable: false,
       placeholder: '请选择',
@@ -455,7 +457,7 @@ export const basicsList = [
       defaultValue: undefined, // 默认值
       showSearch: false, // 是否显示搜索框，搜索选择的项的值，而不是文字
       placeholder: '请选择',
-      clearable: false, // 是否显示清除按钮
+      allowClear: false, // 是否显示清除按钮
       dataKey: 'options',
       dynamicKey: '',
       dynamic: true,
