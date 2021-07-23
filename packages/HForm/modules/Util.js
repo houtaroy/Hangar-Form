@@ -1,6 +1,9 @@
+import postcss from 'postcss';
+import postcssPrefixSelector from 'postcss-prefix-selector';
+
 import { jsonMinimumVersion } from '../config';
 
-export const deconstructionMethodString = function(methodString) {
+const deconstructionMethodString = function(methodString) {
   if (!/^[a-zA-Z0-9]*(.*)$/.test(methodString)) {
     return {};
   }
@@ -17,7 +20,7 @@ export const deconstructionMethodString = function(methodString) {
  * @param {String} version Json版本号
  * @returns {Boolean} 检查结果, true 支持 false 不支持
  */
-export const checkVersion = function(version) {
+const checkVersion = function(version) {
   if (version === jsonMinimumVersion) {
     return true;
   }
@@ -49,4 +52,28 @@ const get_next_chunk = function(version, n, p) {
     num: result,
     p: p
   };
+};
+
+/**
+ * @description: 为所有css增加前缀选择器
+ * @param {String} css css文本
+ * @param {String} prefixSelector 前缀选择器名称
+ * @return {*}
+ */
+const addCSSPrefixSelector = function(css, prefixSelector) {
+  return postcss()
+    .use(
+      postcssPrefixSelector({
+        prefix: `.${prefixSelector}`
+      })
+    )
+    .process(css).css;
+};
+
+export { checkVersion, addCSSPrefixSelector, deconstructionMethodString };
+
+export default {
+  checkVersion,
+  addCSSPrefixSelector,
+  deconstructionMethodString
 };

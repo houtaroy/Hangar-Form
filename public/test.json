@@ -62,7 +62,7 @@
                 "addonBefore": "",
                 "addonAfter": "",
                 "hidden": false,
-                "disabled": false
+                "disabled": true
               },
               "model": "input_1625624187341",
               "key": "input_1625624187341",

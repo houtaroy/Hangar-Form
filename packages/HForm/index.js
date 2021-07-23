@@ -1,10 +1,8 @@
-import postcss from 'postcss';
-import postcssPrefixSelector from 'postcss-prefix-selector';
-
 import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
 import 'moment/locale/zh-cn';
 
-import { bind, has, pick } from 'lodash';
+import Schema from 'async-validator';
+import { bind, get, has, pick, values } from 'lodash';
 
 import {
   componentMap,
@@ -25,7 +23,7 @@ import {
 } from './modules/OptionsParser';
 import { generateProps } from './modules/ComponentProp';
 import { parseMethod, parseOptions } from './modules/VueParser';
-import { checkVersion } from './modules/Util';
+import { checkVersion, addCSSPrefixSelector } from './modules/Util';
 
 const globalLifecycle = {};
 
@@ -90,6 +88,15 @@ const HForm = {
   computed: {
     loading: function() {
       return this.loadingCount > 0;
+    },
+    rules: function() {
+      const result = {};
+      values(this.elementConfigs).forEach(elementConfig => {
+        if (!get(elementConfig, 'options.disabled') && elementConfig.model && elementConfig.rules) {
+          result[elementConfig.model] = elementConfig.rules;
+        }
+      });
+      return result;
     }
   },
   watch: {
@@ -104,6 +111,7 @@ const HForm = {
      * @param {Function} callback 回调函数, 参数为验证结果
      */
     validate(callback) {
+      new Schema();
       this.$refs.form.validate((valid, result) => {
         callback(valid, result);
       });
@@ -113,6 +121,7 @@ const HForm = {
      * @param {Function} callback 回调函数, 参数为[校验结果, 表单数据]
      */
     submit(callback) {
+      console.log(this.rules);
       this.$refs.form.validate((valid, object) => {
         callback(valid, valid ? this.data : object);
       });
@@ -236,20 +245,6 @@ const HForm = {
       };
     },
     /**
-     * @description: 渲染css, 为所有选择器增加表单唯一id, 例如: test => form-1-test
-     * @param {String} css内容
-     * @return {String} 渲染结果
-     */
-    _renderCSS(css) {
-      return postcss()
-        .use(
-          postcssPrefixSelector({
-            prefix: `.form-${this.formId}`
-          })
-        )
-        .process(css).css;
-    },
-    /**
      * @description: 批量渲染元素
      * @param {Array} elements 树形结构元素配置json
      * @return {*} 渲染结果
@@ -275,9 +270,15 @@ const HForm = {
       return (
         <FormTag
           {...{
-            props: generateProps(FormTag, element, this.antFormModalItemAttrs, {
-              prop: element.model
-            })
+            props: generateProps(
+              FormTag,
+              element,
+              this.antFormModalItemAttrs,
+              {
+                prop: element.model
+              },
+              { rules: get(element, 'options.disabled') ? undefined : element.rules }
+            )
           }}
           style={this.antFormModalItemAttrs.style}>
           {this._renderElement(element)}
@@ -452,11 +453,13 @@ const HForm = {
           <Tag
             class={['k-form-build-9136076486841527', `form-${this.formId}`]}
             ref="form"
-            {...{ props: generateProps(Tag, formConfig, { model: this.data }) }}>
+            {...{
+              props: generateProps(Tag, formConfig, { model: this.data })
+            }}>
             {...this._renderElements(elements)}
           </Tag>
         </a-spin>
-        <style>{this._renderCSS(formConfig.customStyle)}</style>
+        <style>{addCSSPrefixSelector(formConfig.customStyle, `form-${this.formId}`)}</style>
       </section>
     );
   },
