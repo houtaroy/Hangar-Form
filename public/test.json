@@ -490,17 +490,19 @@
           "tds": [
             {
               "type": "td",
-              "colspan": 2,
+              "colspan": 1,
               "rowspan": 1,
               "list": [
                 {
                   "type": "text",
                   "label": "文字",
+                  "class": "red",
+                  "style": "background-color: blue;",
                   "icon": "icon-zihao",
                   "options": {
-                    "textAlign": "left",
+                    "textAlign": "center",
                     "hidden": false,
-                    "showRequiredMark": false,
+                    "showRequiredMark": true,
                     "color": "rgb(0, 0, 0)",
                     "fontFamily": "SimHei",
                     "fontSize": "16pt"
@@ -511,7 +513,7 @@
             },
             {
               "type": "td",
-							"colspan": 0,
+							"colspan": 1,
 							"rowspan": 1,
 							"list": [
 								{
@@ -577,7 +579,7 @@
       "xxl": 18
     },
     "hideRequiredMark": false,
-    "customStyle": ".ant-input { color: red } .ant-select{ color: blue }",
+    "customStyle": ".ant-input { color: red } .ant-select{ color: blue } .red { color: red }",
     "lifecycle": [
       {
         "name": "created",

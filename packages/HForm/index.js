@@ -121,7 +121,6 @@ const HForm = {
      * @param {Function} callback 回调函数, 参数为[校验结果, 表单数据]
      */
     submit(callback) {
-      console.log(this.rules);
       this.$refs.form.validate((valid, object) => {
         callback(valid, valid ? this.data : object);
       });
@@ -321,9 +320,6 @@ const HForm = {
       };
     },
     _renderStyle(element) {
-      if (element.type === 'number') {
-        console.log(element.style + `width: ${element.options.width};`);
-      }
       return element.options && element.options.width
         ? element.style + `width: ${element.options.width};`
         : element.style;
@@ -406,7 +402,9 @@ const HForm = {
       };
       return (
         <div {...divAttrs}>
-          <label {...labelAttrs}>{textElement.label}</label>
+          <label {...labelAttrs} class={textElement.class} style={textElement.style}>
+            {textElement.label}
+          </label>
         </div>
       );
     },
