@@ -704,15 +704,23 @@ export const customComponents = {
             label: '第二条意见'
           }
         ],
-        clearable: false, // 是否显示清除按钮
         hidden: false, // 是否隐藏，false显示，true隐藏
         placeholder: '请输入', // 默认提示文字
-        dynamicKey: '',
-        dynamic: false,
-        events: []
+        events: [],
+        autoSize: {
+          minRows: 4,
+          maxRows: 6
+        },
+        maxLength: null,
+        allowClear: false,
       },
       style: '',
       class: '',
+      optionsConfig: {
+        type: 'static',
+        name: '',
+        key: 'listData'
+      },
       model: '',
       key: '',
       rules: [
