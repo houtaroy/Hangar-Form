@@ -4,10 +4,13 @@
     <a-textarea
       v-model="textareaValue"
       :placeholder="placeholder"
-      :auto-size="{ minRows: 5, maxRows: 5 }"
+      :auto-size="autoSize"
       @change="valueChange"
+      :allow-clear="allowClear"
+      :max-length="maxLength"
+      :disabled="disabled"
     />
-    <a-button type="link" class="common-options-btn" @click="openModal">
+    <a-button v-if="!disabled" type="link" class="common-options-btn" @click.prevent="openModal">
       常用意见
     </a-button>
     <a-modal v-model="visible" title="常用意见">
@@ -53,6 +56,22 @@ export default {
     listData: {
       type: Array,
       default: () => []
+    },
+    autoSize: {
+      type: Object,
+      default: () => {}
+    },
+    allowClear: {
+      type: Boolean,
+      default: false
+    },
+    maxLength: {
+      type: Number,
+      default: 300
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -100,8 +119,9 @@ export default {
 .common-options-btn {
   display: none;
   position: absolute;
-  top: 0px;
-  z-index: 10;
-  right: 0px;
+  top: 0;
+  right: 10px;
+  padding-right: 0;
+  margin-right: 10px;
 }
 </style>

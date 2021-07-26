@@ -30,7 +30,7 @@
         <a-form-item v-else-if="typeof options.placeholder !== 'undefined'" label="占位内容">
           <a-input placeholder="请输入" v-model="options.placeholder" />
         </a-form-item>
-        <a-form-item v-if="selectItem.type === 'textarea'" label="自适应内容高度">
+        <a-form-item v-if="selectItem.type === 'textarea' || selectItem.type === 'hCommentOptions'" label="自适应内容高度">
           <a-input-number
             style="width: 100%"
             v-model="options.autoSize.minRows"
@@ -71,8 +71,8 @@
         </a-form-item>
         <!-- 选项配置及动态数据配置 start -->
         <a-form-item
-          v-if="typeof options.options !== 'undefined' || typeof options.treeData !== 'undefined'"
-          label="选项配置"
+          v-if="typeof options.options !== 'undefined' || typeof options.treeData !== 'undefined' || (typeof options.listData !== 'undefined')"
+          :label="typeof options.listData !== 'undefined' ? '列表数据' : '选项配置'"
         >
           <a-radio-group buttonStyle="solid" v-model="selectItem.optionsConfig.type" size="small">
             <a-radio-button value="static">静态数据</a-radio-button>
@@ -105,7 +105,7 @@
             v-model="options.options"
           />-->
           <a
-            v-if="(typeof options.treeData !== 'undefined') || (typeof options.options !== 'undefined')"
+            v-if="(typeof options.treeData !== 'undefined') || (typeof options.options !== 'undefined')  || (typeof options.listData !== 'undefined')"
             v-show="selectItem.optionsConfig.type === 'static'"
             @click="staticEditModalVisible = true"
           >添加静态数据</a>
@@ -370,7 +370,7 @@
         <a-form-item v-if="selectItem.type === 'hCommentOptions'" label="默认值">
           <a-input v-model="options.defaultValue" />
         </a-form-item>
-        <a-form-item v-if="typeof options.listData !== 'undefined'" label="列表数据">
+<!--        <a-form-item v-if="typeof options.listData !== 'undefined'" label="列表数据">
           <a-radio-group buttonStyle="solid" v-model="options.dynamic">
             <a-radio-button :value="false">静态数据</a-radio-button>
             <a-radio-button :value="true">动态数据</a-radio-button>
@@ -383,7 +383,7 @@
           ></a-input>
 
           <KChangeOption v-show="!options.dynamic" v-model="options.listData" />
-        </a-form-item>
+        </a-form-item>-->
 
         <!-- 文字对齐方式 -->
         <a-form-item v-if="selectItem.type === 'text'" label="文字对齐方式">
@@ -677,7 +677,7 @@ export default {
     },
     aceEditorValue: {
       get() {
-        return this.selectItem.options.options || this.selectItem.options.treeData || {};
+        return this.selectItem.options.options || this.selectItem.options.treeData || this.selectItem.options.listData || [];
       },
       set(val) {
         if (this.selectItem.options.options) {
@@ -685,6 +685,9 @@ export default {
         }
         if (this.selectItem.options.treeData) {
           this.selectItem.options.treeData = val
+        }
+        if (this.selectItem.options.listData) {
+          this.selectItem.options.listData = val
         }
       }
     }
