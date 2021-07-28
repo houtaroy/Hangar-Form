@@ -9,8 +9,6 @@
 <script>
 import testConfig from '../../../public/test.json';
 
-// import { BaseParser, getParsers, setParser } from '../../../packages/Parsers';
-
 export default {
   data() {
     return {
@@ -43,12 +41,6 @@ export default {
       this.$refs.test.resetFields();
     }
   }
-  // mounted() {
-  //   console.log('开始的方法解析器', getParsers()['method']);
-  //   class MyMethod extends BaseParser {}
-  //   setParser('method', new MyMethod());
-  //   console.log('之后的1', getParsers()['method']);
-  // }
 };
 </script>
 
