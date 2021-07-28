@@ -4,7 +4,7 @@ import postcssPrefixSelector from 'postcss-prefix-selector';
 import { jsonMinimumVersion } from '../config';
 
 const deconstructionMethodString = function(methodString) {
-  if (!/^[a-zA-Z0-9]*(.*)$/.test(methodString)) {
+  if (!/^[a-zA-Z0-9.]*(.*)$/.test(methodString)) {
     return {};
   }
   return {

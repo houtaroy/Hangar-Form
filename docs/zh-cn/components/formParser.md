@@ -170,7 +170,7 @@
     </tr>
     <tr>
       <td>动态数据</td>
-      <td>test</td>
+      <td>dynamic</td>
       <td>当前组件中的数据</td>
     </tr>
     <tr>

@@ -251,11 +251,13 @@ const HForm = {
     _renderElements(elements) {
       const result = [];
       elements.forEach(element => {
-        result.push(
-          excludeFormElementTypes.includes(element.type)
-            ? this._renderElement(element)
-            : this._renderFormElement(element)
-        );
+        if (!get(element, 'options.hidden', false)) {
+          result.push(
+            excludeFormElementTypes.includes(element.type)
+              ? this._renderElement(element)
+              : this._renderFormElement(element)
+          );
+        }
       });
       return result;
     },
@@ -268,6 +270,7 @@ const HForm = {
       const FormTag = this._getTag('formItem');
       return (
         <FormTag
+          v-show={element.options && !element.options.hidden}
           {...{
             props: generateProps(
               FormTag,
