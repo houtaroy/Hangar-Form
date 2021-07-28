@@ -57,7 +57,7 @@ class ApiOptionsParser extends BaseOptionsParser {
     super('api');
   }
   parse(element, context) {
-    return this.parseByApi(context, element.optionsConfig);
+    return this.parseByApi(element.optionsConfig, context);
   }
   /**
    * @description: 从接口请求数据进行解析
