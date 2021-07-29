@@ -1,8 +1,16 @@
 import BaseParser from './models';
 import DefaultMethodParser from './MethodParser';
+import DefaultEventParser from './EventParser';
+import DefaultComputedParser from './ComputedParser';
+import DefaultWatchParser from './WatchParser';
 
 const Parsers = {
-  method: DefaultMethodParser
+  method: DefaultMethodParser,
+  event: DefaultEventParser,
+  methods: DefaultMethodParser,
+  computed: DefaultComputedParser,
+  watch: DefaultWatchParser,
+  filter: DefaultMethodParser
 };
 
 function getParsers() {

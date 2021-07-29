@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h-form ref="test" v-model="value" v-bind="json"></h-form>
+    <form-parser ref="test" v-model="value" v-bind="json"></form-parser>
     <button @click="submit" class="test">提交</button>
     <button @click="reset">重置</button>
   </div>

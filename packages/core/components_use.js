@@ -61,6 +61,7 @@ import uploader from 'vue-simple-uploader';
 import HCommentOptions from '../customeComponents/commonOptions/commonOptions';
 import HAceEditor from '../customeComponents/ace-editor';
 
+import FormParser from '../FormParser';
 
 export default {
   input: Input,
@@ -126,6 +127,8 @@ Vue.use(HCommentOptions);
 Vue.component('h-uploader', HUploader);
 Vue.use(uploader);
 Vue.use(HAceEditor);
+
+Vue.use(FormParser);
 
 Vue.prototype.$confirm = Modal.confirm;
 Vue.prototype.$message = message;
