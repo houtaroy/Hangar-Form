@@ -1,29 +1,17 @@
 import 'moment/locale/zh-cn';
 
 import Schema from 'async-validator';
-import { bind, get, has, pick, values } from 'lodash';
+import { bind, get, has, values } from 'lodash';
 
-import {
-  componentMap,
-  constantComponentMap,
-  childrenKeys,
-  excludeFormElementTypes,
-  jsonMinimumVersion,
-  dataTemplate
-} from './config';
-import {
-  getDefaultValueParsers,
-  addDefaultValueParser,
-  removeDefaultValueParser
-} from './modules/DefaultValueParser';
+import { addDefaultValueParser, removeDefaultValueParser } from './modules/DefaultValueParser';
 import {
   parseOptionsConfig,
   addOptionsConfigParser,
   removeOptionsConfigParser
 } from './modules/OptionsParser';
+import ElementRender from '../Renders/ElementRender';
 import ComponentPropParser from '../Parsers/ComponentPropParser';
-import { VueData, VueDataParser } from '../Parsers/VueDataParser';
-import { checkVersion, addCSSPrefixSelector } from './modules/Util';
+import { ElementUtil, StyleUtil, VersionUtil } from '../Utils';
 
 import { getParser } from '../Parsers';
 
@@ -65,27 +53,6 @@ const FormParser = {
         return [];
       }
     }
-  },
-  data() {
-    return {
-      error: false,
-      errorMessage: '解析过程中出现错误',
-      loadingCount: 0,
-      antFormModalItemAttrs: {},
-      defaultValueParsers: getDefaultValueParsers(),
-      constantRender: {
-        table: this._renderTable,
-        td: this._renderTd,
-        'a-tab-pane': this._renderAntTabPane,
-        text: this._renderText,
-        'h-html': this._renderHtml
-      },
-      vueDatas: [],
-      originalData: {},
-      data: {},
-      elementConfigs: {},
-      optionsMap: {}
-    };
   },
   computed: {
     loading: function() {
@@ -145,11 +112,7 @@ const FormParser = {
         if (element.model) this._parseModel(element);
         if (element.optionsConfig) this._parseOptions(element);
         if (element.events) element.listeners = getParser('event').parseList(element.events, this);
-        childrenKeys.forEach(key => {
-          if (element[key]) {
-            this._parseData(element[key]);
-          }
-        });
+        this._parseData(ElementUtil.getChildren(element));
       });
     },
     /**
@@ -176,278 +139,51 @@ const FormParser = {
           break;
         }
       }
-      this.vueDatas.push(new VueData(result, 'originalData', key));
+      this.formDataParser.add(result, 'originalData', key);
     },
     /**
      * @description: 解析选项配置
      * @param {Object} element 表单元素Json
      */
     _parseOptions(element) {
-      this.vueDatas.push(new VueData(parseOptionsConfig(element, this), 'optionsMap', element.key));
+      this.formDataParser.add(parseOptionsConfig(element, this), 'optionsMap', element.key);
     },
-    /**
-     * @description: 解析ant design中a-form-model-item样式, 适配KFormDesign编辑器
-     * @param {Object} formConfig 表单配置
-     */
-    _parseAntFormModalItemAttrs(formConfig) {
-      return {
-        labelCol:
-          formConfig.layout === 'horizontal'
-            ? formConfig.labelLayout === 'flex'
-              ? { style: `width:${formConfig.labelWidth}px` }
-              : formConfig.labelCol
-            : {},
-        wrapperCol:
-          formConfig.layout === 'horizontal'
-            ? formConfig.labelLayout === 'flex'
-              ? { style: 'width:auto;flex:1' }
-              : formConfig.wrapperCol
-            : {},
-        style:
-          formConfig.layout === 'horizontal' && formConfig.labelLayout === 'flex'
-            ? { display: 'flex' }
-            : {}
-      };
-    },
-    /**
-     * @description: 批量渲染元素
-     * @param {Array} elements 树形结构元素配置json
-     * @return {*} 渲染结果
-     */
-    _renderElements(elements) {
-      const result = [];
-      elements.forEach(element => {
-        if (!get(element, 'options.hidden', false)) {
-          result.push(
-            excludeFormElementTypes.includes(element.type)
-              ? this._renderElement(element)
-              : this._renderFormElement(element)
-          );
-        }
-      });
-      return result;
-    },
-    /**
-     * @description: 渲染表单元素
-     * @param {Object} element 表单元素配置json
-     * @return {*} 渲染结果
-     */
-    _renderFormElement(element) {
-      const FormTag = this._getTag('formItem');
-      return (
-        <FormTag
-          v-show={element.options && !element.options.hidden}
-          {...{
-            props: ComponentPropParser.parse(
-              FormTag,
-              element,
-              this.antFormModalItemAttrs,
-              {
-                prop: element.model
-              },
-              { rules: get(element, 'options.disabled') ? undefined : element.rules }
-            )
-          }}
-          style={this.antFormModalItemAttrs.style}>
-          {this._renderElement(element)}
-        </FormTag>
-      );
-    },
-    /**
-     * @description: 渲染元素
-     * @param {Object} element 元素配置json
-     * @return {*} 渲染结果
-     */
-    _renderElement(element) {
-      const Tag = this._getTag(element.type);
-      if (has(this.constantRender, Tag)) {
-        return this.constantRender[Tag](element);
-      }
-      const attrs = this._renderTagAttrs(Tag, element);
-      if (element.model) {
-        return (
-          <Tag v-model={this.data[element.model]} {...attrs}>
-            {this._renderChildren(element)}
-          </Tag>
-        );
-      }
-      return <Tag {...attrs}>{this._renderChildren(element)}</Tag>;
-    },
-    /**
-     * @description: 渲染组件参数
-     * @param {String} Tag 组件标签名称
-     * @param {Object} element 元素配置json
-     * @return {Object} 参数对象, 包含[props, on]
-     */
-    _renderTagAttrs(Tag, element) {
-      return {
-        ref: element.key,
-        class: element.class ? element.class.split(',') : '',
-        style: this._renderStyle(element),
-        props: this._renderTagProps(Tag, element),
-        on: element.listeners
-      };
-    },
-    _renderStyle(element) {
-      return element.options && element.options.width
-        ? element.style + `width: ${element.options.width};`
-        : element.style;
-    },
-    /**
-     * @description: 渲染组件props
-     * @param {String} Tag 组件标签名称
-     * @param {Object} element 元素配置json
-     * @return {Object} 组件props对象
-     */
-    _renderTagProps(Tag, element) {
-      const options = [element, element.options, { locale: this.locale }];
-      this.extendConfigs.forEach(extendConfig => {
-        const key = element.model || element.key;
-        if (has(extendConfig, key)) {
-          options.push(extendConfig[key]);
-        }
-      });
-      const result = ComponentPropParser.parse(Tag, ...options);
-      if (element.optionsConfig) {
-        result[element.optionsConfig.key] = this.optionsMap[element.key];
-      }
-      delete result['type'];
-      return result;
-    },
-    /**
-     * @description: 渲染表格元素
-     * @param {Object} tableElement 表格元素配置json
-     * @return {*} 渲染结果
-     */
-    _renderTable(tableElement) {
-      const attr = {
-        class: pick(tableElement.options, ['bright', 'small', 'bordered']),
-        style: tableElement.options.customStyle
-      };
-      return (
-        <table class="kk-table-9136076486841527" {...attr}>
-          {this._renderElements(tableElement.trs)}
-        </table>
-      );
-    },
-    /**
-     * @description: 渲染表单列元素
-     * @param {Object} tdElement 表单列元素配置json
-     * @return {*} 渲染结果
-     */
-    _renderTd(tdElement) {
-      if (tdElement.colspan && tdElement.rowspan) {
-        return (
-          <td class="table-td" colSpan={tdElement.colspan} rowSpan={tdElement.rowspan}>
-            {this._renderChildren(tdElement)}
-          </td>
-        );
-      }
-    },
-    /**
-     * @description: ant-design的a-tab-pane存在问题, 未找到解决办法, 暂时进行特殊处理
-     * @param {Object} element a-tab-pane配置对象
-     * @return {*} 渲染结果
-     */
-    _renderAntTabPane(element) {
-      return (
-        <a-tab-pane key={element.value} tab={element.label}>
-          {this._renderChildren(element)}
-        </a-tab-pane>
-      );
-    },
-    /**
-     * @description: 渲染文本元素
-     * @param {Object} textElement 文本元素配置json
-     * @return {*} 渲染结果
-     */
-    _renderText(textElement) {
-      const divAttrs = {
-        style: `text-align: ${textElement.options.textAlign}`
-      };
-      const labelAttrs = {
-        class: { 'ant-form-item-required': textElement.options.showRequiredMark },
-        style: pick(textElement.options, ['fontFamily', 'fontSize', 'color'])
-      };
-      return (
-        <div {...divAttrs}>
-          <label {...labelAttrs} class={textElement.class} style={textElement.style}>
-            {textElement.label}
-          </label>
-        </div>
-      );
-    },
-    /**
-     * @description: 渲染html元素
-     * @param {Object} htmlElement html元素配置json
-     * @return {*} 渲染结果
-     */
-    _renderHtml(htmlElement) {
-      return <h-html v-model={this.data} {...this._renderTagAttrs('h-html', htmlElement)}></h-html>;
-    },
-    /**
-     * @description: 渲染子元素
-     * @param {Object} element 元素配置数组
-     * @return {Array} 所有子元素渲染结果
-     */
-    _renderChildren(element) {
-      let result = [];
-      childrenKeys.forEach(childrenKey => {
-        if (element[childrenKey]) {
-          result = result.concat(this._renderElements(element[childrenKey]));
-        }
-      });
-      return result;
-    },
-    /**
-     * @description: 根据元素类型获取组件标签, 如不存在则使用原值
-     * @param {String} type 元素类型
-     * @return {String} 组件标签名称
-     */
-    _getTag(type) {
-      return constantComponentMap[type] || this.componentMap[type] || type;
-    }
+    ...ElementRender
   },
   render(h) {
     if (this.error) {
       return <h1 style="text-align: center">{this.errorMessage}</h1>;
     }
     const { config: formConfig, list: elements } = this.$props.config;
-    const Tag = this._getTag('form');
+    const FormComponentName = this._getComponentName({ type: 'form' });
     return (
       <section>
         <a-spin spinning={this.loading} size="large">
-          <Tag
+          <FormComponentName
             class={['k-form-build-9136076486841527', `form-${this.formId}`]}
             ref="form"
             {...{
-              props: ComponentPropParser.parse(Tag, formConfig, { model: this.data })
+              props: ComponentPropParser.parse(FormComponentName, formConfig, { model: this.data })
             }}>
-            {...this._renderElements(elements)}
-          </Tag>
+            {...this._renderList(h, elements)}
+          </FormComponentName>
         </a-spin>
-        <style>{addCSSPrefixSelector(formConfig.customStyle, `form-${this.formId}`)}</style>
+        <style>{StyleUtil.addPrefixSelector(formConfig.customStyle, `form-${this.formId}`)}</style>
       </section>
     );
   },
   beforeCreate() {
     const { config: jsonCofing } = this.$options.propsData;
-    if (!checkVersion(jsonCofing.version)) {
-      const errorMessage = `Json配置版本不匹配: 当前版本[${jsonCofing.version}], 解析器支持最低版本[${jsonMinimumVersion}]`;
-      console.error(errorMessage);
+    const versionCheckResult = VersionUtil.checkJsonVersion(jsonCofing.version);
+    if (versionCheckResult.error) {
       this.$options.data = function() {
-        return {
-          error: true,
-          errorMessage: errorMessage
-        };
+        return versionCheckResult;
       };
       this.$options.created = undefined;
       this.$options.mounted = undefined;
       return;
     }
-    this.$options.data = function() {
-      return Object.assign({}, dataTemplate, { defaultValueParsers: getDefaultValueParsers() });
-    };
+    this.$options.data = getParser('data').parse();
     const { component } = jsonCofing.config;
     for (const key in component) {
       const parser = getParser(key);
@@ -463,18 +199,16 @@ const FormParser = {
   },
   created() {
     this.loadingCount += 1;
-    const { frame, config: formConfig, list: elements } = this.$props.config;
+    const { config: jsonConfig } = this.$props;
+    const { frame, config: formConfig, list: elements } = jsonConfig;
     const { lifecycle } = formConfig;
     lifecycle.forEach(one => {
       globalLifecycle[one.name] = bind(getParser('method').parse(one), this);
     });
-    this.componentMap = componentMap[frame] || componentMap['ant'];
-    if (frame === 'ant') {
-      this.antFormModalItemAttrs = this._parseAntFormModalItemAttrs(formConfig);
-    }
+    this._initRender(frame, formConfig);
     runLifecycle('created');
     this._parseData(elements);
-    VueDataParser.parseList(this.vueDatas, this);
+    this.formDataParser.parse(this);
   },
   mounted() {
     runLifecycle('mounted');

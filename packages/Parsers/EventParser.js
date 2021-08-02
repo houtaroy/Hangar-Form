@@ -7,7 +7,7 @@ class DefaultEventParser extends BaseParser {
     if (has(context, eventConfig.methodName)) {
       return get(context, eventConfig.methodName);
     }
-    console.error(`[Hangar-Form]: 事件${eventConfig.name}绑定方法${eventConfig.methodName}不存在`);
+    console.error(`[HForm Error]: 事件${eventConfig.name}绑定方法${eventConfig.methodName}不存在`);
   }
   static parseList(eventConfigs, context) {
     const result = {};

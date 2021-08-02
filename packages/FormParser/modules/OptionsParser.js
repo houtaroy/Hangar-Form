@@ -1,6 +1,6 @@
 import { has, pick, keys, values } from 'lodash';
 
-import { deconstructionMethodString } from './Util';
+import { MethodUtil } from '../../Utils';
 
 /**
  * 所有选项解析器的父类
@@ -66,8 +66,8 @@ class ApiOptionsParser extends BaseOptionsParser {
    * @return {Promise} 解析结果
    */
   parseByApi(config, context) {
-    const method = deconstructionMethodString(config.name);
-    if (!has(context.$api, method.name)) {
+    const method = MethodUtil.parseMethodString(config.name);
+    if (!method || !has(context.$api, method.name)) {
       return [];
     }
     return new Promise(resolve => {

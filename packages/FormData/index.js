@@ -1,4 +1,4 @@
-class VueData {
+class FormData {
   #valueExp;
   #dataName;
   #dataProp;
@@ -19,21 +19,32 @@ class VueData {
       this._setValue(this.#valueExp, context);
     }
   }
+  /**
+   * 利用vue的this.$set响应式赋值
+   */
   _setValue(value, context) {
     context.$set(context[this.#dataName], this.#dataProp, value);
   }
 }
 
-class VueDataParser {
-  static parse(vueData, context) {
-    vueData.parse(context);
+export default class FormDataParser {
+  #datas;
+  constructor() {
+    this.#datas = [];
   }
-  static parseList(vueDatas, context) {
-    vueDatas.forEach(vueData => {
-      this.parse(vueData, context);
+  /**
+   * 新增表单数据对象
+   * 用于同步/异步数据一并处理
+   * @param {string} valueExp 表单数据表达式
+   * @param {string} dataName vue中对应的属性名称
+   * @param {string} dataProp vue中对应的属性键值
+   */
+  add(valueExp, dataName, dataProp) {
+    this.#datas.push(new FormData(valueExp, dataName, dataProp));
+  }
+  parse(context) {
+    this.#datas.forEach(data => {
+      data.parse(context);
     });
   }
 }
-
-export { VueData, VueDataParser };
-export default VueDataParser;

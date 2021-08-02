@@ -1,7 +1,12 @@
 import { jsonMinimumVersion } from '../Configs';
 
 function checkJsonVersion(version) {
-  return compare(version, jsonMinimumVersion) > -1;
+  return compare(version, jsonMinimumVersion) > -1
+    ? { error: false }
+    : {
+        error: true,
+        errorMessage: `Json配置版本不匹配: 当前版本[${version}], 解析器支持最低版本[${jsonMinimumVersion}]`
+      };
 }
 
 function compare(version1, version2) {
