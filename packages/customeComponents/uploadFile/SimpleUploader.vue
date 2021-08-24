@@ -312,13 +312,9 @@ export default {
         });
     },
     /**
-     * 上传文件成功后的回调函数
-     */
-    fileSuccess(rootFile, file, message, chunk) {},
-    /**
      * 上传文件失败后的回调函数
      */
-    fileError(rootFile, file, message, chunk) {
+    fileError(rootFile, file, message) {
       const fileResponse = JSON.parse(message);
       if (fileResponse.code && fileResponse.code === 500) {
         return this.$message.error(
