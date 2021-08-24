@@ -19,8 +19,7 @@ export const basicsList = [
       addonBefore: '',
       addonAfter: '',
       hidden: false, // 是否隐藏，false显示，true隐藏
-      disabled: false, // 是否禁用，false不禁用，true禁用
-      events: []
+      disabled: false // 是否禁用，false不禁用，true禁用
     },
     style: '',
     class: '',
@@ -33,7 +32,8 @@ export const basicsList = [
         required: false, // 必须填写
         message: '必填项'
       }
-    ]
+    ],
+    events: []
   },
   {
     type: 'textarea', // 表单类型
@@ -50,8 +50,7 @@ export const basicsList = [
       allowClear: false,
       hidden: false, // 是否隐藏，false显示，true隐藏
       disabled: false,
-      placeholder: '请输入',
-      events: []
+      placeholder: '请输入'
     },
     style: '',
     class: '',
@@ -63,7 +62,8 @@ export const basicsList = [
         required: false,
         message: '必填项'
       }
-    ]
+    ],
+    events: []
   },
   {
     type: 'number', // 表单类型
@@ -78,8 +78,7 @@ export const basicsList = [
       step: 1, // 步长，点击加减按钮时候，加减多少
       hidden: false, // 是否隐藏，false显示，true隐藏
       disabled: false, //是否禁用
-      placeholder: '请输入',
-      events: []
+      placeholder: '请输入'
     },
     style: '',
     class: '',
@@ -91,7 +90,8 @@ export const basicsList = [
         required: false,
         message: '必填项'
       }
-    ]
+    ],
+    events: []
   },
   {
     type: 'select', // 表单类型
@@ -119,8 +119,7 @@ export const basicsList = [
           label: '下拉框2'
         }
       ],
-      showSearch: false, // 是否显示搜索框，搜索选择的项的值，而不是文字
-      events: []
+      showSearch: false // 是否显示搜索框，搜索选择的项的值，而不是文字
     },
     style: '',
     class: '',
@@ -137,7 +136,8 @@ export const basicsList = [
         required: false,
         message: '必填项'
       }
-    ]
+    ],
+    events: []
   },
   {
     type: 'checkbox',
@@ -163,8 +163,7 @@ export const basicsList = [
           value: '3',
           label: '选项3'
         }
-      ],
-      events: []
+      ]
     },
     style: '',
     class: '',
@@ -181,7 +180,8 @@ export const basicsList = [
         required: false,
         message: '必填项'
       }
-    ]
+    ],
+    events: []
   },
   {
     type: 'radio', // 表单类型
@@ -207,8 +207,7 @@ export const basicsList = [
           value: '3',
           label: '选项3'
         }
-      ],
-      events: []
+      ]
     },
     style: '',
     class: '',
@@ -225,7 +224,8 @@ export const basicsList = [
         required: false,
         message: '必填项'
       }
-    ]
+    ],
+    events: []
   },
   {
     type: 'date', // 表单类型
@@ -243,8 +243,7 @@ export const basicsList = [
       placeholder: '请选择',
       rangePlaceholder: ['开始时间', '结束时间'],
       format: 'YYYY-MM-DD', // 展示格式  （请按照这个规则写 YYYY-MM-DD HH:mm:ss，区分大小写）
-      valueFormat: 'x',
-      events: []
+      valueFormat: 'x'
     },
     style: '',
     class: '',
@@ -256,7 +255,8 @@ export const basicsList = [
         required: false,
         message: '必填项'
       }
-    ]
+    ],
+    events: []
   },
   {
     type: 'time', // 表单类型
@@ -270,8 +270,7 @@ export const basicsList = [
       allowClear: false, // 是否显示清除按钮
       placeholder: '请选择',
       format: 'HH:mm:ss', // 展示格式
-      valueFormat: 'x',
-      events: []
+      valueFormat: 'x'
     },
     style: '',
     class: '',
@@ -283,7 +282,8 @@ export const basicsList = [
         required: false,
         message: '必填项'
       }
-    ]
+    ],
+    events: []
   },
   {
     type: 'rate', // 表单类型
@@ -349,8 +349,7 @@ export const basicsList = [
       fileName: 'file',
       headers: {},
       action: 'http://cdn.kcz66.com/uploadFile.txt',
-      placeholder: '上传',
-      events: []
+      placeholder: '上传'
     },
     model: '',
     key: '',
@@ -360,7 +359,8 @@ export const basicsList = [
         required: false,
         message: '必填项'
       }
-    ]
+    ],
+    events: []
   },
   {
     type: 'uploadImg',
@@ -378,8 +378,7 @@ export const basicsList = [
       fileName: 'image',
       headers: {},
       action: 'http://cdn.kcz66.com/upload-img.txt',
-      listType: 'picture-card',
-      events: []
+      listType: 'picture-card'
     },
     model: '',
     key: '',
@@ -389,7 +388,8 @@ export const basicsList = [
         required: false,
         message: '必填项'
       }
-    ]
+    ],
+    events: []
   },
   {
     type: 'treeSelect', // 表单类型
@@ -428,8 +428,7 @@ export const basicsList = [
             }
           ]
         }
-      ],
-      events: []
+      ]
     },
     style: '',
     class: '',
@@ -446,7 +445,8 @@ export const basicsList = [
         required: false,
         message: '必填项'
       }
-    ]
+    ],
+    events: []
   },
   {
     type: 'cascader', // 表单类型
@@ -483,8 +483,7 @@ export const basicsList = [
             }
           ]
         }
-      ],
-      events: []
+      ]
     },
     style: '',
     class: '',
@@ -501,7 +500,8 @@ export const basicsList = [
         required: false,
         message: '必填项'
       }
-    ]
+    ],
+    events: []
   },
   {
     type: 'batch',
@@ -628,12 +628,12 @@ export const basicsList = [
       showRequiredMark: false,
       color: 'rgb(0, 0, 0)',
       fontFamily: 'PingFangSC-Regular',
-      fontSize: '10.5pt',
-      events: []
+      fontSize: '10.5pt'
     },
     key: '',
     style: '',
-    class: ''
+    class: '',
+    events: []
   },
   {
     type: 'html',
@@ -641,12 +641,12 @@ export const basicsList = [
     icon: 'icon-ai-code',
     options: {
       hidden: false, // 是否隐藏，false显示，true隐藏
-      defaultValue: '<strong>HTML</strong>',
-      events: []
+      defaultValue: '<strong>HTML</strong>'
     },
     key: '',
     style: '',
-    class: ''
+    class: '',
+    events: []
   }
 ];
 
@@ -710,7 +710,6 @@ export const customComponents = {
         ],
         hidden: false, // 是否隐藏，false显示，true隐藏
         placeholder: '请输入', // 默认提示文字
-        events: [],
         autoSize: {
           minRows: 4,
           maxRows: 6
@@ -732,7 +731,8 @@ export const customComponents = {
           required: false,
           message: '必填项'
         }
-      ]
+      ],
+      events: []
     },
     {
       type: 'hDatePicker', // 表单类型
@@ -748,8 +748,7 @@ export const customComponents = {
         allowClear: false, // 是否显示清除按钮
         placeholder: '请选择',
         format: 'YYYY-MM-DD', // 展示格式  （请按照这个规则写 YYYY-MM-DD HH:mm:ss，区分大小写）
-        valueFormat: 'x',
-        events: []
+        valueFormat: 'x'
       },
       style: '',
       class: '',
@@ -761,7 +760,8 @@ export const customComponents = {
           required: false,
           message: '必填项'
         }
-      ]
+      ],
+      events: []
     }
   ]
 };
