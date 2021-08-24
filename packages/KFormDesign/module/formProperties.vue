@@ -115,9 +115,10 @@
             class="event-modal"
             v-model="methodModalFlag"
             title="方法"
-            @ok="methodModalFlag = false"
+            @close="methodModalFlag = false"
             :maskClosable="false"
             :width="1200"
+            :footer="null"
           >
             <h-form-list
               v-model="config.methods"

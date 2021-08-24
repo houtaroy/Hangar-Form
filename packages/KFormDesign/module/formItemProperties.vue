@@ -587,9 +587,10 @@
             class="event-modal"
             v-model="eventModalFlag"
             title="方法"
-            @ok="eventModalFlag = false"
+            @cancel="methodModalHandleClosed"
             :maskClosable="false"
             :width="1200"
+            :footer="null"
           >
             <h-form-list
               v-model="selectItem.events"
@@ -597,6 +598,7 @@
               :formOptions="{ methods: formMethods }"
               labelKey="name"
               @add="handleEventAdd"
+              ref="hFormList"
             ></h-form-list>
           </a-modal>
         </a-form-item>
@@ -753,10 +755,13 @@ export default {
           }
         })
       );
+    },
+    methodModalHandleClosed() {
+      this.eventModalFlag = false;
+      this.$nextTick(() => {
+        this.$refs.hFormList.selected = null;
+      });
     }
-  },
-  created() {
-    console.log('selectItem', this.selectItem);
   }
 };
 </script>
