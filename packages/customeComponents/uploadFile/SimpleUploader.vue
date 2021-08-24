@@ -70,7 +70,6 @@
         :file-status-text="statusText"
         ref="uploader"
         @file-complete="fileComplete"
-        @file-success="fileSuccess"
         @file-error="fileError"
         @file-added="fileAdded"
       >
