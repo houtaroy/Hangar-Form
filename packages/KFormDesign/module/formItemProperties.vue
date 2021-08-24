@@ -30,7 +30,10 @@
         <a-form-item v-else-if="typeof options.placeholder !== 'undefined'" label="占位内容">
           <a-input placeholder="请输入" v-model="options.placeholder" />
         </a-form-item>
-        <a-form-item v-if="selectItem.type === 'textarea' || selectItem.type === 'hCommentOptions'" label="自适应内容高度">
+        <a-form-item
+          v-if="selectItem.type === 'textarea' || selectItem.type === 'hCommentOptions'"
+          label="自适应内容高度"
+        >
           <a-input-number
             style="width: 100%"
             v-model="options.autoSize.minRows"
@@ -71,7 +74,11 @@
         </a-form-item>
         <!-- 选项配置及动态数据配置 start -->
         <a-form-item
-          v-if="typeof options.options !== 'undefined' || typeof options.treeData !== 'undefined' || (typeof options.listData !== 'undefined')"
+          v-if="
+            typeof options.options !== 'undefined' ||
+              typeof options.treeData !== 'undefined' ||
+              typeof options.listData !== 'undefined'
+          "
           :label="typeof options.listData !== 'undefined' ? '列表数据' : '选项配置'"
         >
           <a-radio-group buttonStyle="solid" v-model="selectItem.optionsConfig.type" size="small">
@@ -99,16 +106,21 @@
             placeholder="枚举变量名"
           ></a-input>
 
-<!--          <KChangeOption
+          <!--          <KChangeOption
             v-if="typeof options.options !== 'undefined' && selectItem.type !== 'cascader'"
             v-show="selectItem.optionsConfig.type === 'static'"
             v-model="options.options"
           />-->
           <a
-            v-if="(typeof options.treeData !== 'undefined') || (typeof options.options !== 'undefined')  || (typeof options.listData !== 'undefined')"
+            v-if="
+              typeof options.treeData !== 'undefined' ||
+                typeof options.options !== 'undefined' ||
+                typeof options.listData !== 'undefined'
+            "
             v-show="selectItem.optionsConfig.type === 'static'"
             @click="staticEditModalVisible = true"
-          >添加静态数据</a>
+            >添加静态数据</a
+          >
 
           <a-modal
             v-model="staticEditModalVisible"
@@ -379,7 +391,7 @@
         <a-form-item v-if="selectItem.type === 'hCommentOptions'" label="默认值">
           <a-input v-model="options.defaultValue" />
         </a-form-item>
-<!--        <a-form-item v-if="typeof options.listData !== 'undefined'" label="列表数据">
+        <!--        <a-form-item v-if="typeof options.listData !== 'undefined'" label="列表数据">
           <a-radio-group buttonStyle="solid" v-model="options.dynamic">
             <a-radio-button :value="false">静态数据</a-radio-button>
             <a-radio-button :value="true">动态数据</a-radio-button>
@@ -569,7 +581,7 @@
         </a-form-item>
 
         <!--自定义事件-->
-        <a-form-item v-if="options.hasOwnProperty('events')" label="事件">
+        <a-form-item v-if="selectItem.hasOwnProperty('events')" label="事件">
           <a-button @click="eventModalFlag = true" style="width: 100%">设置</a-button>
           <a-modal
             class="event-modal"
@@ -580,7 +592,7 @@
             :width="1200"
           >
             <h-form-list
-              v-model="options.events"
+              v-model="selectItem.events"
               formComponent="h-event-form"
               :formOptions="{ methods: formMethods }"
               labelKey="name"
@@ -686,17 +698,22 @@ export default {
     },
     aceEditorValue: {
       get() {
-        return this.selectItem.options.options || this.selectItem.options.treeData || this.selectItem.options.listData || [];
+        return (
+          this.selectItem.options.options ||
+          this.selectItem.options.treeData ||
+          this.selectItem.options.listData ||
+          []
+        );
       },
       set(val) {
         if (this.selectItem.options.options) {
-          this.selectItem.options.options = val
+          this.selectItem.options.options = val;
         }
         if (this.selectItem.options.treeData) {
-          this.selectItem.options.treeData = val
+          this.selectItem.options.treeData = val;
         }
         if (this.selectItem.options.listData) {
-          this.selectItem.options.listData = val
+          this.selectItem.options.listData = val;
         }
       }
     }
@@ -724,9 +741,9 @@ export default {
   },
   methods: {
     handleEventAdd() {
-      this.options.events.push(
+      this.selectItem.events.push(
         Object.assign({
-          name: 'event_' + (this.options.events.length + 1),
+          name: 'event_' + (this.selectItem.events.length + 1),
           type: 'select',
           methodName: '',
           method: {
@@ -737,6 +754,9 @@ export default {
         })
       );
     }
+  },
+  created() {
+    console.log('selectItem', this.selectItem);
   }
 };
 </script>
