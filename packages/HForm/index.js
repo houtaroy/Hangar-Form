@@ -212,7 +212,7 @@ const HForm = {
         this.loadingCount += 1;
         result
           .then(res => {
-            this.$set(this.originalData, key, res.data);
+            this.$set(this.originalData, key, res.data || null);
           })
           .catch(() => {
             this.$set(this.originalData, key, undefined);
