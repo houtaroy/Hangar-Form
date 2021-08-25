@@ -6986,12 +6986,12 @@ postcss-ordered-values@^4.1.2:
     postcss "^7.0.0"
     postcss-value-parser "^3.0.0"
 
-postcss-prefix-selector@^1.10.0:
-  version "1.10.0"
-  resolved "https://registry.nlark.com/postcss-prefix-selector/download/postcss-prefix-selector-1.10.0.tgz?cache=0&sync_timestamp=1623864823037&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fpostcss-prefix-selector%2Fdownload%2Fpostcss-prefix-selector-1.10.0.tgz#7ed3194d44f6c314ab4bd93a4b7b8a2d89718844"
-  integrity sha1-ftMZTUT2wxSrS9k6S3uKLYlxiEQ=
+postcss-prefix-selector@^1.12.0:
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/postcss-prefix-selector/-/postcss-prefix-selector-1.12.0.tgz#1e62bb6ded830c5c1d4ec7378558dfaeaaf5ea62"
+  integrity sha512-yEV+oJQOmrm4qvhTgf+jF2davZcxMCy7Y3kN1ETS8fTc5R3+pPUzhj6sHcMfMDSUbm1tWdCQ5bPBycd/4VOCwA==
   dependencies:
-    postcss "^8.2.10"
+    postcss "^8.3.6"
 
 postcss-reduce-initial@^4.0.3:
   version "4.0.3"
@@ -7067,10 +7067,10 @@ postcss@^7.0.0, postcss@^7.0.1, postcss@^7.0.14, postcss@^7.0.27, postcss@^7.0.3
     source-map "^0.6.1"
     supports-color "^6.1.0"
 
-postcss@^8.2.10:
+postcss@^8.3.6:
   version "8.3.6"
-  resolved "https://registry.nlark.com/postcss/download/postcss-8.3.6.tgz?cache=0&sync_timestamp=1626882858066&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fpostcss%2Fdownload%2Fpostcss-8.3.6.tgz#2730dd76a97969f37f53b9a6096197be311cc4ea"
-  integrity sha1-JzDddql5afN/U7mmCWGXvjEcxOo=
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.3.6.tgz#2730dd76a97969f37f53b9a6096197be311cc4ea"
+  integrity sha512-wG1cc/JhRgdqB6WHEuyLTedf3KIRuD0hG6ldkFEZNCjRxiC+3i6kkWUUbiJQayP28iwG35cEmAbe98585BYV0A==
   dependencies:
     colorette "^1.2.2"
     nanoid "^3.1.23"
