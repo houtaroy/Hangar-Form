@@ -95,7 +95,7 @@ class ApiOptionsParser extends BaseOptionsParser {
    */
   parseApiResultByOptions(apiResult, options) {
     const result = [];
-    apiResult.forEach(data => {
+    apiResult.items.forEach(data => {
       keys(options).forEach(key => {
         data[options[key]] = data[key];
       });

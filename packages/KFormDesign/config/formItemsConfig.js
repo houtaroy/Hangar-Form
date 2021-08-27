@@ -700,12 +700,12 @@ export const customComponents = {
         width: '100%',
         listData: [
           {
-            value: '1',
-            label: '第一条意见'
+            id: '1',
+            content: '第一条意见'
           },
           {
-            value: '2',
-            label: '第二条意见'
+            id: '2',
+            content: '第二条意见'
           }
         ],
         hidden: false, // 是否隐藏，false显示，true隐藏

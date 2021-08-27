@@ -1,5 +1,4 @@
 <template>
-  <!---->
   <div class="common-options">
     <a-textarea
       v-model="textareaValue"
@@ -9,6 +8,7 @@
       :allow-clear="allowClear"
       :max-length="maxLength"
       :disabled="disabled"
+      @blur="itemBlur"
     />
     <a-button v-if="!disabled" type="link" class="common-options-btn" @click.prevent="openModal">
       常用意见
@@ -26,7 +26,7 @@
           @click="selectOptions(item)"
           style="cursor: pointer"
         >
-          {{ item.label }}
+          {{ item.content }}
         </a-list-item>
       </a-list>
     </a-modal>
@@ -85,8 +85,7 @@ export default {
   watch: {
     value: {
       handler(val) {
-        if (!val) return;
-        this.textareaValue = val;
+        this.textareaValue = val ? val : null;
       },
       immediate: true
     }
@@ -97,13 +96,16 @@ export default {
       this.visible = true;
     },
     selectOptions(item) {
-      console.log(item);
-      this.textareaValue = item.label;
+      this.textareaValue = item.content;
       this.$emit('input', this.textareaValue);
+      this.$emit('click');
       this.visible = false;
     },
     valueChange() {
       this.$emit('input', this.textareaValue);
+    },
+    itemBlur() {
+      this.$emit('blur');
     }
   }
 };

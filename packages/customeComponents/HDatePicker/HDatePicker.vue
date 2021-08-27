@@ -70,9 +70,7 @@ export default {
   watch: {
     value: {
       handler(val) {
-        if (val) {
-          this.date = val.toString();
-        }
+        this.date = val ? val.toString() : null;
       }
     }
   }
