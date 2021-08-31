@@ -59,7 +59,7 @@ class StoreParser extends BaseRegexpDefaultValueParser {
     super(/^\$store\.[a-zA-Z0-9]*\/?[a-zA-Z0-9]*[a-zA-Z0-9.[\]'"]*$/);
   }
   parse(defaultValue, context) {
-    return get(context.$store.getters, defaultValue.replace('$store.', ''));
+    return get(context.$store.getters, defaultValue.replace('$store.', ''), null);
   }
 }
 
@@ -74,7 +74,7 @@ class DataParser extends BaseRegexpDefaultValueParser {
     super(/^\${[a-zA-Z0-9.[\]'"]*}$/);
   }
   parse(defaultValue, context) {
-    return get(context, defaultValue.substring(2, defaultValue.length - 1));
+    return get(context, defaultValue.substring(2, defaultValue.length - 1), null);
   }
 }
 
