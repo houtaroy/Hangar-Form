@@ -190,21 +190,12 @@ export default {
      * @return {type} 无返回
      */
     delFile(index) {
-      this.$confirm({
-        title: '确定要删除吗?',
-        okText: '确定',
-        okType: 'danger',
-        cancelText: '取消',
-        onOk() {
-          this.fileData.splice(index, 1);
-          if (this.fileData.length === 0) {
-            this.$emit('input', '');
-          } else {
-            this.$emit('input', JSON.stringify(this.fileData));
-          }
-          this.$message.success('保存成功');
-        }
-      });
+      this.fileData.splice(index, 1);
+      if (this.fileData.length === 0) {
+        this.$emit('input', '');
+      } else {
+        this.$emit('input', JSON.stringify(this.fileData));
+      }
     },
     /**
      * @description 下载附件
