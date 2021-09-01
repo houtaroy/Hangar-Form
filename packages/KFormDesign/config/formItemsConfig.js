@@ -667,7 +667,7 @@ export const customComponents = {
       icon: 'icon-upload',
       component: HUploader,
       options: {
-        defaultValue: undefined,
+        defaultValue: null,
         disabled: false,
         width: '100%',
         text: '',
@@ -695,7 +695,7 @@ export const customComponents = {
       icon: 'icon-edit',
       component: hCommentOptions,
       options: {
-        defaultValue: undefined,
+        defaultValue: '',
         disabled: false,
         width: '100%',
         listData: [
@@ -741,7 +741,7 @@ export const customComponents = {
       component: HDatePicker,
       options: {
         width: '100%', // 宽度
-        defaultValue: '', // 默认值，字符串 12:00:00
+        defaultValue: null, // 默认值，字符串 12:00:00
         showTime: false, // 是否显示时间选择器
         disabled: false, // 是否禁用
         hidden: false, // 是否隐藏，false显示，true隐藏
