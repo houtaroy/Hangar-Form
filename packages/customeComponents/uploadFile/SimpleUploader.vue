@@ -156,12 +156,7 @@ export default {
     return {
       sequence: [], // 待合并序列
       resetUploader: true,
-      fileData: [
-        {
-          id: '123123',
-          name: '11.doc'
-        }
-      ], // 附件所存信息
+      fileData: [], // 附件所存信息
       options: {
         target: '/api/fileInfos/chunk',
         chunkSize: 10 * 1024 * 1024,
