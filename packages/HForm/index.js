@@ -221,7 +221,7 @@ const HForm = {
             this.loadingCount -= 1;
           });
       } else {
-        this.$set(this.originalData, key, result);
+        this.$set(this.originalData, key, result || null);
       }
     },
     /**
