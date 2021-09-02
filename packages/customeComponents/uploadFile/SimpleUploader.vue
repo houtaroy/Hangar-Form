@@ -196,7 +196,7 @@ export default {
         okText: '确定',
         okType: 'danger',
         cancelText: '取消',
-        onOk() {
+        onOk: () => {
           that.fileData.splice(index, 1);
           if (that.fileData.length === 0) {
             that.$emit('input', '');
