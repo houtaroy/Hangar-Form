@@ -290,8 +290,6 @@ export default {
      * 上传到最后，合并文件碎片
      */
     fileComplete() {
-      console.log('上传完成,即将开始合并');
-      console.log('file complete', arguments);
       this.sequence = [];
       const file = arguments[0].file;
       axios
@@ -357,7 +355,7 @@ export default {
       }
 
       const idx = file.name.lastIndexOf('.');
-      const ext = file.name.substr(idx + 1);
+      const ext = file.name.substr(idx);
       result = fileTypeArray.includes(ext);
       file.ignored = !result;
       if (!result) {
