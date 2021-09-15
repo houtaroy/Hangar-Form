@@ -9,7 +9,8 @@ import {
   constantComponentMap,
   childrenKeys,
   excludeFormElementTypes,
-  jsonMinimumVersion
+  jsonMinimumVersion,
+  filterRegExp
 } from './config';
 import {
   getDefaultValueParsers,
@@ -133,6 +134,12 @@ const HForm = {
             }
           }
         });
+      },
+      deep: true
+    },
+    formData: {
+      handler(newVal) {
+        this.$emit('change', newVal);
       },
       deep: true
     }
@@ -378,6 +385,7 @@ const HForm = {
         }
       });
       const result = generateProps(Tag, ...options);
+      result.defaultValue = this._filterDefaultValue(result.defaultValue);
       if (element.optionsConfig) {
         result[element.optionsConfig.key] = this.optionsMap[element.key];
       }
@@ -482,6 +490,22 @@ const HForm = {
      */
     _getTag(type) {
       return constantComponentMap[type] || this.componentMap[type] || type;
+    },
+    /**
+     * @description: 过滤默认值
+     * @param {String} defaultValue 组件默认值
+     * @return {*} 过滤结果
+     */
+    _filterDefaultValue(defaultValue) {
+      if (
+        filterRegExp.checkApiDefaultValue.test(defaultValue) ||
+        filterRegExp.checkStoreDefaultValue.test(defaultValue) ||
+        filterRegExp.checkDataDefaultValue.test(defaultValue)
+      ) {
+        return null;
+      } else {
+        return defaultValue;
+      }
     }
   },
   render() {

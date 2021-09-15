@@ -12,33 +12,41 @@
     <div class="file-item" v-for="(item, index) in fileData" :key="index">
       <!-- 判断文件图标 -->
       <span class="file-type">
-        <a-icon v-if="item.name.indexOf('.png') !== -1" type="file-image" style="color: #faad14;" />
         <a-icon
-          v-else-if="item.name.indexOf('.jpg') !== -1"
+          v-if="item.name.substr(item.name.lastIndexOf('.')).toLowerCase() === '.png'"
           type="file-image"
           style="color: #faad14;"
         />
         <a-icon
-          v-else-if="item.name.indexOf('.pdf') !== -1"
+          v-else-if="item.name.substr(item.name.lastIndexOf('.')).toLowerCase() === '.jpg'"
+          type="file-image"
+          style="color: #faad14;"
+        />
+        <a-icon
+          v-else-if="item.name.substr(item.name.lastIndexOf('.')).toLowerCase() === '.pdf'"
           type="file-pdf"
           style="color: #f5222d;"
         />
         <a-icon
-          v-else-if="item.name.indexOf('.doc') !== -1"
+          v-else-if="item.name.substr(item.name.lastIndexOf('.')).toLowerCase() === '.doc'"
           type="file-word"
           style="color: #1890ff;"
         />
         <a-icon
-          v-else-if="item.name.indexOf('.docx') !== -1"
+          v-else-if="item.name.substr(item.name.lastIndexOf('.')).toLowerCase() === '.docx'"
           type="file-word"
           style="color: #1890ff;"
         />
         <a-icon
-          v-else-if="item.name.indexOf('.xls') !== -1"
+          v-else-if="item.name.substr(item.name.lastIndexOf('.')).toLowerCase() === '.xls'"
           type="file-excel"
           style="color: #52c41a;"
         />
-        <a-icon v-else-if="item.name.indexOf('.xlsx') !== -1" type="file" style="color: #52c41a;" />
+        <a-icon
+          v-else-if="item.name.substr(item.name.lastIndexOf('.')).toLowerCase() === '.xlsx'"
+          type="file-excel"
+          style="color: #52c41a;"
+        />
         <a-icon v-else type="file" />
       </span>
       <!-- 文件名称 -->
@@ -46,9 +54,9 @@
       <!-- 文件操作 -->
       <span class="file-function">
         <a @click="download(item)">下载</a>
-        <a v-if="item.name.indexOf('.pdf') !== -1" type="eye" @click="openPdf(item)">预览</a>
-        <a v-if="item.name.indexOf('.png') !== -1" @click="picViewer(item)">预览</a>
-        <a v-if="item.name.indexOf('.jpg') !== -1" @click="picViewer(item)">预览</a>
+        <a v-if="item.name.substr(item.name.lastIndexOf('.')).toLowerCase() === '.pdf'" @click="openPdf(item)">预览</a>
+        <a v-if="item.name.substr(item.name.lastIndexOf('.')).toLowerCase() === '.jpg'" @click="picViewer(item)">预览</a>
+        <a v-if="item.name.substr(item.name.lastIndexOf('.')).toLowerCase() === '.png'" @click="picViewer(item)">预览</a>
         <a-icon v-if="!disabled" @click.stop="delFile(index)" type="close" />
       </span>
     </div>
@@ -355,7 +363,7 @@ export default {
       }
 
       const idx = file.name.lastIndexOf('.');
-      const ext = file.name.substr(idx);
+      const ext = file.name.substr(idx).toLowerCase();
       result = fileTypeArray.includes(ext);
       file.ignored = !result;
       if (!result) {
