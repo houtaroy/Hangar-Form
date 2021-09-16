@@ -60,7 +60,7 @@ export const excludeFormElementTypes = [
 /**
  * 过滤默认值使用的正则表达式
  */
-export const filterRegExp = {
+export const filterDefaultValueRegExp = {
   checkApiDefaultValue: /^\$api\.[a-zA-Z0-9.]*(.*)$/,
   checkStoreDefaultValue: /^\$store\.[a-zA-Z0-9]*\/?[a-zA-Z0-9]*[a-zA-Z0-9.[\]'"]*$/,
   checkDataDefaultValue: /^\${[a-zA-Z0-9.[\]'"]*}$/
