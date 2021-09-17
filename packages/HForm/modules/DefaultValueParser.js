@@ -1,4 +1,5 @@
-import { values, has, get } from 'lodash';
+import { values, has, get, set } from 'lodash';
+import { filterDefaultValueRegExp } from '../config';
 
 /**
  * 所有默认值解析器的父类
@@ -31,17 +32,18 @@ export class BaseDefaultValueParser {
  *
  * @class 正则表达式默认值解析器抽象类
  */
-export class BaseRegexpDefaultValueParser {
-  #regexp = undefined;
+export class BaseRegexpDefaultValueParser extends BaseDefaultValueParser {
+  regexp = undefined;
   /**
    * @description: 构造方法
    * @param {RegExp} regexp 正则表达式
    */
   constructor(regexp) {
-    this.#regexp = regexp;
+    super();
+    this.regexp = regexp;
   }
   test(defaultValue) {
-    return this.#regexp ? this.#regexp.test(defaultValue) : false;
+    return this.regexp ? this.regexp.test(defaultValue) : false;
   }
   parse() {
     return undefined;
@@ -125,6 +127,9 @@ export const addDefaultValueParser = function(name, parser) {
   if (!(parser instanceof BaseDefaultValueParser)) {
     console.error('[HForm Error]: 解析器需继承BaseDefaultValueParser');
     return;
+  }
+  if (parser instanceof BaseRegexpDefaultValueParser) {
+    set(filterDefaultValueRegExp, name, parser.regexp);
   }
   defaultValueParsers[name] = parser;
 };
