@@ -54,9 +54,21 @@
       <!-- 文件操作 -->
       <span class="file-function">
         <a @click="download(item)">下载</a>
-        <a v-if="item.name.substr(item.name.lastIndexOf('.')).toLowerCase() === '.pdf'" @click="openPdf(item)">预览</a>
-        <a v-if="item.name.substr(item.name.lastIndexOf('.')).toLowerCase() === '.jpg'" @click="picViewer(item)">预览</a>
-        <a v-if="item.name.substr(item.name.lastIndexOf('.')).toLowerCase() === '.png'" @click="picViewer(item)">预览</a>
+        <a
+          v-if="item.name.substr(item.name.lastIndexOf('.')).toLowerCase() === '.pdf'"
+          @click="openPdf(item)"
+          >预览</a
+        >
+        <a
+          v-if="item.name.substr(item.name.lastIndexOf('.')).toLowerCase() === '.jpg'"
+          @click="picViewer(item)"
+          >预览</a
+        >
+        <a
+          v-if="item.name.substr(item.name.lastIndexOf('.')).toLowerCase() === '.png'"
+          @click="picViewer(item)"
+          >预览</a
+        >
         <a-icon v-if="!disabled" @click.stop="delFile(index)" type="close" />
       </span>
     </div>
@@ -71,6 +83,9 @@
       @ok="handleOk"
       @cancel="handleCancel"
     >
+      <div v-if="isComputeMD5Show" class="spin-box">
+        <a-spin class="bodySpin" :spinning="isComputeMD5Show" tip="正在校验文件，请稍等"/>
+      </div>
       <uploader
         v-if="resetUploader"
         :options="options"
@@ -106,6 +121,7 @@ import axios from 'axios';
 import qs from 'qs';
 import storage from 'store';
 import { ACCESS_TOKEN } from '../../../examples/store/mutation-types';
+import SparkMD5 from 'spark-md5';
 export default {
   name: 'uploadFile',
   props: {
@@ -171,7 +187,8 @@ export default {
         singleFile: true,
         headers: {
           Authorization: 'Bearer ' + storage.get(ACCESS_TOKEN)
-        }
+        },
+        autoStart: false
       }, // 附件配置
       /*attrs: {
         accept: ''
@@ -181,13 +198,15 @@ export default {
         error: '出错了',
         uploading: '上传中',
         paused: '暂停中',
-        waiting: '等待中'
+        waiting: '等待中',
+        computedMD5: '校验中'
       }, // 自定义文字
       visible: false, // 上传组件弹窗
       visibleFile: false, // 附件列表弹窗
       confirmLoading: false,
       previewVisible: false, // 图片预览弹窗
-      previewImage: '' // 图片的地址
+      previewImage: '', // 图片的地址
+      isComputeMD5Show: false // 是否显示计算MD5的提示
     };
   },
   methods: {
@@ -220,19 +239,6 @@ export default {
      * @Modify
      */
     download(item) {
-      /*  axios.get(`/api/fileInfos/download?id=${item.id}`).then(resp => {
-        const blob = new Blob([resp], { type: 'application/zip' }); // 如类型为excel,type为：'application/vnd.ms-excel'
-        const fileName = item.name;
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.style.display = 'none';
-        link.href = url;
-        link.setAttribute('download', fileName);
-
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link); // 点击后移除，防止生成很多个隐藏a标签
-      }); */
       window.open(`${this.downloadUrl}${item.id}`);
     },
     /**
@@ -342,8 +348,8 @@ export default {
      * @return {type} 无返回
      */
     fileAdded(file) {
+      this.computeMD5(file);
       let result = false;
-
       // 判断文件个数
       const length = this.fileData.length;
       if (length >= this.fileNumber) {
@@ -372,6 +378,45 @@ export default {
       return result;
     },
     /**
+     * @method 计算文件的MD5
+     * @param {Object} file 待上传文件的实体
+     * @return {type} 无返回
+     */
+    computeMD5(file) {
+      const fileReader = new FileReader();
+      const blobSlice =
+        File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice;
+      let currentChunk = 0;
+      const chunkSize = 10 * 1024 * 1000;
+      const chunks = Math.ceil(file.size / chunkSize);
+      const spark = new SparkMD5.ArrayBuffer();
+      file.pause();
+      this.isComputeMD5Show = true;
+      loadNext();
+      fileReader.onload = e => {
+        spark.append(e.target.result);
+        if (currentChunk < chunks) {
+          currentChunk++;
+          loadNext();
+        } else {
+          const md5 = spark.end();
+          file.uniqueIdentifier = md5;
+          file.resume();
+          this.isComputeMD5Show = false;
+        }
+      };
+      fileReader.onerror = function() {
+        this.$message.error(`文件${file.name}读取出错，请检查该文件`);
+        this.isComputeMD5Show = false;
+        file.cancel();
+      };
+      function loadNext() {
+        const start = currentChunk * chunkSize;
+        const end = start + chunkSize >= file.size ? file.size : start + chunkSize;
+        fileReader.readAsArrayBuffer(blobSlice.call(file.file, start, end));
+      }
+    },
+    /**
      * @description 预览照片
      * @param {type} 无参
      * @Modify
@@ -398,6 +443,36 @@ export default {
 </script>
 
 <style>
+.spin-box {
+  z-index: 1001 !important;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.bodySpin .ant-spin-dot-spin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -10px;
+}
+
+.bodySpin .ant-spin-text {
+  width: 400px;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: 30px;
+  margin-left: -200px;
+  font-weight: 600;
+}
+
 .uploader-example {
   width: 880px;
   padding: 15px;
