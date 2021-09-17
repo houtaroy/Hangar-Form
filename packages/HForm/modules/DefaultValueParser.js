@@ -1,4 +1,4 @@
-import { values, has, get, set } from 'lodash';
+import { values, has, get } from 'lodash';
 import { filterDefaultValueRegExp } from '../config';
 
 /**
@@ -129,7 +129,7 @@ export const addDefaultValueParser = function(name, parser) {
     return;
   }
   if (parser instanceof BaseRegexpDefaultValueParser) {
-    set(filterDefaultValueRegExp, name, parser.regexp);
+    filterDefaultValueRegExp[name] = parser.regexp;
   }
   defaultValueParsers[name] = parser;
 };
