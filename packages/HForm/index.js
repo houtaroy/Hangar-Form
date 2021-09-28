@@ -90,7 +90,8 @@ const HForm = {
       formData: {},
       elementConfigs: {},
       optionsMap: {},
-      optionsDynamic: {}
+      optionsDynamic: {},
+      expressions: {}
     };
   },
   computed: {
@@ -172,6 +173,18 @@ const HForm = {
       this.formData = Object.assign({}, this.originalData);
     },
     /**
+     * @description: 重新获取当前表单的默认值
+     */
+    getDefaultValue() {
+      for (const key in this.expressions) {
+        if (this.value[key]) {
+          return;
+        } else {
+          this._parseDefaultValue(key, this.expressions[key].defaultValue);
+        }
+      }
+    },
+    /**
      * @description: 根据json配置
      * @param {Array} elements 树形结构元素配置json
      */
@@ -211,6 +224,7 @@ const HForm = {
       let result = defaultValue;
       for (const parser of this.defaultValueParsers) {
         if (parser.test(defaultValue)) {
+          this.$set(this.expressions, key, { defaultValue });
           result = parser.parse(defaultValue, this);
           break;
         }
