@@ -177,9 +177,7 @@ const HForm = {
      */
     getDefaultValue() {
       for (const key in this.expressions) {
-        if (this.value[key]) {
-          return;
-        } else {
+        if (!this.value[key]) {
           this._parseDefaultValue(key, this.expressions[key].defaultValue);
         }
       }
