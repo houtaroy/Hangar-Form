@@ -91,7 +91,7 @@ const HForm = {
       elementConfigs: {},
       optionsMap: {},
       optionsDynamic: {},
-      expressions: {}
+      defaultValueExpressions: {}
     };
   },
   computed: {
@@ -176,8 +176,8 @@ const HForm = {
      * @description: 重新获取当前表单的默认值
      */
     getDefaultValue() {
-      for (const key in this.expressions) {
-        if (!this.value[key]) this._parseDefaultValue(key, this.expressions[key].defaultValue);
+      for (const key in this.defaultValueExpressions) {
+        if (!this.value[key]) this._parseDefaultValue(key, this.defaultValueExpressions[key]);
       }
     },
     /**
@@ -206,9 +206,12 @@ const HForm = {
      */
     _parseModel(element) {
       const key = element.model;
-      has(this.value, key)
-        ? this.$set(this.originalData, key, this.value[key])
-        : this._parseDefaultValue(key, element.options.defaultValue);
+      if (has(this.value, key)) {
+        this.$set(this.originalData, key, this.value[key]);
+      } else {
+        this.$set(this.defaultValueExpressions, key, element.options.defaultValue);
+        this._parseDefaultValue(key, element.options.defaultValue);
+      }
       this.$set(this.elementConfigs, key, element);
     },
     /**
@@ -220,7 +223,6 @@ const HForm = {
       let result = defaultValue;
       for (const parser of this.defaultValueParsers) {
         if (parser.test(defaultValue)) {
-          this.$set(this.expressions, key, { defaultValue });
           result = parser.parse(defaultValue, this);
           break;
         }
