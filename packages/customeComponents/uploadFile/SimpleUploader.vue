@@ -84,7 +84,7 @@
       @cancel="handleCancel"
     >
       <div v-if="isComputeMD5Show" class="spin-box">
-        <a-spin class="bodySpin" :spinning="isComputeMD5Show" tip="正在校验文件，请稍等"/>
+        <a-spin class="bodySpin" :spinning="isComputeMD5Show" tip="正在校验文件，请稍等" />
       </div>
       <uploader
         v-if="resetUploader"
@@ -182,13 +182,39 @@ export default {
       resetUploader: true,
       fileData: [], // 附件所存信息
       options: {
+        simultaneousUploads: 1, // 上传分片的并发数，默认3
         target: '/api/fileInfos/chunk',
         chunkSize: 10 * 1024 * 1024,
         singleFile: true,
         headers: {
           Authorization: 'Bearer ' + storage.get(ACCESS_TOKEN)
         },
-        autoStart: false
+        autoStart: false,
+        // 验证断点续传和秒传
+        checkChunkUploadedByResponse: (chunk, message) => {
+          const objMessage = JSON.parse(message);
+          if (objMessage.uploadedList && this.uploadedChunks.length === 0) {
+            const { uploadedList } = objMessage;
+            uploadedList.forEach(item => {
+              this.uploadedChunks.push(item.chunkNumber);
+              if (item.chunkNumber === 1) {
+                this.$set(this.options.query, 'checkCode', item.id);
+              }
+            });
+          }
+          return (this.uploadedChunks || []).indexOf(chunk.offset + 1) >= 0;
+        },
+        query: {
+          checkCode: undefined
+        },
+        // 接受到第一片的返回值
+        processResponse: (response, cb) => {
+          const objMessage = JSON.parse(response);
+          if (objMessage && objMessage.code === 200) {
+            this.$set(this.options.query, 'checkCode', objMessage.data);
+          }
+          cb(null, response);
+        }
       }, // 附件配置
       /*attrs: {
         accept: ''
@@ -206,7 +232,8 @@ export default {
       confirmLoading: false,
       previewVisible: false, // 图片预览弹窗
       previewImage: '', // 图片的地址
-      isComputeMD5Show: false // 是否显示计算MD5的提示
+      isComputeMD5Show: false, // 是否显示计算MD5的提示
+      uploadedChunks: []
     };
   },
   methods: {
@@ -266,6 +293,8 @@ export default {
       setTimeout(() => {
         this.resetUploader = true;
       }, 500);
+      this.options.query.checkCode = undefined;
+      this.uploadedChunks = [];
     },
     /**
      * 确认上传完毕
@@ -304,6 +333,9 @@ export default {
      * 上传到最后，合并文件碎片
      */
     fileComplete() {
+      // 清除当前的碎片信息和验证码 防止再次上传时出错
+      this.uploadedChunks = [];
+      this.options.query.checkCode = undefined;
       this.sequence = [];
       const file = arguments[0].file;
       axios
