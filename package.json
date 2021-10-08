@@ -1,6 +1,6 @@
 {
   "name": "hangar-form",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "private": false,
   "description": "基于vue的表单设计器,可视化开发表单",
   "license": "MIT",
