@@ -193,6 +193,7 @@ export default {
         // 验证断点续传和秒传
         checkChunkUploadedByResponse: (chunk, message) => {
           const objMessage = JSON.parse(message);
+          // 判断返回值，如果是断点续传的文件，找到分片1的id设置成校验码
           if (objMessage.uploadedList && this.uploadedChunks.length === 0) {
             const { uploadedList } = objMessage;
             uploadedList.forEach(item => {
@@ -202,6 +203,13 @@ export default {
               }
             });
           }
+          // 判断文件是否是断点续传、秒传或者是重新上传的
+          if (objMessage.uploadedList && this.uploadedChunks.length > 0) {
+            this.uploadFlag = 0;
+          } else {
+            this.uploadFlag = 1;
+          }
+          // 判断当前上传文件的碎片是否上传过
           return (this.uploadedChunks || []).indexOf(chunk.offset + 1) >= 0;
         },
         query: {
@@ -210,6 +218,7 @@ export default {
         // 接受到第一片的返回值
         processResponse: (response, cb) => {
           const objMessage = JSON.parse(response);
+          // 判断接收到第一片的返回值
           if (objMessage && objMessage.code === 200) {
             this.$set(this.options.query, 'checkCode', objMessage.data);
           }
@@ -233,7 +242,8 @@ export default {
       previewVisible: false, // 图片预览弹窗
       previewImage: '', // 图片的地址
       isComputeMD5Show: false, // 是否显示计算MD5的提示
-      uploadedChunks: []
+      uploadedChunks: [],
+      uploadFlag: undefined // 秒传，断点续传 - 0 正常上传，修改分片后重新上传 - 1
     };
   },
   methods: {
@@ -295,6 +305,7 @@ export default {
       }, 500);
       this.options.query.checkCode = undefined;
       this.uploadedChunks = [];
+      this.uploadFlag = undefined;
     },
     /**
      * 确认上传完毕
@@ -333,9 +344,6 @@ export default {
      * 上传到最后，合并文件碎片
      */
     fileComplete() {
-      // 清除当前的碎片信息和验证码 防止再次上传时出错
-      this.uploadedChunks = [];
-      this.options.query.checkCode = undefined;
       this.sequence = [];
       const file = arguments[0].file;
       axios
@@ -345,7 +353,8 @@ export default {
             filename: file.name,
             identifier: arguments[0].uniqueIdentifier,
             totalSize: file.size,
-            type: file.type
+            type: file.type,
+            uploadFlag: this.uploadFlag
           }),
           {
             headers: {
@@ -361,6 +370,12 @@ export default {
         })
         .catch(function(error) {
           console.log(error);
+        })
+        .finally(() => {
+          // 清除当前的碎片信息，验证码和上传状态标识 防止再次上传时出错
+          this.uploadedChunks = [];
+          this.options.query.checkCode = undefined;
+          this.uploadFlag = undefined;
         });
     },
     /**
