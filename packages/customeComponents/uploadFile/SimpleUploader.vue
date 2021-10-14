@@ -209,11 +209,17 @@ export default {
           } else {
             this.uploadFlag = 1;
           }
+          // 判断当前文件是否上传过？如果上传过，保存文件在服务中的位置，在合并文件接口中返回改值
+          if (objMessage.uploadFolder) {
+            this.location = objMessage.uploadFolder;
+            this.$set(this.options.query, 'uploadFolder', objMessage.uploadFolder);
+          }
           // 判断当前上传文件的碎片是否上传过
           return (this.uploadedChunks || []).indexOf(chunk.offset + 1) >= 0;
         },
         query: {
-          checkCode: undefined
+          checkCode: undefined,
+          uploadFolder: undefined
         },
         // 接受到第一片的返回值
         processResponse: (response, cb) => {
@@ -243,7 +249,8 @@ export default {
       previewImage: '', // 图片的地址
       isComputeMD5Show: false, // 是否显示计算MD5的提示
       uploadedChunks: [],
-      uploadFlag: undefined // 秒传，断点续传 - 0 正常上传，修改分片后重新上传 - 1
+      uploadFlag: undefined, // 秒传，断点续传 - 0 正常上传，修改分片后重新上传 - 1
+      location: undefined // 当前上传文件保存的文件位置
     };
   },
   methods: {
@@ -372,10 +379,12 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          // 清除当前的碎片信息，验证码和上传状态标识 防止再次上传时出错
+          // 清除当前的碎片信息，验证码、文件路径和上传状态标识 防止再次上传时出错
           this.uploadedChunks = [];
           this.options.query.checkCode = undefined;
+          this.options.query.uploadFolder = undefined;
           this.uploadFlag = undefined;
+          this.location = undefined;
         });
     },
     /**
