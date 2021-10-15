@@ -361,7 +361,8 @@ export default {
             identifier: arguments[0].uniqueIdentifier,
             totalSize: file.size,
             type: file.type,
-            uploadFlag: this.uploadFlag
+            uploadFlag: this.uploadFlag,
+            location: this.location
           }),
           {
             headers: {
