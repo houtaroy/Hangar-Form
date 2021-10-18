@@ -259,7 +259,8 @@ export default {
         'grid',
         'table',
         'hUpload',
-        'hCommentOptions'
+        'hCommentOptions',
+        'hWebOffice'
       ]
     },
     hideModel: {
