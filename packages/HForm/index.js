@@ -9,7 +9,8 @@ import {
   constantComponentMap,
   childrenKeys,
   excludeFormElementTypes,
-  jsonMinimumVersion
+  jsonMinimumVersion,
+  filterDefaultValueRegExp
 } from './config';
 import {
   getDefaultValueParsers,
@@ -90,7 +91,8 @@ const HForm = {
       formData: {},
       elementConfigs: {},
       optionsMap: {},
-      optionsDynamic: {}
+      optionsDynamic: {},
+      defaultValueExpressions: {}
     };
   },
   computed: {
@@ -136,6 +138,12 @@ const HForm = {
         });
       },
       deep: true
+    },
+    formData: {
+      handler(newVal) {
+        this.$emit('change', newVal);
+      },
+      deep: true
     }
   },
   filter: {},
@@ -179,6 +187,14 @@ const HForm = {
       this.formData = Object.assign({}, this.originalData);
     },
     /**
+     * @description: 重新获取当前表单的默认值
+     */
+    getDefaultValue() {
+      for (const key in this.defaultValueExpressions) {
+        if (!this.value[key]) this._parseDefaultValue(key, this.defaultValueExpressions[key]);
+      }
+    },
+    /**
      * @description: 根据json配置
      * @param {Array} elements 树形结构元素配置json
      */
@@ -204,9 +220,12 @@ const HForm = {
      */
     _parseModel(element) {
       const key = element.model;
-      has(this.value, key)
-        ? this.$set(this.originalData, key, this.value[key])
-        : this._parseDefaultValue(key, element.options.defaultValue);
+      if (has(this.value, key)) {
+        this.$set(this.originalData, key, this.value[key]);
+      } else {
+        this.$set(this.defaultValueExpressions, key, element.options.defaultValue);
+        this._parseDefaultValue(key, element.options.defaultValue);
+      }
       this.$set(this.elementConfigs, key, element);
     },
     /**
@@ -235,7 +254,7 @@ const HForm = {
             this.loadingCount -= 1;
           });
       } else {
-        this.$set(this.originalData, key, result);
+        this.$set(this.originalData, key, result || null);
       }
     },
     /**
@@ -392,6 +411,9 @@ const HForm = {
         }
       });
       const result = generateProps(Tag, ...options);
+      if (result.defaultValue) {
+        result.defaultValue = this._filterDefaultValue(result.defaultValue);
+      }
       if (element.optionsConfig) {
         result[element.optionsConfig.key] = this.optionsMap[element.key];
       }
@@ -508,6 +530,19 @@ const HForm = {
      */
     _getTag(type) {
       return constantComponentMap[type] || this.componentMap[type] || type;
+    },
+    /**
+     * @description: 过滤默认值
+     * @param {String} defaultValue 组件默认值
+     * @return {*} 过滤结果
+     */
+    _filterDefaultValue(defaultValue) {
+      for (const key in filterDefaultValueRegExp) {
+        if (filterDefaultValueRegExp[key].test(defaultValue)) {
+          return null;
+        }
+      }
+      return defaultValue;
     }
   },
   render() {
