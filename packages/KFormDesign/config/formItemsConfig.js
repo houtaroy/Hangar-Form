@@ -656,7 +656,6 @@ export const basicsList = [
 import HUploader from '../../customeComponents/uploadFile/SimpleUploader';
 import hCommentOptions from '../../customeComponents/commonOptions/commonOptions';
 import HDatePicker from '../../customeComponents/HDatePicker/HDatePicker';
-import hWebOffice from '../../customeComponents/webOffice/webOffice';
 
 // 自定义组件
 export const customComponents = {
@@ -763,30 +762,6 @@ export const customComponents = {
         }
       ],
       events: []
-    },
-    {
-      type: 'hWebOffice', // 表单类型
-      label: 'office组件', // 标题文字
-      icon: 'icon-edit',
-      component: hWebOffice,
-      options: {
-        defaultValue: undefined,
-        disabled: false,
-        width: '100%',
-        hidden: false, // 是否隐藏，false显示，true隐藏
-        placeholder: '请输入', // 默认提示文字
-        events: []
-      },
-      style: '',
-      class: '',
-      model: '',
-      key: '',
-      rules: [
-        {
-          required: false,
-          message: '必填项'
-        }
-      ]
     }
   ]
 };
