@@ -1,6 +1,6 @@
 <template>
   <div class="option-change-container">
-    <a-row v-if="type === 'option' || type === 'tab'" :gutter="8">
+    <a-row v-if="type === 'option'" :gutter="8">
       <div class="option-change-box" v-for="(val, index) in value" :key="index">
         <a-col :span="9"><a-input v-model="val.label" placeholder="名称"/></a-col>
         <a-col :span="9"><a-input v-model="val.value" placeholder="值"/></a-col>
@@ -8,6 +8,28 @@
           ><div @click="handleDelete(index)" class="option-delete-box">
             <a-icon type="delete" /></div
         ></a-col>
+      </div>
+      <a-col :span="24"><a @click="handleAdd">添加</a></a-col>
+    </a-row>
+
+    <a-row v-if="type === 'tab'" :gutter="8">
+      <div class="option-change-box" v-for="(val, index) in value" :key="index">
+        <a-col :span="9"><a-input v-model="val.label" placeholder="名称"/></a-col>
+        <a-col :span="9"><a-input v-model="val.value" placeholder="值"/></a-col>
+        <a-col :span="3">
+          <a-tooltip>
+            <template slot="title">
+              隐藏时渲染选项
+            </template>
+            <kCheckbox
+              v-model="val.forceRender"
+            />
+          </a-tooltip>
+        </a-col>
+        <a-col :span="3">
+          <div @click="handleDelete(index)" class="option-delete-box">
+          <a-icon type="delete" /></div>
+        </a-col>
       </div>
       <a-col :span="24"><a @click="handleAdd">添加</a></a-col>
     </a-row>
@@ -68,8 +90,12 @@
  * date 2019-11-20
  * description 修改多选、下拉、单选等控件options的组件，添加移除校验规制的组件
  */
+import kCheckbox from '../KCheckbox/index.vue';
 export default {
   name: 'KChangeOption',
+  components: {
+    kCheckbox
+  },
   props: {
     value: {
       type: Array,

@@ -522,7 +522,7 @@
             v-model="options.treeCheckable"
             label="可勾选"
           />
-          <kCheckbox选项配置
+          <kCheckbox
             v-if="typeof options.animated !== 'undefined'"
             v-model="options.animated"
             label="动画切换"

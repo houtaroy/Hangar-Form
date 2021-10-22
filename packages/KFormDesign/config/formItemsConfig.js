@@ -822,20 +822,22 @@ export const layoutList = [
       tabPosition: 'top',
       size: 'default',
       animated: true,
-      events: []
+      events: [],
     },
     columns: [
       {
         type: 'tabPane',
         value: '1',
         label: '选项1',
-        list: []
+        list: [],
+        forceRender: false
       },
       {
         type: 'tabPane',
         value: '2',
         label: '选项2',
-        list: []
+        list: [],
+        forceRender: false
       }
     ],
     key: '',

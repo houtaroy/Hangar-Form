@@ -84,7 +84,7 @@ const HForm = {
         'a-tab-pane': this._renderAntTabPane,
         text: this._renderText,
         'h-html': this._renderHtml,
-        'a-tabs': this._renderAntTabs,
+        'a-tabs': this._renderAntTabs
       },
       originalData: {},
       formData: {},
@@ -439,7 +439,7 @@ const HForm = {
      */
     _renderAntTabPane(element) {
       return (
-        <a-tab-pane key={element.value} tab={element.label}>
+        <a-tab-pane key={element.value} tab={element.label} forceRender={element.forceRender}>
           {this._renderChildren(element)}
         </a-tab-pane>
       );
