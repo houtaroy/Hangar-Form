@@ -32,7 +32,8 @@ export const componentMap = {
     dateRange: 'a-range-picker',
     hUpload: 'h-uploader',
     hCommentOptions: 'h-comment-options',
-    hDatePicker: 'h-date-picker'
+    hDatePicker: 'h-date-picker',
+    hWebOffice: 'h-web-office'
   }
 };
 
