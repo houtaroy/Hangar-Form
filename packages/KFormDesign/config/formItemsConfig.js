@@ -775,8 +775,7 @@ export const customComponents = {
         width: '100%',
         hidden: false, // 是否隐藏，false显示，true隐藏
         placeholder: '请输入', // 默认提示文字
-        events: [],
-        allowClear: false,
+        events: []
       },
       style: '',
       class: '',

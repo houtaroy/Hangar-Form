@@ -1,131 +1,654 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html  xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
-    <title>文档编辑器demo</title>
-<meta content="IE=11" http-equiv="X-UA-Compatible" charset="UTF-8"/> <!-- TODO bird 这里可能需要调整 -->
-		<!--设置缓存-->
-		<meta http-equiv="cache-control" content="no-cache,must-revalidate">
-		<meta http-equiv="pragram" content="no-cache">
-		<meta http-equiv="expires" content="0">
-    <link href="StyleSheet.css" rel="stylesheet" type="text/css" />
-   <script type="text/javascript" src="OfficeContorlFunctions.js"></script>
-   <script type="text/javascript">
-   		var id = "123233";
-   </script>
+  <title>NTKO OFFICE文档控件 For Linux 示例</title>
 </head>
-<body  onload='intializePage(id)' onbeforeunload ="onPageClose()"><!-- TODO bird 两个事件需要注意一下 -->
-<div id="editmain" class="editmain">
-                <div id="officecontrol">
-                <script type="text/javascript" src="http://www.ntko.com/control/officecontrol/ntkoofficecontrol.js"></script>
-                <div id=statusBar style="height:20px;width:100%;background-color:#c0c0c0;font-size:12px;"></div>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="OfficeContorlConfig.js"></script>
+<script type="text/javascript">
+  function getQueryVariable(variable)
+  {
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i=0;i<vars.length;i++) {
+      var pair = vars[i].split("=");
+      if(pair[0] == variable){return pair[1];}
+    }
+    return(false);
+  }
+  //alert(getQueryVariable("token"));
+  // var token = getQueryVariable("token");
+  var token = localStorage.getItem("Access-Token")
+  token = token.substr(1)
+  token = token.substring(0, (token.length -1))
+  var fileId = getQueryVariable("fileId");
+  // var id = "123233";
+</script>
+<style>
+  body{
+    text-align:center;
+    font-family:"微软雅黑";
+    letter-spacing:0.05em;
+    margin:0px;
+    width:100%;
+  }
+  .divTop{
+    width:100%;
+    height:40px;
+    background-color:#000000;
+    border-bottom-width:4px;
+    border-bottom-style:solid;
+    border-bottom-color:#ad0000;
+    text-align:left;
+    color:#ffffff;
+    line-height:40px;
+    top:0;
+    font-size:16px;
+    font-weight:bolder;
+  }
+  .divTop a{
+    margin-left: 30px;
+  }
+  .divBody{
+    width:100%;
+    margin-top: 5px;
+  }
+  .divLeft{
+    width:25%;
+    float: left;
+  }
+  .divRight{
+    width:75%;
+    float: left;
+  }
+  .divButtons{
+    width:100%;
+    text-align:left;
+    padding-left:10px;
+  }
+  .ntkoButton{
+    height:30px;
+    border-width:0px;
+    border-radius:3px;
+    cursor:pointer;
+    outline:none;
+    color:white;
+  font-size:14px;
+    margin-top:2px;
+  }
+  .blue{
+    background:#1E90FF;
+  }
+  .blue:hover{ /* 鼠标移入按钮范围时改变颜色 */
+    background:#5599FF;
+  }
+  .green{
+    background:#00a508;
+  }
+  .green:hover{ /* 鼠标移入按钮范围时改变颜色 */
+    background:#01af0a;
+  }
+  .orange{
+    background:#eb6a00;
+  }
+  .orange:hover{ /* 鼠标移入按钮范围时改变颜色 */
+    background:#fa7507;
+  }
+</style>
+<body onload="init();" onbeforeunload="onPageClose();">
+<!--<div class="divTop"><a>NTKO OFFICE文档控件 For Linux 示例</a></div>-->
+<div class="divBody">
+  <!--<div class="divLeft">
+    <div class="divButtons">
+      <input type="button" class="ntkoButton blue" onclick="ntkoCreateNew('wps.document')" value="创建wps"></input>
+      <input type="button" class="ntkoButton blue" onclick="ntkoCreateNew('Excel.Sheet')" value="创建et"></input>
+      <input type="button" class="ntkoButton blue" onclick="ntkoCreateNew('powerpoint.show')" value="创建ppt"></input>
+      <input type="button" class="ntkoButton blue" onclick="closewps()" value="关闭文档"></input>
+      <input type="button" class="ntkoButton blue" onclick="getDocType()" value="获取文档类型和大小"></input>
+      <input type="button" class="ntkoButton blue" onclick="GetWPSVer()" value="获取wps版本"></input>
+      <input type="button" class="ntkoButton blue" onclick="ntkoOpenLocal()" value="打开本地文件"></input>
+      <input type="button" class="ntkoButton blue" onclick="SaveToLocal()" value="保存到本地"></input>
+      <input type="button" class="ntkoButton blue" onclick="Savehtmltofile()" value="保存Html到本地"></input>
+      <input type="button" class="ntkoButton blue" onclick="Saveasothertofile()" value="保存其他格式到本地"></input>
+      <input type="button" class="ntkoButton blue" onclick="Savepdftofile()" value="保存PDF到本地"></input>
+      <input type="button" class="ntkoButton blue" onclick="Saveofd()" value="保存OFD到本地"></input>
+      <input type="button" class="ntkoButton blue" onclick="optmessage()" value="控件自定义弹窗"></input>
+      <input type="button" class="ntkoButton blue" onclick="showdialog()" value="ShowDialog窗口"></input>
+      <input type="button" class="ntkoButton blue" onclick="printwps()" value="打印文档"></input>
+      <input type="button" class="ntkoButton blue" onclick="objprintpreview()" value="打印预览"></input>
+      <input type="button" class="ntkoButton blue" onclick="objexitprintpreview()" value="退出打印预览"></input>
+      <input type="button" class="ntkoButton green" onclick="ShowMenubar()" value="切换菜单栏"></input>
+      <input type="button" class="ntkoButton green" onclick="ShowToolBars()" value="切换工具栏"></input>
+      <input type="button" class="ntkoButton green" onclick="ShowStatuBar()" value="切换状态栏"></input>
+      <input type="button" class="ntkoButton green" onclick="ShowFullButton()" value="切换全屏按钮"></input>
+      <input type="button" class="ntkoButton green" onclick="VisableFileMenu()" value="切换文件菜单按钮"></input>
+      <input type="button" class="ntkoButton green" onclick="ShowWPSMenu()" value="切换WPS菜单"></input>
+      <input type="button" class="ntkoButton green" onclick="AddCustomToolBar()" value="添加自定义工具栏"></input>
+      <input type="button" class="ntkoButton green" onclick="ShowCustomToolBar()" value="切换自定义工具栏"></input>
+      <input type="button" class="ntkoButton green" onclick="SetCustomToolButtonStatus()" value="设置自定义工具栏按钮状态"></input>
+      <input type="button" class="ntkoButton green" onclick="AddCustomMenu()" value="添加自定义菜单"></input>
+      <input type="button" class="ntkoButton green" onclick="EnabledAndRemovedCustomMenu()" value="禁用和移除自定义菜单"></input>
+      <input type="button" class="ntkoButton green" onclick="AddCustomButton()" value="自定义菜单按钮"></input>
+      <input type="button" class="ntkoButton green" onclick="RemoveCustomButton()" value="删除自定义菜单按钮"></input>
+      <input type="button" class="ntkoButton green" onclick="AddFileCustomBar()" value="自定义文件菜单"></input>
+      <input type="button" class="ntkoButton green" onclick="RemoveFileCustomBar()" value="删除自定义文件菜单"></input>
+      <input type="button" class="ntkoButton orange" onclick="addPicFromLocal()" value="本地添加图片"></input>
+      <input type="button" class="ntkoButton orange" onclick="addMultiPicFromLocal()" value="本地批量添加图片"></input>
+      <input type="button" class="ntkoButton orange" onclick="Add2DCodePic(0)" value="添加PDF417二维码"></input>
+      <input type="button" class="ntkoButton orange" onclick="Add2DCodePic(1)" value="添加QRCode二维码"></input>
+      <input type="button" class="ntkoButton orange" onclick="Highlight()" value="文字高亮显示"></input>
+      <input type="button" class="ntkoButton orange" onclick="gridlines()" value="显示文档网格线"></input>
+      <input type="button" class="ntkoButton orange" onclick="InsertTempWord()" value="插入模板文件"></input>
+      <input type="button" class="ntkoButton orange" onclick="bookmarkpater()" value="书签赋值取值"></input>
+      <input type="button" class="ntkoButton orange" onclick="WebUserName()" value="设置修订用户名"></input>
+      <input type="button" class="ntkoButton orange" onclick="TrackRevisions()" value="保留/不保留痕迹"></input>
+      <input type="button" class="ntkoButton orange" onclick="EnterRevisionMode()" value="强制修订模式"></input>
+      <input type="button" class="ntkoButton orange" onclick="showRevision(0)" value="显示修订"></input>
+      <input type="button" class="ntkoButton orange" onclick="showRevision(1)" value="显示原始修订"></input>
+      <input type="button" class="ntkoButton orange" onclick="showRevision(2)" value="显示最终修订"></input>
+      <input type="button" class="ntkoButton orange" onclick="AcceptAllRevisions()" value="接受修订"></input>
+      <input type="button" class="ntkoButton orange" onclick="RejectAllRevisions()" value="拒绝修订"></input>
+      <input type="button" class="ntkoButton orange" onclick="enableCopy()" value="启用/禁止拷贝"></input>
+      <input type="button" class="ntkoButton orange" onclick="enableProtect(true)" value="保护文档"></input>
+      <input type="button" class="ntkoButton orange" onclick="enableProtect(false)" value="停止保护"></input>
+      <input type="button" class="ntkoButton orange" onclick="setZoom()" value="设置页面比例"></input>
+      <input type="button" class="ntkoButton orange" onclick="ScrollBar()" value="切换滚动条"></input>
+      <input type="button" class="ntkoButton orange" onclick="Field()" value="公文域操作"></input>
+      <input type="button" class="ntkoButton orange" onclick="addtable()" value="添加表格并填充"></input>
 
-               			 <!-- js配置项 开始-->
-								<script language="JScript" for=TANGER_OCX event="OnDocumentClosed()">
-									setFileOpenedOrClosed(false);
-								</script>
-								<script language="JScript" for="TANGER_OCX" event="OnDocumentOpened(TANGER_OCX_str,TANGER_OCX_obj)">
-
-									OFFICE_CONTROL_OBJ.activeDocument.saved=true;//saved属性用来判断文档是否被修改过,文档打开的时候设置成ture,当文档被修改,自动被设置为false,该属性由office提供.
-									//获取文档控件中打开的文档的文档类型
-									switch (OFFICE_CONTROL_OBJ.doctype)
-									{
-										case 1:
-											fileType = "Word.Document";
-											fileTypeSimple = "wrod";
-											break;
-										case 2:
-											fileType = "Excel.Sheet";
-											fileTypeSimple="excel";
-											break;
-										case 3:
-											fileType = "PowerPoint.Show";
-											fileTypeSimple = "ppt";
-											break;
-										case 4:
-											fileType = "Visio.Drawing";
-											break;
-										case 5:
-											fileType = "MSProject.Project";
-											break;
-										case 6:
-											fileType = "WPS Doc";
-											fileTypeSimple="wps";
-											break;
-										case 7:
-											fileType = "Kingsoft Sheet";
-											fileTypeSimple="et";
-											break;
-										default :
-											fileType = "unkownfiletype";
-											fileTypeSimple="unkownfiletype";
-									}
-									setFileOpenedOrClosed(true);
-								</script>
-								<!-- 自定义按钮事件 -->
-								<script language="javascript" for="TANGER_OCX" event="OnCustomToolBarCommand(btnIdx)">
-								switch (btnIdx)
-								{
-									case 0://保存
-										saveFileToUrl();
-										break;
-									case 1://保存到本地
-										OFFICE_CONTROL_OBJ.SaveToLocal(ShowDialog(3));
-										break;
-									case 2://打印
-										OFFICE_CONTROL_OBJ.PrintPreview();
-										break;
-									case 3://隐藏痕迹
-										toggleRevisions(btnIdx,4);
-										break;
-									case 4://显示痕迹
-										toggleRevisions(btnIdx,3);
-										break;
-									case 5://打开文件
-										OFFICE_CONTROL_OBJ.OpenLocalFile(ShowDialog(1));
-										break;
-									case 6://全屏
-										toggleFullScreenMode(btnIdx,7);
-										break;
-									case 7://退出全屏
-										toggleFullScreenMode(btnIdx,6);
-										break;
-									case 8://打开修订
-										toggleReviewMode(btnIdx,9);
-										break;
-									case 9://退出修订
-										toggleReviewMode(btnIdx,8);
-										break;
-									default :
-										console.log("没有对应功能！");
-								}
-								</script>
-								<script language="JScript" for=TANGER_OCX event="OnFileCommand(TANGER_OCX_str,TANGER_OCX_obj)">
-									if (TANGER_OCX_str == 3)
-									{
-										alert("不能保存！");
-										CancelLastCommand = true;
-									}
-								</script>
-								<script language="JScript" for=TANGER_OCX event="AfterPublishAsPDFToURL(result,code)">
-									result=trim(result);
-									alert(result);
-									document.all("statusBar").innerHTML="服务器返回信息:"+result;
-									if(result=="文档保存成功。")
-									{window.close();}
-								</script>
-								<script language="JScript" for=TANGER_OCX event="OnCustomMenuCmd2(menuPos,submenuPos,subsubmenuPos,menuCaption,menuID)">
-								alert("第" + menuPos +","+ submenuPos +","+ subsubmenuPos +"个菜单项,menuID="+menuID+",菜单标题为\""+menuCaption+"\"的命令被执行.");
-								</script>
-								<!-- js配置项完毕 -->
-                </div>
-       <div id="edit_bottom" class="edit_bottom">
-       <img alt="" src="images/edit_main_nether.jpg" />
-           <div id="conmpanyinfo" class="conmpanyinfo">
-            <img alt="重庆软航科技有限公司" src="images/Companyinfo.jpg" />
-             <p>技术支持详见公司网站www.ntko.com “联系我们”</p>
-            </div>
-        </div>
     </div>
+  </div>-->
+  <div class="divRight">
+    <div id="wps" style="width:75%; height:100%; left:100px; margin-left: 20px;">
+      <script type="text/javascript" src="ntkoofficecontrol.min.js"></script>
+    </div>
+  </div>
+</div>
 </body>
 </html>
+<!--
+<script type="text/javascript">
+	var obj;	//OFFICE文档控件对象
+
+	function init() {
+		 obj = document.getElementById("TANGER_OCX");
+	}
+
+
+
+	//=============================================================
+	//                            事 件
+	//=============================================================
+	function OnAfterOpenFromURLCallBack( object, uStateCode )
+	{
+		alert("AfterOpenFromURL 事件"  + uStateCode + object.FullName );
+	}
+
+	function OnBeginOpenFromURL( uEnEIFT, uStateCode, returndata )
+	{
+		alert("OnBeginOpenFromURL 事件" + uEnEIFT + uStateCode + returndata );
+	}
+
+	function OnDocumentOpened( path, object)
+	{
+		var data = object.path;
+		//alert("OnDocumentOpened 事件" + path );
+	}
+
+	function OnDocumentClosed()
+	{
+		//alert("OnDocumentClosed 事件");
+	}
+
+	function OnCustomToolBarCommand( menuPos )
+	{
+		alert("CustomToolBarCommand" + menuPos );
+		if( 1 == menuPos )
+			ntkoCreateNew('wps.document');
+		else if( 2 == menuPos )
+			obj.OpenLocAlFile("");
+		else if( 3 == menuPos )
+			saveAs();
+		else if( 4 == menuPos )
+			obj.PrintOut(true);
+		else if( 5 == menuPos )
+			obj.PrintPreview();
+		else if( 6 == menuPos )
+			obj.Close();
+	}
+
+	function OnCustomMenuCmd2( menuPos, submenuPos, subsubmenuPos, menuCaption, myMenuID )
+	{
+		alert("选择了[" + menuPos + "   " + submenuPos + "  " + subsubmenuPos + "     " + menuCaption + "  " + myMenuID + "]菜单项。在此你可以调用自己的JS函数");
+	}
+
+	function OnCustomButtonOnMenuCmd( menuPos, menuCaption, myMenuID )
+	{
+		alert( "选择了[" + menuPos +  "     " + menuCaption + "  " + myMenuID + "]菜单项。在此你可以调用自己的JS函数");
+	}
+
+	function OnCustomFileMenuCmd( menuPos, menuCaption, myMenuID )
+	{
+		alert("选择了[" + menuPos + "     " + menuCaption + "    " + myMenuID + "]文件菜单项。在此你可以调用自己的JS函数");
+	}
+
+	function OnFileCommand( item, calcel )
+	{
+		alert("选择了[" + item + "   " + calcel  + "]菜单项。在此你可以调用自己的JS函数");
+		if(item == "3")
+		{
+			alert("保存操作被CancelLastCommand属性阻止了。");
+			obj.CancelLastCommand = true;
+		}
+	}
+
+	function OnSheetBeforeDoubleClick(SheetName,row,col,IsCancel)
+	{
+		console.log("OnSheetBeforeDoubleClick触发");
+		//iscancel.SetValue(true);//取消右键操作
+	}
+	function OnWordBeforeRightClick(disp,iscancel)
+	{
+		console.log("OnWordBeforeRightClick触发");
+		//iscancel.SetValue(true);//取消右键操作
+	}
+
+	function OnScreenModeChanged(IsActivated)
+	{
+		alert("OnScreenModeChanged 事件" + IsActivated );
+	}
+
+
+
+	//=============================================================
+	//                            方 法
+	//=============================================================
+	function ntkoCreateNew(type)
+	{
+
+		obj.CreateNew(type);
+	}
+
+    function closewps()
+	{
+		obj.Close();
+	}
+
+	function getDocType()
+	{
+		alert("文档类型:" + obj.doctype + "\r\n文档大小:" + obj.docsize + "字节");
+	}
+
+	function ntkoOpenLocal()
+	{
+		obj.OpenLocalFile("");
+	}
+
+	function SaveToLocal()
+	{
+      	obj.SaveToLocal("",false,true);
+	}
+
+	function Savehtmltofile()
+	{
+		var a = obj.SaveAsHTMLFile("/home/ntko/Desktop/ntko.html");
+        if(!a){
+            alert("demo中设置的保存路径可能与您测试机器中的路径不匹配");
+        }
+	}
+
+	function Saveasothertofile()
+	{
+		obj.SaveAsOtherFormatFile(0,"",true);
+	}
+
+    function Savepdftofile()
+	{
+		var a = obj.SaveAsPDFFile("/home/ntko/Desktop/ntko.pdf");
+        if(!a){
+            alert("demo中设置的保存路径可能与您测试机器中的路径不匹配");
+        }
+	}
+
+    function Saveofd()
+	{
+		var a = obj.SaveAsOFDFile("/home/ntko/Desktop/ntko.ofd");
+        if(!a){
+            alert("demo中设置的保存路径可能与您测试机器中的路径不匹配");
+        }
+	}
+
+    function showdialog()
+	{
+		obj.showdialog(0);
+	}
+
+	//打印文档
+	function printwps()
+	{
+		obj.PrintOut();
+		//obj.PrintOut(true);
+	}
+
+	//打印预览文档
+	function objprintpreview()
+	{
+	    obj.PrintPreview();
+	}
+
+	//退出打印预览文档
+	function objexitprintpreview()
+	{
+	    obj.ExitPrintPreview();
+	}
+
+	function GetWPSVer()
+	{
+		var ret = obj.GetWPSVer();
+		alert(ret);
+	}
+
+	function AddCustomToolBar()
+	{
+		obj.AddCustomToolButton("新建", 3,1);
+		obj.AddCustomToolButton("打开", 4,2);
+		obj.AddCustomToolButton("保存", 5,3);
+		obj.AddCustomToolButton("打印", 9,4);
+		obj.AddCustomToolButton("打印预览", 10,5);
+		obj.AddCustomToolButton("关闭文档", -1,6);
+	}
+
+	function ShowCustomToolBar()
+	{
+		obj.CustomToolBar = !obj.CustomToolBar;
+	}
+
+	function SetCustomToolButtonStatus()
+	{
+		alert("请注意观察自定义工具栏里，新建按钮将被禁用，打开按钮将被隐藏");
+		obj.SetCustomToolButtonStatus(1,false,true);
+		obj.SetCustomToolButtonStatus(2,false,false);
+	}
+
+	function ShowStatuBar()
+	{
+		obj.Statusbar = !obj.Statusbar;
+	}
+
+	function ShowMenubar()
+	{
+		obj.Menubar = !obj.Menubar;
+	}
+
+	function ShowToolBars()
+	{
+		obj.ToolBars = !obj.ToolBars;
+	}
+
+	function ShowFullButton()
+	{
+		obj.IsShowFullScreenButton = !obj.IsShowFullScreenButton;
+	}
+
+	function VisableFileMenu()
+	{
+		obj.FileNew = !obj.FileNew;
+		obj.FileOpen = !obj.FileOpen;
+		obj.FileClose = !obj.FileClose;
+		obj.FileSave = !obj.FileSave;
+		obj.FileSaveAs = !obj.FileSaveAs;
+		obj.FilePrint = !obj.FilePrint;
+		obj.FilePrintPreview = !obj.FilePrintPreview;
+		obj.FilePageSetup = !obj.FilePageSetup;
+		obj.FileProperties = !obj.FileProperties;
+
+		obj.FileSaveAsOFD = !obj.FileSaveAsOFD;
+		obj.FileSaveAsPDF = !obj.FileSaveAsPDF;
+	}
+
+	function ShowWPSMenu()
+	{
+		obj.IsShowToolMenu = !obj.IsShowToolMenu;
+		obj.IsShowHelpMenu = !obj.IsShowHelpMenu;
+		obj.IsShowInsertMenu = !obj.IsShowInsertMenu;
+		obj.IsShowEditMenu = !obj.IsShowEditMenu;
+	}
+
+	function AddCustomMenu()
+	{
+		obj.AddCustomMenu2( 3, "自定义菜单3");
+		obj.AddCustomMenu2( 0, "自定义菜单0");
+		obj.AddCustomMenu2( 2, "自定义菜单2");
+		obj.AddCustomMenu2( 1, "自定义菜单1");
+
+		obj.AddCustomMenuItem2( 0, 0, -1, false, "测试0");
+		obj.AddCustomMenuItem2( 0, 1, -1, false, "测试1");
+		obj.AddCustomMenuItem2( 0, 4, -1, true, "测试4");
+		obj.AddCustomMenuItem2( 0, 3, -1, false, "测试3");
+		obj.AddCustomMenuItem2( 0, 2, -1, true, "测试2");
+
+		obj.AddCustomMenuItem2( 0, 2, 4, false, "测试4");
+		obj.AddCustomMenuItem2( 0, 2, 0, false, "测试1");
+		obj.AddCustomMenuItem2( 0, 2, 1, false, "测试2",true);
+		obj.AddCustomMenuItem2( 0, 2, 2, false, "测试3");
+
+		obj.AddCustomMenuItem2( 0, 4, 2, false, "测试1");
+		obj.AddCustomMenuItem2( 0, 4, 1, false, "测试2",true);
+		obj.AddCustomMenuItem2( 0, 4, 0, false, "测试3");
+	}
+
+	function EnabledAndRemovedCustomMenu()
+	{
+		//obj.EnableCustomMenuItem2( 0, 3, -1, false);
+		//obj.EnableCustomMenuItem2( 0, 4, 0, false);
+		obj.RemoveCustomMenu2( 2 );
+		obj.RemoveCustomMenu2( 3 );
+	}
+
+	function AddCustomButton()
+	{
+		obj.AddCustomButtonOnMenu(4,"自定义按钮0",false);
+	}
+
+	function RemoveCustomButton()
+	{
+		obj.RemoveCustomButtonOnMenu(4);
+	}
+
+	function AddFileCustomBar()
+	{
+		obj.AddFileMenuItem("自定义文件菜单一");
+		obj.AddFileMenuItem("自定义文件菜单二");
+		obj.AddFileMenuItem("自定义文件菜单三");
+		obj.AddFileMenuItem("自定义文件菜单四");
+		alert("添加了"+obj.FileMenuItemCount+"个自定义文件菜单项");
+	}
+
+	function RemoveFileCustomBar()
+	{
+		//移除指定的自定义文件菜单项
+		obj.RemoveFileMenuItem(1);
+		alert(obj.FileMenuItemCount);
+
+		//移除所有自定义文件菜单项
+		obj.ClearAllFileMenuItems();
+		alert(obj.FileMenuItemCount);
+	}
+
+	function addPicFromLocal()
+	{
+		obj.AddPicFromLocal( "", true,true,//是否浮动图片
+		0,//如果是浮动图片，相对于左边的Left 单位磅
+		0, //如果是浮动图片，相对于当前段落Top
+		1, //当前光标处
+		20,//无缩放
+		1 //文字上方)
+		);
+	}
+
+	function addMultiPicFromLocal()
+	{
+		obj.AddMultiPicFromLocal();
+	}
+
+	//文字高亮显示
+	function Highlight()
+	{
+		obj.ActiveDocument.application.selection.range.highlightColorindex = 7;
+		obj.setScreenFocus();
+	}
+
+	//显示文档网络线
+	function gridlines()
+	{
+		obj.ActiveDocument.Application.Options.DisplayGridLines = !obj.ActiveDocument.Application.Options.DisplayGridLines;
+		obj.setScreenFocus();
+	}
+
+	function InsertTempWord()
+	{
+		obj.AddTemplateFromLocal("",true);
+		//obj.AddTemplateFromURL("http://192.168.0.95:8080//newdemo//1.doc");
+	}
+
+	//书签赋值取值
+	function bookmarkpater()
+	{
+		// 添加书签
+		var data = obj.ActiveDocument.Application.Selection.Range;
+		obj.ActiveDocument.Bookmarks.Add("ntkoBK",data);
+		alert(obj.SetBookmarkValue("ntkoBK", "2008年8月8日"));
+		alert(obj.GetBookmarkValue("ntkoBK"));
+	}
+
+	function Add2DCodePic(pType)
+	{
+		var data;
+		switch(pType)
+		{
+			case 0:
+				data = "GB0626-2005^00000000^主办单位^通知^无^相关部门^文件标题^无^无^20111020^公开发布^软航软件^20111020^自定义^|";
+				obj.Add2DCodePic(1, data, true, 120, 120, 1, 100, 1, true);
+				break;
+			case 1:
+				data = "http://www.ntko.com";
+				obj.Add2DCodePic(2, data, true, 300, 200);
+				break;
+		}
+	}
+
+	function TrackRevisions()
+	{
+		obj.enableRevision(!obj.ActiveDocument.TrackRevisions);
+	}
+
+	function EnterRevisionMode()
+	{
+		if (obj.ActiveDocument.ProtectionType == -1)
+		{
+			obj.EnterRevisionMode(true);
+		}
+		else
+		{
+			obj.EnterRevisionMode(false);
+		}
+	}
+
+	function WebUserName()
+	{
+		obj.WebUserName = "NTKO";
+	}
+
+	function showRevision(val)
+	{
+		obj.showRevision(val);
+	}
+
+	function AcceptAllRevisions()
+	{
+		obj.ActiveDocument.AcceptAllRevisions();
+	}
+
+	function RejectAllRevisions()
+	{
+		obj.ActiveDocument.RejectAllRevisions();
+	}
+
+	function enableProtect(vbool)
+	{
+		obj.enableProtect(vbool);
+	}
+
+	function enableCopy()
+	{
+		//obj.IsNoCopy = !obj.IsNoCopy;
+		obj.IsStrictNoCopy = !obj.IsStrictNoCopy;
+	}
+
+	function setZoom()
+	{
+		alert("当前页面显示比例：" + obj.getZoomRadio() + "%");
+		obj.setZoomRadio(120);
+		alert("当前页面显示比例：" + obj.getZoomRadio() + "%");
+	}
+
+	function Field()
+	{
+		//插入两个文本域
+		obj.insertDocumentField("姓名");
+		obj.insertDocumentField("民族");
+
+		//获取文本域列表和名称
+		var fieldsname = obj.getAllDocumentField();
+		var strs = new Array();
+		strs = fieldsname.split(",");
+		alert("文本域域名：" + strs);
+
+		//给文本域赋值
+		obj.setDocumentField("姓名","张三");
+		obj.setDocumentField("民族","汉");
+
+		//删除指定的文本域
+		alert("确定后删除民族文本域");
+		obj.deleteDocumentField("民族");
+
+		fieldsname = obj.getAllDocumentField();
+		strs = fieldsname.split(",");
+		alert("文本域域名：" + strs);
+	}
+
+	function ScrollBar()
+	{
+		//水平滚动条
+		obj.ActiveDocument.ActiveWindow.DisplayHorizontalScrollBar = !obj.ActiveDocument.ActiveWindow.DisplayHorizontalScrollBar;
+		//垂直滚动条
+		obj.ActiveDocument.ActiveWindow.DisplayVerticalScrollBar = !obj.ActiveDocument.ActiveWindow.DisplayVerticalScrollBar;
+	}
+
+	function optmessage()
+	{
+		obj.ShowTipMessage("NTKO提示","Hello! World！");
+	}
+
+	function addtable()
+	{
+        var doc = obj.ActiveDocument;
+        var sel = doc.Selection;
+
+        var tables = doc.Tables;
+        var rn = sel.Range;
+		var table = tables.Add(rn,3,3,1,0);
+
+		//插入一新行
+		sel.InsertRowsBelow(1);
+
+		//遍历单元格并填充值
+		var cell = table.Cell(1, 1);
+		while (cell != null)
+		{
+			cell.Range.Text = "第" + cell.RowIndex + "行" + cell.ColumnIndex + "列";
+			cell = cell.next;
+		}
+    }
+
+</script>-->

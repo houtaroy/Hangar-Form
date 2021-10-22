@@ -7,36 +7,64 @@
  * @FilePath: \k-form-design-dev\packages\customeComponents\webOffice\webOffice.vue
 -->
 <template>
-  <div>
-    <iframe width="100%" frameborder="0" height="800px" :src="iframeSrc"></iframe>
-  </div>
+  <iframe
+    name="iframeOffice"
+    id="iframeOfficeViewContent"
+    width="100%"
+    frameborder="0"
+    height="800px"
+    :src="iframeSrc"
+    ref="iframeDom"
+  ></iframe>
 </template>
 
 <script>
-
-import storage from 'store';
-import { ACCESS_TOKEN } from '../../../examples/store/mutation-types';
-  export default {
-    props: {
-      disabled: {
-        type: Boolean,
-        default: false
-      }
+export default {
+  props: {
+    disabled: {
+      type: Boolean,
+      default: false
     },
-    mixins: [],
-    components: {},
-    name: 'webOffice',
-    install: function (Vue) {
-      Vue.component('h-web-office', this);
-    },
-    data() {
-      return {
-        iframeSrc: "office/webOffice.html?token=" + storage.get(ACCESS_TOKEN)
-      };
-    },
-    mounted() {
-
-    },
-    methods: {}
-  };
+    value: {
+      type: String,
+      default: ''
+    }
+  },
+  mixins: [],
+  components: {},
+  name: 'webOffice',
+  install: function(Vue) {
+    Vue.component('h-web-office', this);
+  },
+  data() {
+    return {
+      iframeSrc:
+        'office/webOffice.html' + '?fileId=' + this.officeId + '&disabled' + this.disabled,
+      iframeWindow: null,
+      officeId: null
+    };
+  },
+  mounted() {
+    this.iframeWindow = this.$refs.iframeDom.contentWindow;
+  },
+  watch: {
+    value: {
+      handler(newVal) {
+        if (!newVal) return;
+        this.officeId = newVal;
+        this.iframeSrc =
+          'office/webOffice.html' + '?fileId=' + newVal + '&disabled' + this.disabled;
+      },
+      immediate: true
+    }
+  },
+  methods: {
+    saveMethod() {
+      const saveResult = this.iframeWindow.saveFileToUrl();
+      this.officeId = this.iframeWindow.fileId;
+      this.$emit('input', this.officeId);
+      return saveResult;
+    }
+  }
+};
 </script>

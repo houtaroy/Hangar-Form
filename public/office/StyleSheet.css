@@ -1,4 +1,4 @@
-body {
+﻿body {
     background-color: #e3dfdf;
     margin: 0;
     border:0px;
@@ -190,7 +190,7 @@ a
     width:100%;
 }
 .editmain_left
-{
+{   
     margin-right:10px;
     margin-left:10px;
     float:left;
@@ -302,7 +302,7 @@ li
     background-repeat:repeat-x;
     line-height:20px;
     width:20%;
-    margin:5px;
+    margin:5px; 
     text-align:center;
     vertical-align:middle;
     float:left;
