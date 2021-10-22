@@ -25,8 +25,7 @@ export default {
         'hDatePicker',
         'tabs',
         'grid',
-        'table',
-        'hWebOffice'
+        'table'
       ]
     };
   }

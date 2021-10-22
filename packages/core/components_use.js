@@ -61,7 +61,6 @@ import uploader from 'vue-simple-uploader';
 import HCommentOptions from '../customeComponents/commonOptions/commonOptions';
 import HDatePicker from '../customeComponents/HDatePicker/HDatePicker';
 import HAceEditor from '../customeComponents/ace-editor';
-import HWebOffice from '../customeComponents/webOffice/webOffice';
 
 export default {
   input: Input,
@@ -128,7 +127,6 @@ Vue.component('h-date-picker', HDatePicker);
 Vue.component('h-uploader', HUploader);
 Vue.use(uploader);
 Vue.use(HAceEditor);
-Vue.use(HWebOffice);
 
 Vue.prototype.$confirm = Modal.confirm;
 Vue.prototype.$message = message;
