@@ -10,11 +10,13 @@
 import testConfig from '../../../public/test.json';
 
 export default {
+  name: 'codePage',
   data() {
     return {
       value: {
         // input_1625624184608: '123',
-        number_1625624195507: 0
+        number_1625624195507: 0,
+        hWebOfficeInput: '1212121212212'
       },
       json: {
         formId: '1',

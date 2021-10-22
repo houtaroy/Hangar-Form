@@ -1,8 +1,8 @@
 import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
 import 'moment/locale/zh-cn';
 
-import Schema from 'async-validator';
-import { bind, get, has, pick, values } from 'lodash';
+// import Schema from 'async-validator';
+import { bind, get, has, pick, values, filter } from 'lodash';
 
 import {
   componentMap,
@@ -84,7 +84,8 @@ const HForm = {
         td: this._renderTd,
         'a-tab-pane': this._renderAntTabPane,
         text: this._renderText,
-        'h-html': this._renderHtml
+        'h-html': this._renderHtml,
+        'a-tabs': this._renderAntTabs,
       },
       originalData: {},
       formData: {},
@@ -152,7 +153,20 @@ const HForm = {
      * @param {Function} callback 回调函数, 参数为验证结果
      */
     validate(callback) {
-      new Schema();
+      // new Schema();
+      const hWebOfficeArr = filter(this.elementConfigs, item => {
+        return item.type === 'hWebOffice';
+      });
+      let saveAllOfficeResult = true;
+      for (let item = 0; item < hWebOfficeArr.length; item++) {
+        const saveOfficeResult = this.$refs[hWebOfficeArr[item].key].saveMethod();
+        if (!saveOfficeResult) {
+          callback(false, `${hWebOfficeArr[item].key} 文件保存失败`);
+          saveAllOfficeResult = false;
+          break;
+        }
+      }
+      if (!saveAllOfficeResult) return;
       this.$refs.form.validate((valid, result) => {
         callback(valid, result);
       });
@@ -162,7 +176,7 @@ const HForm = {
      * @param {Function} callback 回调函数, 参数为[校验结果, 表单数据]
      */
     submit(callback) {
-      this.$refs.form.validate((valid, object) => {
+      this.validate((valid, object) => {
         callback(valid, valid ? this.formData : object);
       });
     },
@@ -450,6 +464,18 @@ const HForm = {
         <a-tab-pane key={element.value} tab={element.label}>
           {this._renderChildren(element)}
         </a-tab-pane>
+      );
+    },
+    /**
+     * @description: ant-design的a-tab-pane存在问题, 未找到解决办法, 暂时进行特殊处理
+     * @param {Object} element a-tab-pane配置对象
+     * @return {*} 渲染结果
+     */
+    _renderAntTabs(element) {
+      return (
+        <a-tabs type={element.options.type} {...element.options}>
+          {this._renderChildren(element)}
+        </a-tabs>
       );
     },
     /**
