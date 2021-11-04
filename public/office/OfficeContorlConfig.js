@@ -1,10 +1,10 @@
-﻿var OFFICE_CONTROL_OBJ;//控件对象
+﻿/* eslint-disable */
+var OFFICE_CONTROL_OBJ;//控件对象
 var IsFileOpened;      //控件是否打开文档
 var isPublish=false;//是否部署
 var fileType ;
 var fileTypeSimple;
 var host = "http://"+window.location.host;
-var projectName = "/portal";
 /**
  * 页面加载事件
  * @param fileUrl
@@ -16,14 +16,15 @@ function init()
   OFFICE_CONTROL_OBJ = document.getElementById("TANGER_OCX");
   initObjConfig();//加载配置
   AddCustomToolBar();//加载工具栏内容
-  if(isNull(fileId)){//fileId不为空
-    ntkoCreateNew('wps.document');//id为空，则创建新
-    fileId = guid();
+  if(isNewFileId){//是否是新的fileId
+    ntkoCreateNew('wps.document');//创建文档
+    setFileOpenedOrClosed(true);
+    saveFileToUrl();
   }else{
     NTKO_OCX_OpenDoc(getFileUrl(fileId));//加载需要打开的文件
+    setFileOpenedOrClosed(true);
   }
   console.log(fileId);
-  setFileOpenedOrClosed(true);
 }
 /**
  * 页面加载配置
@@ -157,7 +158,8 @@ function toggleTrackRevisions(closeIndex,openIndex){
  */
 function NTKO_OCX_OpenDoc(fileUrl)
 {
-  OFFICE_CONTROL_OBJ.BeginOpenFromURL(fileUrl);
+  var flag = OFFICE_CONTROL_OBJ.OpenFromURL(fileUrl);
+  console.log(flag);
 }
 /**
  * 切换互斥显示按钮状态
@@ -170,9 +172,10 @@ function toggleCustomToolButtonStatus(closeIndex,openIndex){
  * 获取文件下载的url
  */
 function getFileUrl(fileId){
-  //var url ="/download.jsp?fileId="+fileId;
+  // var url ="/download.jsp?fileId="+fileId;
   var url ="/api/fileInfos/download";
-  let fileUrl = host + url + '?id=' + fileId + '&access_token=' + encodeURI(token);
+  // let fileUrl = host + url + '?id=' + fileId + '&access_token=' + encodeURI(token);
+  let fileUrl = host + url + '?id=' + fileId;
   console.log(fileUrl);
   return fileUrl;
 }
@@ -181,9 +184,10 @@ function saveFileToUrl()
 {
 
   var uploadUrl ="/api/fileInfos/saveFile";
-  var myUrl = host + uploadUrl + '?access_token=' + encodeURI(token);
+  var myUrl = host + uploadUrl + '?access_token=' + encodeURIComponent(token);
   var fileName = fileId + '.doc';
   var result;
+  console.log(IsFileOpened+"_"+fileId);
   if(IsFileOpened)
   {
     console.log(OFFICE_CONTROL_OBJ.doctype);
@@ -213,6 +217,7 @@ function saveFileToUrl()
       default :
         fileType = "unkownfiletype";
     }
+
     //利用控件方法实现form表单提交
     result = OFFICE_CONTROL_OBJ.saveToURL(myUrl,//提交到的url地址
       "file",//文件域的id，类似<input type=file id=upLoadFile 中的id
@@ -221,7 +226,7 @@ function saveFileToUrl()
       0    //与控件一起提交的表单id，也可以是form的序列号，这里应该是0.
     );
     // document.all("statusBar").innerHTML="服务器返回信息:" + result;
-    alert(result);
+    // alert(result);
     // window.close();
     return result;
   }

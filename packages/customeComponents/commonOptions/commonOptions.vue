@@ -21,6 +21,7 @@
       </template>
       <a-list :data-source="listData">
         <a-list-item
+          class="common-options-list"
           slot="renderItem"
           slot-scope="item"
           @click="selectOptions(item)"
@@ -121,9 +122,20 @@ export default {
 .common-options-btn {
   display: none;
   position: absolute;
-  top: 0;
+  top: 6px;
   right: 10px;
-  padding-right: 0;
   margin-right: 10px;
+  background-color: #fafafa;
+  padding: 2px 4px;
+  border-radius: 6px;
+}
+
+.common-options-list {
+  transition: color 0.8s;
+  -webkit-transition: color 0.8s; /* Safari */
+}
+
+.common-options-list:hover {
+  color: #1e90ff;
 }
 </style>
