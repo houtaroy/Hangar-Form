@@ -67,7 +67,6 @@ export default {
           this.disabled +
           '&isNewID=' +
           this.isNewID;
-        console.log('SRC', this.iframeSrc);
       },
       immediate: true
     }
