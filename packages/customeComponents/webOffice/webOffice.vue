@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { nanoid } from 'nanoid';
 export default {
   props: {
     disabled: {
@@ -38,10 +39,10 @@ export default {
   },
   data() {
     return {
-      iframeSrc:
-        'office/webOffice.html' + '?fileId=' + this.officeId + '&disabled' + this.disabled,
+      iframeSrc: 'office/webOffice.html' + '?fileId=' + this.officeId + '&disabled' + this.disabled,
       iframeWindow: null,
-      officeId: null
+      officeId: null,
+      isNewID: null
     };
   },
   mounted() {
@@ -50,10 +51,23 @@ export default {
   watch: {
     value: {
       handler(newVal) {
-        if (!newVal) return;
-        this.officeId = newVal;
+        console.log('newVal', newVal);
+        if (newVal !== this.officeId) {
+          this.officeId = nanoid(16);
+          this.isNewID = true;
+        } else {
+          this.officeId = newVal;
+          this.isNewID = false;
+        }
         this.iframeSrc =
-          'office/webOffice.html' + '?fileId=' + newVal + '&disabled' + this.disabled;
+          'office/webOffice.html' +
+          '?fileId=' +
+          this.officeId +
+          '&disabled=' +
+          this.disabled +
+          '&isNewID=' +
+          this.isNewID;
+        console.log('SRC', this.iframeSrc);
       },
       immediate: true
     }
