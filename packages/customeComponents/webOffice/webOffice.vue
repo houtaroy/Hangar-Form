@@ -51,10 +51,14 @@ export default {
   watch: {
     value: {
       handler(newVal) {
-        if (newVal && !this.isNewID) {
-          this.officeId = newVal;
-          this.isNewID = 0;
-        } else if (newVal && this.isNewID === 1) {
+        if (newVal) {
+          if (newVal !== this.officeId) {
+            this.isNewID = 0;
+            this.officeId = newVal;
+          } else {
+            this.isNewID = 1;
+            this.officeId = newVal;
+          }
         } else {
           this.officeId = nanoid(16);
           this.isNewID = 1;
@@ -78,6 +82,9 @@ export default {
       this.officeId = this.iframeWindow.fileId;
       this.$emit('input', this.officeId);
       return saveResult;
+    },
+    isFileSaved() {
+      return this.iframeWindow.isObjSaved();
     }
   }
 };
