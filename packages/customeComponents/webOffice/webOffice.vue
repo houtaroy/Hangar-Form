@@ -51,21 +51,22 @@ export default {
   watch: {
     value: {
       handler(newVal) {
-        console.log('newVal', newVal);
-        if (newVal !== this.officeId) {
-          this.officeId = nanoid(16);
-          this.isNewID = true;
-        } else {
+        if (newVal && !this.isNewID) {
           this.officeId = newVal;
-          this.isNewID = false;
+          this.isNewID = 0;
+        } else if (newVal && this.isNewID === 1) {
+        } else {
+          this.officeId = nanoid(16);
+          this.isNewID = 1;
+          this.$emit('input', this.officeId);
         }
         this.iframeSrc =
           'office/webOffice.html' +
           '?fileId=' +
           this.officeId +
-          '&disabled=' +
+          '&isRead=' +
           this.disabled +
-          '&isNewID=' +
+          '&isNewFileId=' +
           this.isNewID;
       },
       immediate: true
@@ -73,10 +74,10 @@ export default {
   },
   methods: {
     saveMethod() {
-      // const saveResult = this.iframeWindow.saveFileToUrl();
+      const saveResult = this.iframeWindow.saveFileToUrl();
       this.officeId = this.iframeWindow.fileId;
       this.$emit('input', this.officeId);
-      return true;
+      return saveResult;
     }
   }
 };

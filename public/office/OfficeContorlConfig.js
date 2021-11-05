@@ -16,7 +16,7 @@ function init()
   OFFICE_CONTROL_OBJ = document.getElementById("TANGER_OCX");
   initObjConfig();//加载配置
   AddCustomToolBar();//加载工具栏内容
-  if(isNewFileId){//是否是新的fileId
+  if(isNewFileId === '1'){//是否是新的fileId
     ntkoCreateNew('wps.document');//创建文档
     setFileOpenedOrClosed(true);
     saveFileToUrl();
@@ -24,7 +24,6 @@ function init()
     NTKO_OCX_OpenDoc(getFileUrl(fileId));//加载需要打开的文件
     setFileOpenedOrClosed(true);
   }
-  console.log(fileId);
 }
 /**
  * 页面加载配置
