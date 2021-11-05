@@ -54,11 +54,10 @@ export default {
         if (newVal) {
           if (newVal !== this.officeId) {
             this.isNewID = 0;
-            this.officeId = newVal;
           } else {
             this.isNewID = 1;
-            this.officeId = newVal;
           }
+          this.officeId = newVal;
         } else {
           this.officeId = nanoid(16);
           this.isNewID = 1;
