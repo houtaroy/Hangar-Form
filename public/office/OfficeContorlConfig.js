@@ -269,3 +269,12 @@ function getIpAndPort(){
   var localhostPath = curPath.substring( 0, pos );
   return localhostPath;
 }
+
+//当前文档是否保存
+function isObjSaved(){
+  return OFFICE_CONTROL_OBJ.activeDocument.saved;
+}
+
+function ntkosavetourl(type, code, html) {
+  console.log(type, code, html);
+}
