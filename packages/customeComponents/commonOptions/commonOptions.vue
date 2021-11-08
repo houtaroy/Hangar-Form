@@ -13,7 +13,11 @@
     <a-button v-if="!disabled" type="link" class="common-options-btn" @click.prevent="openModal">
       常用意见
     </a-button>
-    <a-modal v-model="visible" title="常用意见">
+    <a-modal
+      v-model="visible"
+      title="常用意见"
+      :bodyStyle="{ height: '300px', overflow: 'auto', padding: '0 24px' }"
+    >
       <template slot="footer">
         <a-button key="back" @click="visible = false">
           取消
@@ -23,10 +27,11 @@
         <a-list-item
           class="common-options-list"
           slot="renderItem"
-          slot-scope="item"
+          slot-scope="item, index"
           @click="selectOptions(item)"
           style="cursor: pointer"
         >
+          {{ index + 1 }}、
           {{ item.content }}
         </a-list-item>
       </a-list>

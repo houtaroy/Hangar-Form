@@ -77,10 +77,10 @@ export default {
   },
   methods: {
     saveMethod() {
-      const saveResult = this.iframeWindow.saveFileToUrl();
+      // const saveResult = this.iframeWindow.saveFileToUrl();
       this.officeId = this.iframeWindow.fileId;
       this.$emit('input', this.officeId);
-      return saveResult;
+      return true;
     },
     isFileSaved() {
       return this.iframeWindow.isObjSaved();
