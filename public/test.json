@@ -1,35 +1,95 @@
 {
   "frame": "ant",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "list": [
     {
-      "type": "tabs",
-      "label": "标签页布局",
+      "type": "input",
+      "label": "姓名",
       "options": {
-        "tabBarGutter": null,
-        "type": "card",
-        "tabPosition": "top",
-        "size": "default",
-        "animated": true,
-        "events": []
+        "type": "text",
+        "width": "100%",
+        "defaultValue": "",
+        "placeholder": "请输入",
+        "allowClear": false,
+        "maxLength": null,
+        "addonBefore": "",
+        "addonAfter": "",
+        "hidden": false,
+        "disabled": false
       },
-      "columns": [
+      "style": "",
+      "class": "",
+      "dataId": "table",
+      "dataProp": "name",
+      "key": "input_1639017725566",
+      "help": "",
+      "rules": [
         {
-          "type": "tabPane",
-          "value": "1",
-          "label": "基本信息",
-          "list": []
-        },
-        {
-          "type": "tabPane",
-          "value": "2",
-          "label": "在线编辑",
-          "list": []
+          "required": false,
+          "message": "必填项"
         }
       ],
-      "key": "tabs_1634811401187"
+      "events": []
+    },
+    {
+      "type": "input",
+      "label": "年龄",
+      "options": {
+        "type": "text",
+        "width": "100%",
+        "defaultValue": "",
+        "placeholder": "请输入",
+        "allowClear": false,
+        "maxLength": null,
+        "addonBefore": "",
+        "addonAfter": "",
+        "hidden": false,
+        "disabled": false
+      },
+      "style": "",
+      "class": "",
+      "dataId": "table",
+      "dataProp": "age",
+      "key": "input_1639017727516",
+      "help": "",
+      "rules": [
+        {
+          "required": false,
+          "message": "必填项"
+        }
+      ],
+      "events": []
+    },
+    {
+      "type": "input",
+      "label": "性别",
+      "options": {
+        "type": "text",
+        "width": "100%",
+        "defaultValue": "",
+        "placeholder": "请输入",
+        "allowClear": false,
+        "maxLength": null,
+        "addonBefore": "",
+        "addonAfter": "",
+        "hidden": false,
+        "disabled": false
+      },
+      "style": "",
+      "class": "",
+      "dataId": "table",
+      "dataProp": "sex",
+      "key": "input_1639017870479",
+      "help": "",
+      "rules": [
+        {
+          "required": false,
+          "message": "必填项"
+        }
+      ],
+      "events": []
     }
-	],
+  ],
   "config": {
     "layout": "horizontal",
     "labelCol": {
@@ -40,7 +100,7 @@
       "xl": 4,
       "xxl": 4
     },
-    "labelWidth": 120,
+    "labelWidth": 100,
     "labelLayout": "flex",
     "wrapperCol": {
       "xs": 18,
@@ -51,54 +111,20 @@
       "xxl": 18
     },
     "hideRequiredMark": false,
-    "customStyle": ".ant-input { color: red } .ant-select{ color: blue } .red { color: red }",
+    "customStyle": "",
     "lifecycle": [
       {
         "name": "created",
-        "body": "this.aaa = [ { a: { b: 'test2' } } ];this.selectDynamicData = [ { label: '动态数据1', value: '1' }, { label: '动态数据2', value: '2' } ];"
+        "body": ""
       },
       {
         "name": "mounted",
-        "body": "this.test1();"
+        "body": ""
       }
     ],
-    "computed": [
-      {
-        "name": "loadingCountPlus",
-        "get": "return this.loadingCount + 1"
-      },
-      {
-        "name": "loadingCountPlus2",
-        "get": "return this.loadingCount + 1",
-        "set": "console.log('给计算属性设置值', newValue)"
-      }
-    ],
-    "watch": [
-      {
-        "name": "data",
-        "body": "console.log('data新值', newValue);console.log('旧值', oldValue);"
-      }
-    ],
-    "filter": [
-      {
-        "name": "testFilter",
-        "body": "console.log('过滤的值', value);return value;"
-      }
-    ],
-    "methods": [
-      {
-        "name": "test1",
-        "body": "console.log('页面方法一')"
-      },
-      {
-        "name": "test2",
-        "arguments": "name, age",
-        "body": "console.log('页面方法二: ' + name + '的年龄是' + age)"
-      },
-      {
-        "name": "test3",
-        "body": "console.log('页面方法三, 调用了二');this.test2('我', 999);"
-      }
-    ]
+    "computed": [],
+    "watch": [],
+    "filter": [],
+    "methods": []
   }
 }
