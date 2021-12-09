@@ -23,8 +23,7 @@ export const basicsList = [
     },
     style: '',
     class: '',
-    dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+    model: '', // 数据字段
     key: '',
     help: '',
     rules: [
@@ -55,8 +54,7 @@ export const basicsList = [
     },
     style: '',
     class: '',
-    dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+    model: '', // 数据字段
     key: '',
     help: '',
     rules: [
@@ -84,8 +82,7 @@ export const basicsList = [
     },
     style: '',
     class: '',
-    dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+    model: '', // 数据字段
     key: '',
     help: '',
     rules: [
@@ -131,8 +128,7 @@ export const basicsList = [
       name: '',
       key: 'options'
     },
-    dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+    model: '',
     key: '',
     help: '',
     rules: [
@@ -176,8 +172,7 @@ export const basicsList = [
       name: '',
       key: 'options'
     },
-    dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+    model: '',
     key: '',
     help: '',
     rules: [
@@ -221,8 +216,7 @@ export const basicsList = [
       name: '',
       key: 'options'
     },
-    dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+    model: '',
     key: '',
     help: '',
     rules: [
@@ -253,8 +247,7 @@ export const basicsList = [
     },
     style: '',
     class: '',
-    dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+    model: '',
     key: '',
     help: '',
     rules: [
@@ -281,8 +274,7 @@ export const basicsList = [
     },
     style: '',
     class: '',
-    dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+    model: '',
     key: '',
     help: '',
     rules: [
@@ -304,8 +296,7 @@ export const basicsList = [
       hidden: false, // 是否隐藏，false显示，true隐藏
       allowHalf: false // 是否允许半选
     },
-    dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+    model: '',
     key: '',
     help: '',
     rules: [
@@ -330,8 +321,7 @@ export const basicsList = [
       showInput: false // 是否显示输入框，range为true时，请勿开启
       // range: false // 双滑块模式
     },
-    dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+    model: '',
     key: '',
     help: '',
     rules: [
@@ -361,8 +351,7 @@ export const basicsList = [
       action: 'http://cdn.kcz66.com/uploadFile.txt',
       placeholder: '上传'
     },
-    dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+    model: '',
     key: '',
     help: '',
     rules: [
@@ -391,8 +380,7 @@ export const basicsList = [
       action: 'http://cdn.kcz66.com/upload-img.txt',
       listType: 'picture-card'
     },
-    dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+    model: '',
     key: '',
     help: '',
     rules: [
@@ -449,8 +437,7 @@ export const basicsList = [
       name: '',
       key: 'treeData'
     },
-    dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+    model: '',
     key: '',
     help: '',
     rules: [
@@ -505,8 +492,7 @@ export const basicsList = [
       name: '',
       key: 'options'
     },
-    dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+    model: '',
     key: '',
     help: '',
     rules: [
@@ -530,8 +516,7 @@ export const basicsList = [
       hideSequence: false,
       width: '100%'
     },
-    dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+    model: '',
     key: '',
     help: ''
   },
@@ -558,8 +543,7 @@ export const basicsList = [
       showLabel: false,
       width: '100%'
     },
-    dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+    model: '',
     key: '',
     help: ''
   },
@@ -578,8 +562,7 @@ export const basicsList = [
       showLabel: false,
       width: '100%'
     },
-    dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+    model: '',
     key: '',
     help: '',
     rules: [
@@ -598,8 +581,7 @@ export const basicsList = [
       hidden: false, // 是否隐藏，false显示，true隐藏
       disabled: false // 是否禁用
     },
-    dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+    model: '',
     key: '',
     help: '',
     rules: [
@@ -699,8 +681,7 @@ export const customComponents = {
       },
       style: '',
       class: '',
-      dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+      model: '',
       key: '',
       rules: [
         {
@@ -744,8 +725,7 @@ export const customComponents = {
         name: '',
         key: 'listData'
       },
-      dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+      model: '',
       key: '',
       rules: [
         {
@@ -773,8 +753,7 @@ export const customComponents = {
       },
       style: '',
       class: '',
-      dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+      model: '',
       key: '',
       help: '',
       rules: [
@@ -800,8 +779,7 @@ export const customComponents = {
       },
       style: '',
       class: '',
-      dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+      model: '',
       key: '',
       rules: [
         {

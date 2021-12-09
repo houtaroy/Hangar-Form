@@ -2,7 +2,7 @@ import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
 import 'moment/locale/zh-cn';
 
 // import Schema from 'async-validator';
-import { bind, get, has, pick, values, filter, set } from 'lodash';
+import { bind, get, has, pick, values, filter } from 'lodash';
 
 import {
   componentMap,
@@ -46,7 +46,7 @@ const HForm = {
   props: {
     value: {
       type: Object,
-      default: () => {
+      default: function() {
         return {};
       }
     },
@@ -106,8 +106,7 @@ const HForm = {
       }
       values(this.elementConfigs).forEach(elementConfig => {
         if (!elementConfig.options.disabled) {
-          const model = `${elementConfig.dataId}.${elementConfig.dataProp}`;
-          result[model] = elementConfig.rules;
+          result[elementConfig.model] = elementConfig.rules;
         }
       });
       return result;
@@ -122,8 +121,7 @@ const HForm = {
         this.originalData = Object.assign({}, this.originalData, newVal);
         this.formData = Object.assign({}, this.formData, newVal);
       },
-      deep: true,
-      immediate: true
+      deep: true
     },
     extendConfigs: {
       handler(newVal) {
@@ -145,8 +143,7 @@ const HForm = {
       handler(newVal) {
         this.$emit('change', newVal);
       },
-      deep: true,
-      immediate: true
+      deep: true
     }
   },
   filter: {},
@@ -206,7 +203,7 @@ const HForm = {
         return;
       }
       elements.forEach(element => {
-        if (element.dataId && element.dataProp) this._parseModel(element);
+        if (element.model) this._parseModel(element);
         if (element.optionsConfig) this._parseOptions(element);
         if (element.events) element.listeners = this._parseEvents(element.events);
         element.disabled = this.disabled ? this.disabled : get(element, 'options.disabled', false);
@@ -222,12 +219,11 @@ const HForm = {
      * @param {Object} element 元素配置json
      */
     _parseModel(element) {
-      const key = `${element.dataId}.${element.dataProp}`;
+      const key = element.model;
       if (has(this.value, key)) {
-        const propValue = get(this.originalData, key, 'null');
-        this.$set(this.originalData[element.dataId], element.dataProp, propValue);
+        this.$set(this.originalData, key, this.value[key]);
       } else {
-        set(this.defaultValueExpressions, key, element.options.defaultValue);
+        this.$set(this.defaultValueExpressions, key, element.options.defaultValue);
         this._parseDefaultValue(key, element.options.defaultValue);
       }
       this.$set(this.elementConfigs, key, element);
@@ -245,23 +241,20 @@ const HForm = {
           break;
         }
       }
-      const keyArr = key.split('.');
-      const dataId = keyArr[0];
-      const dataProp = keyArr[1];
       if (result instanceof Promise) {
         this.loadingCount += 1;
         result
           .then(res => {
-            this.$set(this.originalData[dataId], dataProp, res.data || null);
+            this.$set(this.originalData, key, res.data || null);
           })
           .catch(() => {
-            this.$set(this.originalData[dataId], dataProp, null);
+            this.$set(this.originalData, key, null);
           })
           .finally(() => {
             this.loadingCount -= 1;
           });
       } else {
-        this.$set(this.originalData[dataId], dataProp, result || null);
+        this.$set(this.originalData, key, result || null);
       }
     },
     /**
@@ -343,7 +336,7 @@ const HForm = {
     _renderFormElement(element) {
       const FormTag = this._getTag('formItem');
       const props = generateProps(FormTag, element, this.antFormModalItemAttrs, {
-        prop: `${element.dataId}.${element.dataProp}`
+        prop: element.model
       });
       delete props['rules'];
       return (
@@ -366,9 +359,9 @@ const HForm = {
         return this.constantRender[Tag](element);
       }
       const attrs = this._renderTagAttrs(Tag, element);
-      if (element.dataId && element.dataProp) {
+      if (element.model) {
         return (
-          <Tag v-model={this.formData[element.dataId][element.dataProp]} {...attrs}>
+          <Tag v-model={this.formData[element.model]} {...attrs}>
             {this._renderChildren(element)}
           </Tag>
         );
@@ -412,8 +405,7 @@ const HForm = {
         { locale: this.locale }
       ];
       this.extendConfigs.forEach(extendConfig => {
-        const model = `${element.dataId}.${element.dataProp}`;
-        const key = model || element.key;
+        const key = element.model || element.key;
         if (has(extendConfig, key)) {
           options.push(extendConfig[key]);
         }

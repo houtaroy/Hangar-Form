@@ -81,8 +81,6 @@ export default {
       // 导入JSON
       try {
         const editorJsonData = JSON.parse(this.jsonFormat);
-        this.jsonData.frame = editorJsonData.frame;
-        this.jsonData.version = editorJsonData.version;
         this.jsonData.list = editorJsonData.list;
         this.jsonData.config = editorJsonData.config;
         this.jsonData.config.layout = editorJsonData.config.layout;
