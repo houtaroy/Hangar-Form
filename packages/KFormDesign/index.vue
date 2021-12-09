@@ -383,11 +383,13 @@ export default {
       this.$set(list, index, {
         ...list[index],
         key,
-        model: key
+        dataId: key,
+        dataProp: key
       });
       if (this.noModel.includes(list[index].type)) {
         // 删除不需要的model属性
-        delete list[index].model;
+        delete list[index].dataId;
+        delete list[index].dataProp;
       }
     },
     handleListPush(item) {
@@ -399,11 +401,13 @@ export default {
         item = {
           ...item,
           key,
-          model: key
+          dataId: key,
+          dataProp: key
         };
         if (this.noModel.includes(item.type)) {
           // 删除不需要的model属性
-          delete item.model;
+          delete item.dataId;
+          delete item.dataProp;
         }
         const itemString = JSON.stringify(item);
         const record = JSON.parse(itemString);
@@ -459,6 +463,8 @@ export default {
     },
     resetData() {
       this.data = {
+        frame: 'ant',
+        version: jsonMinimumVersion,
         list: [],
         config: {
           layout: 'horizontal',
@@ -467,7 +473,21 @@ export default {
           labelLayout: 'flex',
           wrapperCol: { xs: 18, sm: 18, md: 18, lg: 18, xl: 18, xxl: 18 },
           hideRequiredMark: false,
-          customStyle: ''
+          customStyle: '',
+          lifecycle: [
+            {
+              name: 'created',
+              body: ''
+            },
+            {
+              name: 'mounted',
+              body: ''
+            }
+          ],
+          computed: [],
+          watch: [],
+          filter: [],
+          methods: []
         }
       };
       this.handleSetSelectItem({ key: '' });
