@@ -67,4 +67,4 @@ export const filterDefaultValueRegExp = {
   checkDataDefaultValue: /^\${[a-zA-Z0-9.[\]'"]*}$/
 };
 
-export const jsonMinimumVersion = '1.0.0';
+export const jsonMinimumVersion = '1.1.0';
