@@ -3,10 +3,7 @@
  * date 2019-11-20
  * description 默认导入json数据格式
  */
-import { jsonMinimumVersion } from '../../HForm/config'
 export default `{
-  "frame": "ant",
-  "version": "${jsonMinimumVersion}",
 	"list": [
 		{
 			"type": "input",
@@ -50,20 +47,6 @@ export default `{
 			"xxl": 18
 		},
 		"hideRequiredMark": false,
-		"customStyle": "",
-		"lifecycle": [
-      {
-        "name": "created",
-        "body": ""
-      },
-      {
-         "name": "mounted",
-         "body": ""
-      }
-    ],
-    "computed": [],
-    "watch": [],
-    "filter": [],
-    "methods": []
+		"customStyle": ""
 	}
 }`;
