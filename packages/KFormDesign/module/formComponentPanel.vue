@@ -149,11 +149,13 @@ export default {
         this.$set(columns, newIndex, {
           ...columns[newIndex],
           key,
-          model: key
+          dataId: key,
+          dataProp: key
         });
         if (this.noModel.includes(columns[newIndex].type)) {
           // 删除不需要的model属性
-          delete columns[newIndex].model;
+          delete columns[newIndex].dataId;
+          delete columns[newIndex].dataProp;
         }
         if (typeof columns[newIndex].options !== 'undefined') {
           // 深拷贝options
