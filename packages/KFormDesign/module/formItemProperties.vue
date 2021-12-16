@@ -10,12 +10,40 @@
         <a-form-item v-if="typeof selectItem.label !== 'undefined'" label="标签">
           <a-input v-model="selectItem.label" placeholder="请输入" />
         </a-form-item>
-
-        <a-form-item v-if="!hideModel && typeof selectItem.dataId !== 'undefined'" label="数据库表名称">
-          <a-input v-model="selectItem.dataId" placeholder="请输入" />
+        <a-form-item
+          v-if="!hideModel && typeof selectItem.dataId !== 'undefined'"
+          label="数据库表名称"
+        >
+          <a-select
+            v-model="selectItem.dataId"
+            style="width: 100%"
+            @change="handleTableChange"
+            placeholder="请选择"
+          >
+            <a-select-option v-for="table in tableList" :key="table.id" :value="table.tableName">
+              {{ table.tableName }}
+            </a-select-option>
+          </a-select>
         </a-form-item>
-        <a-form-item v-if="!hideModel && typeof selectItem.dataProp !== 'undefined'" label="数据库表字段">
-          <a-input v-model="selectItem.dataProp" placeholder="请输入" />
+        <a-form-item
+          v-if="!hideModel && typeof selectItem.dataProp !== 'undefined'"
+          label="数据库表字段"
+        >
+          <a-select v-model="selectItem.dataProp" style="width: 100%" placeholder="请选择">
+            <template v-if="loadingColumn" slot="notFoundContent">
+              <div style="text-align: center">
+                <a-spin size="small" />
+                <p>加载中</p>
+              </div>
+            </template>
+            <a-select-option
+              v-for="col in columnNameMap.get(selectItem.dataId)"
+              :key="col.id"
+              :value="col.name"
+            >
+              {{ col.name }}
+            </a-select-option>
+          </a-select>
         </a-form-item>
         <!-- input type start -->
         <a-form-item v-if="selectItem.type === 'input'" label="输入框type">
@@ -694,7 +722,10 @@ export default {
         }
       ],
       eventModalFlag: false,
-      staticEditModalVisible: false
+      staticEditModalVisible: false,
+      tableList: [],
+      columnNameMap: new Map(),
+      loadingColumn: false
     };
   },
   computed: {
@@ -737,6 +768,11 @@ export default {
     hideModel: {
       type: Boolean,
       default: false
+    },
+    formDefinitionId: {
+      type: String,
+      default: '',
+      required: true
     }
   },
   components: {
@@ -764,7 +800,47 @@ export default {
       this.$nextTick(() => {
         this.$refs.hFormList.selected = null;
       });
+    },
+    handleTableChange(val) {
+      this.loadingColumn = true;
+      this.selectItem.dataProp = '';
+      const alreadyExit = this.columnNameMap.has(val);
+      if (alreadyExit) {
+        this.loadingColumn = false;
+        return;
+      }
+      const tableId = this.tableList.find(item => item.tableName === val).id;
+      this.loadColumnList(tableId)
+        .then(resp => {
+          this.columnNameMap.set(val, resp);
+        })
+        .finally(_ => {
+          this.loadingColumn = false;
+        });
+    },
+    loadTableList(id) {
+      this.$api.loadFormDefinitionById({ id: id }).then(resp => {
+        this.tableList = resp.data.storages;
+      });
+    },
+    async loadColumnList(id) {
+      let result = [];
+      await this.$api
+        .listStorageFields({ searchStorageId: id, pageNumber: 0, pageSize: 200 })
+        .then(resp => {
+          result = resp.data.content;
+        });
+      return result;
     }
+  },
+  mounted() {
+    this.$nextTick(_ => {
+      if (!this.formDefinitionId) {
+        console.error('缺少表单定义id');
+        return;
+      }
+      this.loadTableList(this.formDefinitionId);
+    });
   }
 };
 </script>
