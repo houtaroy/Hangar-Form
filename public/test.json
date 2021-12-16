@@ -4,7 +4,7 @@
   "list": [
     {
       "type": "input",
-      "label": "姓名",
+      "label": "教师姓名",
       "options": {
         "type": "text",
         "width": "100%",
@@ -19,9 +19,9 @@
       },
       "style": "",
       "class": "",
-      "dataId": "table",
+      "dataId": "teacher",
       "dataProp": "name",
-      "key": "input_1639017725566",
+      "key": "input_1639125971931",
       "help": "",
       "rules": [
         {
@@ -33,7 +33,7 @@
     },
     {
       "type": "input",
-      "label": "年龄",
+      "label": "学生姓名",
       "options": {
         "type": "text",
         "width": "100%",
@@ -48,42 +48,42 @@
       },
       "style": "",
       "class": "",
-      "dataId": "table",
+      "dataId": "student",
+      "dataProp": "name",
+      "key": "input_1639125972747",
+      "help": "",
+      "rules": [
+        {
+          "required": true,
+          "message": "必填项"
+        }
+      ],
+      "events": []
+    },
+    {
+      "type": "input",
+      "label": "学生年龄",
+      "options": {
+        "type": "text",
+        "width": "100%",
+        "defaultValue": "",
+        "placeholder": "请输入",
+        "allowClear": false,
+        "maxLength": null,
+        "addonBefore": "",
+        "addonAfter": "",
+        "hidden": false,
+        "disabled": false
+      },
+      "style": "",
+      "class": "",
+      "dataId": "student",
       "dataProp": "age",
-      "key": "input_1639017727516",
+      "key": "input_1639125977048",
       "help": "",
       "rules": [
         {
-          "required": false,
-          "message": "必填项"
-        }
-      ],
-      "events": []
-    },
-    {
-      "type": "input",
-      "label": "性别",
-      "options": {
-        "type": "text",
-        "width": "100%",
-        "defaultValue": "",
-        "placeholder": "请输入",
-        "allowClear": false,
-        "maxLength": null,
-        "addonBefore": "",
-        "addonAfter": "",
-        "hidden": false,
-        "disabled": false
-      },
-      "style": "",
-      "class": "",
-      "dataId": "table",
-      "dataProp": "sex",
-      "key": "input_1639017870479",
-      "help": "",
-      "rules": [
-        {
-          "required": false,
+          "required": true,
           "message": "必填项"
         }
       ],
@@ -125,6 +125,12 @@
     "computed": [],
     "watch": [],
     "filter": [],
-    "methods": []
+    "methods": [
+      {
+        "name": "outMethod",
+        "arguments": "val",
+        "body": "this.rules = val"
+      }
+    ]
   }
 }

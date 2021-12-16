@@ -92,25 +92,31 @@ const HForm = {
       elementConfigs: {},
       optionsMap: {},
       optionsDynamic: {},
-      defaultValueExpressions: {}
+      defaultValueExpressions: {},
+      ignoreRules: false
     };
   },
   computed: {
     loading: function() {
       return this.loadingCount > 0;
     },
-    rules: function() {
-      const result = {};
-      if (this.disabled) {
-        return result;
-      }
-      values(this.elementConfigs).forEach(elementConfig => {
-        if (!elementConfig.options.disabled) {
-          const model = `${elementConfig.dataId}.${elementConfig.dataProp}`;
-          result[model] = elementConfig.rules;
+    rules: {
+      get() {
+        const result = {};
+        if (this.disabled || this.ignoreRules) {
+          return result;
         }
-      });
-      return result;
+        values(this.elementConfigs).forEach(elementConfig => {
+          if (!elementConfig.options.disabled) {
+            const model = `${elementConfig.dataId}.${elementConfig.dataProp}`;
+            result[model] = elementConfig.rules;
+          }
+        });
+        return result;
+      },
+      set(val) {
+        this.ignoreRules = !!!val;
+      }
     }
   },
   watch: {

@@ -154,6 +154,7 @@
                 :selectItem="selectItem"
                 :hideModel="hideModel"
                 :formMethods="data.config.methods"
+                v-bind="$attrs"
               />
             </a-tab-pane>
           </a-tabs>
@@ -382,15 +383,8 @@ export default {
       const key = list[index].type + '_' + new Date().getTime();
       this.$set(list, index, {
         ...list[index],
-        key,
-        dataId: key,
-        dataProp: key
+        key
       });
-      if (this.noModel.includes(list[index].type)) {
-        // 删除不需要的model属性
-        delete list[index].dataId;
-        delete list[index].dataProp;
-      }
     },
     handleListPush(item) {
       // 双击控件按钮push到list
@@ -400,15 +394,8 @@ export default {
         const key = item.type + '_' + new Date().getTime();
         item = {
           ...item,
-          key,
-          dataId: key,
-          dataProp: key
+          key
         };
-        if (this.noModel.includes(item.type)) {
-          // 删除不需要的model属性
-          delete item.dataId;
-          delete item.dataProp;
-        }
         const itemString = JSON.stringify(item);
         const record = JSON.parse(itemString);
         // 删除icon及compoent属性
