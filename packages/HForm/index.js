@@ -100,23 +100,18 @@ const HForm = {
     loading: function() {
       return this.loadingCount > 0;
     },
-    rules: {
-      get() {
-        const result = {};
-        if (this.disabled || this.ignoreRules) {
-          return result;
-        }
-        values(this.elementConfigs).forEach(elementConfig => {
-          if (!elementConfig.options.disabled) {
-            const model = `${elementConfig.dataId}.${elementConfig.dataProp}`;
-            result[model] = elementConfig.rules;
-          }
-        });
+    rules: () => {
+      const result = {};
+      if (this.disabled || this.ignoreRules) {
         return result;
-      },
-      set(val) {
-        this.ignoreRules = !!!val;
       }
+      values(this.elementConfigs).forEach(elementConfig => {
+        if (!elementConfig.options.disabled) {
+          const model = `${elementConfig.dataId}.${elementConfig.dataProp}`;
+          result[model] = elementConfig.rules;
+        }
+      });
+      return result;
     }
   },
   watch: {
