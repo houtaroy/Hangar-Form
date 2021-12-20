@@ -100,7 +100,7 @@ const HForm = {
     loading: function() {
       return this.loadingCount > 0;
     },
-    rules: () => {
+    rules: function() {
       const result = {};
       if (this.disabled || this.ignoreRules) {
         return result;
