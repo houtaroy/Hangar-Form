@@ -100,7 +100,7 @@
         <uploader-drop>
           <uploader-btn :attrs="attrs">
             <a-icon style="font-size: 48px; color: #1890ff" type="inbox" />
-            <p style="font-size: 18px; margin-top: 20px; font-weight: 600;">
+            <p style="width: 100%; font-size: 18px; margin-top: 20px; font-weight: 600;">
               拖动文件到此处，或点击此处
             </p>
           </uploader-btn>
@@ -534,7 +534,8 @@ export default {
 }
 
 .uploader-example {
-  width: 880px;
+  max-width: 880px;
+  width: auto;
   padding: 15px;
   margin: 0 auto;
   font-size: 12px;

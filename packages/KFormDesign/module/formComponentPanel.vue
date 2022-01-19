@@ -148,9 +148,7 @@ export default {
       if (columns[newIndex].key === '' || isCopy) {
         this.$set(columns, newIndex, {
           ...columns[newIndex],
-          key,
-          dataId: key,
-          dataProp: key
+          key
         });
         if (this.noModel.includes(columns[newIndex].type)) {
           // 删除不需要的model属性
