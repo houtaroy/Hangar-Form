@@ -71,7 +71,8 @@ export default {
     value: {
       handler(val) {
         this.date = val ? val.toString() : null;
-      }
+      },
+      immediate: true
     }
   }
 };
