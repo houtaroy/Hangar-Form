@@ -93,7 +93,7 @@ const HForm = {
       optionsMap: {},
       optionsDynamic: {},
       defaultValueExpressions: {},
-      ignoreRules: false
+      ignoreRulesRequired: false
     };
   },
   computed: {
@@ -102,7 +102,22 @@ const HForm = {
     },
     rules: function() {
       const result = {};
-      if (this.disabled || this.ignoreRules) {
+      if (this.disabled) {
+        return result;
+      }
+      if (this.ignoreRulesRequired) {
+        values(this.elementConfigs).forEach(elementConfig => {
+          if (!elementConfig.options.disabled) {
+            const model = `${elementConfig.dataId}.${elementConfig.dataProp}`;
+            const rules = [];
+            elementConfig.rules.forEach(rule => {
+              if (!rule.required) {
+                rules.push(rule);
+              }
+            });
+            result[model] = rules;
+          }
+        });
         return result;
       }
       values(this.elementConfigs).forEach(elementConfig => {
@@ -120,8 +135,10 @@ const HForm = {
     },
     value: {
       handler(newVal) {
-        this.originalData = Object.assign({}, this.originalData, newVal);
-        this.formData = Object.assign({}, this.formData, newVal);
+        for (const key in newVal) {
+          Object.assign(this.originalData[key] || {}, newVal[key]);
+          Object.assign(this.formData[key] || {}, newVal[key]);
+        }
       },
       deep: true,
       immediate: true
@@ -180,9 +197,24 @@ const HForm = {
      * @param {Function} callback 回调函数, 参数为[校验结果, 表单数据]
      */
     submit(callback) {
-      this.validate((valid, object) => {
-        callback(valid, valid ? this.formData : object);
-      });
+      this.ignoreRulesRequired = false;
+      setTimeout(() => {
+        this.validate((valid, object) => {
+          callback(valid, valid ? this.formData : object);
+        });
+      }, 0);
+    },
+    /**
+     * @description: 表单保存, 移除表单非空校验，保留正则校验
+     * @param {Function} callback 回调函数, 参数为[校验结果, 表单数据]
+     */
+    save(callback) {
+      this.ignoreRulesRequired = true;
+      setTimeout(() => {
+        this.validate((valid, object) => {
+          callback(valid, valid ? this.formData : object);
+        });
+      }, 0);
     },
     /**
      * @description: 表单重置
@@ -207,7 +239,10 @@ const HForm = {
         return;
       }
       elements.forEach(element => {
-        if (element.dataId && element.dataProp) this._parseModel(element);
+        if (element.dataId && element.dataProp) {
+          this._setDefaultValue(element);
+          this._parseModel(element);
+        }
         if (element.optionsConfig) this._parseOptions(element);
         if (element.events) element.listeners = this._parseEvents(element.events);
         element.disabled = this.disabled ? this.disabled : get(element, 'options.disabled', false);
@@ -552,6 +587,13 @@ const HForm = {
         }
       }
       return defaultValue;
+    },
+    _setDefaultValue(element) {
+      if (has(this.originalData, element.dataId)) {
+        return;
+      }
+      this.$set(this.originalData, [element.dataId], {});
+      this.formData = this.originalData;
     }
   },
   render() {
