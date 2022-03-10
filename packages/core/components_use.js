@@ -40,7 +40,8 @@ import {
   Cascader,
   TreeSelect,
   Spin,
-  List
+  List,
+  Tree
 } from 'ant-design-vue';
 import vcolorpicker from 'vcolorpicker';
 
@@ -60,6 +61,8 @@ import HUploader from '../customeComponents/uploadFile/SimpleUploader';
 import uploader from 'vue-simple-uploader';
 import HCommentOptions from '../customeComponents/commonOptions/commonOptions';
 import HDatePicker from '../customeComponents/HDatePicker/HDatePicker';
+import HPersonnelPicker from '../customeComponents/PersonnelPicker/PersonnelPicker';
+import HOpinionsViewer from '../customeComponents/opinionsViewer/opinionsViewer';
 import HAceEditor from '../customeComponents/ace-editor';
 import HWebOffice from '../customeComponents/webOffice/webOffice';
 
@@ -118,6 +121,7 @@ Vue.use(TreeSelect);
 Vue.use(Cascader);
 Vue.use(Spin);
 Vue.use(List);
+Vue.use(Tree);
 Vue.use(HMethodForm);
 Vue.use(HLifecycleForm);
 Vue.use(HEventForm);
@@ -125,6 +129,8 @@ Vue.use(HForm);
 Vue.use(HHtml);
 Vue.use(HCommentOptions);
 Vue.component('h-date-picker', HDatePicker);
+Vue.component('h-personnel-picker', HPersonnelPicker);
+Vue.component('h-opinions-viewer', HOpinionsViewer);
 Vue.component('h-uploader', HUploader);
 Vue.use(uploader);
 Vue.use(HAceEditor);

@@ -31,6 +31,8 @@ export const componentMap = {
     time: 'a-time-picker',
     dateRange: 'a-range-picker',
     hUpload: 'h-uploader',
+    hPersonnelPicker: 'h-personnel-picker',
+    hOpinionsViewer: 'h-opinions-viewer',
     hCommentOptions: 'h-comment-options',
     hDatePicker: 'h-date-picker',
     hWebOffice: 'h-web-office'
