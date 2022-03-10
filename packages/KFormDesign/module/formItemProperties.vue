@@ -422,6 +422,34 @@
         <a-form-item v-if="selectItem.type === 'hCommentOptions'" label="默认值">
           <a-input v-model="options.defaultValue" />
         </a-form-item>
+
+        <!-- 人员选择插件 -->
+        <a-form-item v-if="typeof options.describe !== 'undefined'" label="按钮文字">
+          <a-input v-model="options.describe" />
+        </a-form-item>
+
+        <!-- 意见查看 -->
+        <a-form-item v-if="typeof options.taskDefKey !== 'undefined'" label="流程节点ID">
+          <a-input v-model="options.taskDefKey" placeholder="支持填入多个（用英文逗号分隔）" />
+        </a-form-item>
+        <a-form-item v-if="typeof options.fontSize !== 'undefined'" label="字体大小">
+          <a-input v-model="options.fontSize" />
+        </a-form-item>
+        <a-form-item v-if="typeof options.fontColor !== 'undefined'" label="字体颜色">
+          <a-input v-model="options.fontColor" />
+        </a-form-item>
+        <a-form-item v-if="typeof options.borderStyle !== 'undefined'" label="边框样式">
+          <a-input v-model="options.borderStyle" />
+        </a-form-item>
+        <a-form-item v-if="typeof options.isOpinionShow !== 'undefined'" label="意见">
+          <kCheckbox v-model="options.isOpinionShow" style="width: 100%" label="是否显示意见" />
+        </a-form-item>
+        <a-form-item v-if="typeof options.isAuthorShow !== 'undefined'" label="人员">
+          <kCheckbox v-model="options.isAuthorShow" style="width: 100%" label="是否显示人员" />
+        </a-form-item>
+        <a-form-item v-if="typeof options.isDateShow !== 'undefined'" label="日期">
+          <kCheckbox v-model="options.isDateShow" style="width: 100%" label="是否显示日期" />
+        </a-form-item>
         <!--        <a-form-item v-if="typeof options.listData !== 'undefined'" label="列表数据">
           <a-radio-group buttonStyle="solid" v-model="options.dynamic">
             <a-radio-button :value="false">静态数据</a-radio-button>

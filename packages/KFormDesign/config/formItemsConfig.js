@@ -675,6 +675,8 @@ import HUploader from '../../customeComponents/uploadFile/SimpleUploader';
 import hCommentOptions from '../../customeComponents/commonOptions/commonOptions';
 import HDatePicker from '../../customeComponents/HDatePicker/HDatePicker';
 import hWebOffice from '../../customeComponents/webOffice/webOffice';
+import PersonnelPicker from '../../customeComponents/PersonnelPicker/PersonnelPicker';
+import OpinionsViewer from '../../customeComponents/opinionsViewer/opinionsViewer';
 
 // 自定义组件
 export const customComponents = {
@@ -700,7 +702,7 @@ export const customComponents = {
       style: '',
       class: '',
       dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+      dataProp: '', // 数据库表字段
       key: '',
       rules: [
         {
@@ -745,7 +747,7 @@ export const customComponents = {
         key: 'listData'
       },
       dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+      dataProp: '', // 数据库表字段
       key: '',
       rules: [
         {
@@ -774,7 +776,65 @@ export const customComponents = {
       style: '',
       class: '',
       dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+      dataProp: '', // 数据库表字段
+      key: '',
+      help: '',
+      rules: [
+        {
+          required: false,
+          message: '必填项'
+        }
+      ],
+      events: []
+    },
+    {
+      type: 'hPersonnelPicker', // 表单类型
+      label: '人员选择', // 标题文字
+      icon: 'icon-edit',
+      component: PersonnelPicker,
+      options: {
+        width: '100%', // 宽度
+        defaultValue: '', // 默认值，字符串
+        disabled: false, // 是否禁用
+        hidden: false, // 是否隐藏，false显示，true隐藏
+        describe: '人员选择'
+      },
+      style: '',
+      class: '',
+      dataId: '', // 数据库表名称
+      dataProp: '', // 数据库表字段
+      key: '',
+      help: '',
+      rules: [
+        {
+          required: false,
+          message: '必填项'
+        }
+      ],
+      events: []
+    },
+    {
+      type: 'hOpinionsViewer', // 表单类型
+      label: '意见查看', // 标题文字
+      icon: 'icon-edit',
+      component: OpinionsViewer,
+      options: {
+        width: '100%', // 宽度
+        defaultValue: '', // 默认值，字符串
+        disabled: false, // 是否禁用
+        hidden: false, // 是否隐藏，false显示，true隐藏
+        taskDefKey: '',
+        fontSize: '14px',
+        fontColor: 'black',
+        borderStyle: '',
+        isOpinionShow: true,
+        isAuthorShow: true,
+        isDateShow: true
+      },
+      style: '',
+      class: '',
+      dataId: '', // 数据库表名称
+      dataProp: '', // 数据库表字段
       key: '',
       help: '',
       rules: [
@@ -801,7 +861,7 @@ export const customComponents = {
       style: '',
       class: '',
       dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+      dataProp: '', // 数据库表字段
       key: '',
       rules: [
         {
@@ -844,7 +904,7 @@ export const layoutList = [
       tabPosition: 'top',
       size: 'default',
       animated: true,
-      events: [],
+      events: []
     },
     columns: [
       {

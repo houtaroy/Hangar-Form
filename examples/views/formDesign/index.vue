@@ -23,6 +23,8 @@ export default {
         'hUpload',
         'hCommentOptions',
         'hDatePicker',
+        'hPersonnelPicker',
+        'hOpinionsViewer',
         'tabs',
         'grid',
         'table',

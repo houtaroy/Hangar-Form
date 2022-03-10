@@ -136,8 +136,15 @@ const HForm = {
     value: {
       handler(newVal) {
         for (const key in newVal) {
-          Object.assign(this.originalData[key] || {}, newVal[key]);
-          Object.assign(this.formData[key] || {}, newVal[key]);
+          if (this.originalData[key]) {
+            Object.assign(this.originalData[key], newVal[key]);
+            Object.assign(this.formData[key], newVal[key]);
+          } else {
+            this.originalData[key] = {};
+            this.formData[key] = {};
+            Object.assign(this.originalData[key], newVal[key]);
+            Object.assign(this.formData[key], newVal[key]);
+          }
         }
       },
       deep: true,
@@ -260,7 +267,7 @@ const HForm = {
     _parseModel(element) {
       const key = `${element.dataId}.${element.dataProp}`;
       if (has(this.value, key)) {
-        const propValue = get(this.originalData, key, 'null');
+        const propValue = get(this.originalData, key, null);
         this.$set(this.originalData[element.dataId], element.dataProp, propValue);
       } else {
         set(this.defaultValueExpressions, key, element.options.defaultValue);
