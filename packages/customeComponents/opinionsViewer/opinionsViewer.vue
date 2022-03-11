@@ -5,12 +5,7 @@
       :style="{ width: width, color: fontColor, fontSize: fontSize, border: borderStyle }"
     >
       <div class="opinion-block" v-for="item in opinionData" :key="item.taskId">
-        <span
-          class="opinion-comment"
-          :style="{ color: item.comment ? fontColor : '#929292' }"
-          v-if="isOpinionShow"
-          >{{ item.comment ? item.comment : '暂无意见' }}</span
-        >
+        <span class="opinion-comment" v-if="isOpinionShow">{{ item.comment }}</span>
         <span class="opinion-info"
           >【{{ item.assignee ? item.assignee.name : '--' }}&nbsp;&nbsp;{{
             timestampToDate(item.taskEndTime)
@@ -103,7 +98,7 @@ export default {
             const data = resp.data || [];
             const result = [];
             data.forEach(opinion => {
-              if (opinion.taskEndTime) {
+              if (opinion.taskEndTime && opinion.comment) {
                 result.push(opinion);
               }
             });
