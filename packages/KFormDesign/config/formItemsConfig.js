@@ -797,7 +797,8 @@ export const customComponents = {
         defaultValue: '', // 默认值，字符串
         disabled: false, // 是否禁用
         hidden: false, // 是否隐藏，false显示，true隐藏
-        describe: '人员选择'
+        describe: '人员选择',
+        isMulti: true
       },
       style: '',
       class: '',

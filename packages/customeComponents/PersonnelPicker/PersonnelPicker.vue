@@ -87,7 +87,14 @@ export default {
       default: false
     },
     describe: {
-      type: String
+      type: String,
+      required: false,
+      default: '人员选择'
+    },
+    isMulti: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   data() {
@@ -105,7 +112,15 @@ export default {
     value: {
       handler(val) {
         if (val) {
-          this.tagData = JSON.parse(val);
+          const result = [];
+          const data = JSON.parse(val);
+          data.forEach(user => {
+            result.push({
+              key: user.id,
+              title: user.name
+            });
+          });
+          this.tagData = result;
         }
       },
       immediate: true
@@ -117,8 +132,8 @@ export default {
         val.forEach(user => {
           userKey.push(user.key);
           result.push({
-            title: user.title,
-            key: user.key
+            name: user.title,
+            id: user.key
           });
         });
         this.handleTreeData(this.treeData, userKey);
@@ -140,6 +155,12 @@ export default {
         this.flatten(item.children);
       });
     },
+    /**
+     * @desc 处理左侧树子节点禁用的方法
+     * @param {Array} data 左侧人员树的数据
+     * @param {Array} targetKeys 右侧选中人员的key
+     * @return data Array 处理完成后的结果
+     */
     handleTreeData(data, targetKeys = []) {
       data.forEach(item => {
         item['disabled'] = targetKeys.includes(item.key);
@@ -156,6 +177,11 @@ export default {
       });
       return data;
     },
+    /**
+     * @desc 删除Tag标签后的方法
+     * @param {Object} entity 当前删除的人员实体信息
+     * @return 无返回
+     */
     remove(entity) {
       const originData = this.tagData;
       const result = [];
@@ -166,6 +192,10 @@ export default {
       });
       this.tagData = result;
     },
+    /**
+     * @desc 初始化页面后加载人员树根节点的方法
+     * @return 无返回
+     */
     loadTreeData() {
       this.loading = true;
       this.$api
@@ -222,6 +252,10 @@ export default {
         });
       });
     },
+    /**
+     * @desc 将人员添加到右侧列表的方法
+     * @return 无返回
+     */
     addPersonnel() {
       if (!this.checkedKeys.length) {
         return;
@@ -233,9 +267,16 @@ export default {
           result.push(dataItem);
         }
       });
+      if (this.tagData.length + result.length > 1 && !this.isMulti) {
+        return this.$message.info('最多选择1人');
+      }
       this.tagData = this.tagData.concat(JSON.parse(JSON.stringify(result)));
       this.checkedKeys = [];
     },
+    /**
+     * @desc 移除右侧人员的方法
+     * @return 无返回
+     */
     removePersonnel() {
       if (!this.result.length) {
         return;

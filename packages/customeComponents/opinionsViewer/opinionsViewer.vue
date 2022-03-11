@@ -6,17 +6,16 @@
     >
       <div class="opinion-block" v-for="item in opinionData" :key="item.taskId">
         <span
-          class="opinion-text"
+          class="opinion-comment"
           :style="{ color: item.comment ? fontColor : '#929292' }"
           v-if="isOpinionShow"
           >{{ item.comment ? item.comment : '暂无意见' }}</span
         >
-        <span class="opinion-author" v-if="isAuthorShow">{{
-          item.assignee ? item.assignee.name : '--'
-        }}</span>
-        <span class="opinion-date" v-if="isDateShow">{{
-          item.taskEndTime ? timestampToDate(item.taskEndTime) : '--'
-        }}</span>
+        <span class="opinion-info"
+          >【{{ item.assignee ? item.assignee.name : '--' }}&nbsp;&nbsp;{{
+            timestampToDate(item.taskEndTime)
+          }}】</span
+        >
       </div>
     </div>
   </section>
@@ -147,7 +146,7 @@ export default {
   margin-bottom: 8px;
   border-bottom: 1px dotted #e6e6e6;
   overflow: hidden;
-  padding-top: 8px;
+  padding-top: 4px;
   padding-bottom: 12px;
 }
 .opinion-block:last-child {
@@ -155,29 +154,11 @@ export default {
   margin-bottom: 0;
   padding-bottom: 0;
 }
-.opinion-text {
-  display: inline-block;
-  width: 100%;
-  margin-bottom: 12px;
+.opinion-comment {
 }
-.opinion-author {
-  display: inline-block;
-  float: left;
-  text-align: left;
-  width: 50%;
-  font-weight: 400;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.opinion-date {
-  display: inline-block;
-  color: #666666;
+.opinion-info {
   float: right;
+  display: inline-block;
   text-align: right;
-  width: 50%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 </style>

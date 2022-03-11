@@ -427,6 +427,9 @@
         <a-form-item v-if="typeof options.describe !== 'undefined'" label="按钮文字">
           <a-input v-model="options.describe" />
         </a-form-item>
+        <a-form-item v-if="typeof options.isMulti !== 'undefined'" label="属性">
+          <kCheckbox v-model="options.isMulti" style="width: 100%" label="是否支持多选" />
+        </a-form-item>
 
         <!-- 意见查看 -->
         <a-form-item v-if="typeof options.taskDefKey !== 'undefined'" label="流程节点ID">
