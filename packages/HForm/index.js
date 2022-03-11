@@ -2,7 +2,7 @@ import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
 import 'moment/locale/zh-cn';
 
 // import Schema from 'async-validator';
-import { bind, get, has, pick, values, filter, set } from 'lodash';
+import { bind, get, has, pick, values, filter, set, merge } from 'lodash';
 
 import {
   componentMap,
@@ -135,17 +135,8 @@ const HForm = {
     },
     value: {
       handler(newVal) {
-        for (const key in newVal) {
-          if (this.originalData[key]) {
-            Object.assign(this.originalData[key], newVal[key]);
-            Object.assign(this.formData[key], newVal[key]);
-          } else {
-            this.originalData[key] = {};
-            this.formData[key] = {};
-            Object.assign(this.originalData[key], newVal[key]);
-            Object.assign(this.formData[key], newVal[key]);
-          }
-        }
+        this.originalData = merge(this.originalData, newVal);
+        this.formData = merge(this.formData, newVal);
       },
       deep: true,
       immediate: true
