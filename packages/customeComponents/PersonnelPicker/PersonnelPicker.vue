@@ -113,8 +113,8 @@ export default {
       handler(val) {
         if (val) {
           const result = [];
-          const data = JSON.parse(val);
-          data.forEach(user => {
+          const users = JSON.parse(val);
+          users.forEach(user => {
             result.push({
               key: user.id,
               title: user.name
