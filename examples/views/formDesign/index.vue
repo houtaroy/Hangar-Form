@@ -26,7 +26,8 @@ export default {
         'tabs',
         'grid',
         'table',
-        'hWebOffice'
+        'hWebOffice',
+        'hTable'
       ],
       id: '6151CE34-EE7C-907D-F3AA-D548E9C28504'
     };

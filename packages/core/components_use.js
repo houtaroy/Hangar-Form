@@ -62,6 +62,7 @@ import HCommentOptions from '../customeComponents/commonOptions/commonOptions';
 import HDatePicker from '../customeComponents/HDatePicker/HDatePicker';
 import HAceEditor from '../customeComponents/ace-editor';
 import HWebOffice from '../customeComponents/webOffice/webOffice';
+import HTable from '../customeComponents/operateTotalCountTable/index';
 
 export default {
   input: Input,
@@ -129,6 +130,8 @@ Vue.component('h-uploader', HUploader);
 Vue.use(uploader);
 Vue.use(HAceEditor);
 Vue.use(HWebOffice);
+// Vue.use(HTable);
+Vue.component('h-table', HTable);
 
 Vue.prototype.$confirm = Modal.confirm;
 Vue.prototype.$message = message;

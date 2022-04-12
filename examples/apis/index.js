@@ -18,12 +18,16 @@ export const listDictionaryTypesByCode = function(params) {
       resolve({
         data: [
           {
-            code: '1',
-            name: '字典1'
-          },
-          {
-            code: '2',
-            name: '字典2'
+            items: [
+              {
+                code: '1',
+                name: '字典1'
+              },
+              {
+                code: '2',
+                name: '字典2'
+              }
+            ]
           }
         ]
       });

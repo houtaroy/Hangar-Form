@@ -33,7 +33,8 @@ export const componentMap = {
     hUpload: 'h-uploader',
     hCommentOptions: 'h-comment-options',
     hDatePicker: 'h-date-picker',
-    hWebOffice: 'h-web-office'
+    hWebOffice: 'h-web-office',
+    HTable: 'h-table'
   }
 };
 

@@ -90,3 +90,4 @@ export default {
   },
 </script>
 ```
+如果需要隐藏某个选项，用到联动，可以在hidden里写boolen的表达式。页面操作暂未更改，还没想好怎么展示比较好。

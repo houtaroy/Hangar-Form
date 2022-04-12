@@ -1,0 +1,81 @@
+{
+  "type": "HTable",
+  "options": {
+    "columns": [
+      {
+        "title": "",
+        "dataIndex": "",
+        "key": "",
+        "scopedSlots": { "customRender": "" },
+        "align": "left",
+        "ellipsis": false,
+        "showOverflowTooltip": false,
+        "colSpan": null,
+        "width": null,
+        "className": "",
+        "fixed": false,
+        "canEdit": true,
+        "type": "operateBtns",
+        "btns": [
+          {
+            "name": "查看详情",
+            "action": "detailRecord"
+          },
+          {
+            "name": "编辑",
+            "action": "editRecord"
+          },
+          {
+            "name": "删除",
+            "action": "deleteRecord"
+          }
+        ],
+        "filedOptions": {
+          "type": "input",
+          "label": "",
+          "options": {
+            "type": "text",
+            "width": "100%",
+            "defaultValue": "",
+            "placeholder": "请输入",
+            "allowClear": false,
+            "maxLength": null,
+            "addonBefore": "",
+            "addonAfter": "",
+            "hidden": false,
+            "disabled": false
+          },
+          "style": "",
+          "class": "",
+          "dataId": "student",
+          "dataProp": "name",
+          "key": "input_1639125972747",
+          "help": "",
+          "rules": [
+            {
+              "required": true,
+              "message": "必填项"
+            }
+          ],
+          "events": []
+        }
+      }
+    ],
+    "disabled": false,
+    "size": "default",
+    "loading": false,
+    "bordered": false,
+    "indentSize": 20,
+    "locale": {},
+    "rowKey": "key",
+    "showHeader": true,
+    "sortDirections": ["ascend", "descend"],
+    "childrenColumnName": "children"
+  },
+  "dataId": "",
+  "dataProp": "",
+  "style": "",
+  "class": "",
+  "key": "input_1639125972747",
+  "events": []
+}

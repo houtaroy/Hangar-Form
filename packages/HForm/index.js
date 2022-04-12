@@ -39,7 +39,7 @@ function install(Vue) {
 }
 
 const HForm = {
-  name: 'h-form',
+  name: 'HForm',
   install: function(Vue) {
     Vue.component(this.name, this);
   },
@@ -85,7 +85,8 @@ const HForm = {
         'a-tab-pane': this._renderAntTabPane,
         text: this._renderText,
         'h-html': this._renderHtml,
-        'a-tabs': this._renderAntTabs
+        'a-tabs': this._renderAntTabs,
+        'h-table': this._renderHTable
       },
       originalData: {},
       formData: {},
@@ -93,25 +94,36 @@ const HForm = {
       optionsMap: {},
       optionsDynamic: {},
       defaultValueExpressions: {},
-      ignoreRules: false
+      ignoreRules: false,
+      ignoreRulesList: []
     };
   },
   computed: {
     loading: function() {
       return this.loadingCount > 0;
     },
-    rules: function() {
-      const result = {};
-      if (this.disabled || this.ignoreRules) {
-        return result;
-      }
-      values(this.elementConfigs).forEach(elementConfig => {
-        if (!elementConfig.options.disabled) {
-          const model = `${elementConfig.dataId}.${elementConfig.dataProp}`;
-          result[model] = elementConfig.rules;
+    rules: {
+      get() {
+        const result = {};
+        if (this.disabled || this.ignoreRules) {
+          return result;
         }
-      });
-      return result;
+        values(this.elementConfigs).forEach(elementConfig => {
+          const key = `${elementConfig.dataId}.${elementConfig.dataId}`
+          if (
+            !elementConfig.options.disabled ||
+            !this.ignoreRulesList.includes(key)
+          ) {
+            const model = `${elementConfig.dataId}.${elementConfig.dataProp}`;
+            result[model] = elementConfig.rules;
+          }
+        });
+        return result;
+      },
+      set(val) {
+        this.ignoreRulesList.push(val);
+        this.ignoreRulesList = [...new Set(this.ignoreRulesList)];
+      }
     }
   },
   watch: {
@@ -157,26 +169,21 @@ const HForm = {
      * @param {Function} callback 回调函数, 参数为验证结果
      */
     validate(callback) {
-      // new Schema();
-      const hWebOfficeArr = filter(this.elementConfigs, item => {
-        return item.type === 'hWebOffice';
-      });
-      let saveAllOfficeResult = true;
-      for (let item = 0; item < hWebOfficeArr.length; item++) {
-        const saveOfficeResult = this.$refs[hWebOfficeArr[item].key].saveMethod();
-        if (!saveOfficeResult) {
-          callback(false, `${hWebOfficeArr[item].key} 文件保存失败`);
-          saveAllOfficeResult = false;
-          break;
-        }
-      }
-      if (!saveAllOfficeResult) return;
       this.$refs.form.validate((valid, result) => {
         callback(valid, result);
       });
     },
+    onSave(callback) {
+      this.ignoreRules = true;
+      setTimeout(() => {
+        this.validate((valid, object) => {
+          callback(valid, valid ? this.formData : object);
+        });
+      }, 0);
+    },
     /**
      * @description: 表单提交, 先校验再提交(目前仅支持ant)
+     * @param isSave 是不是保存，是否需要验证必填
      * @param {Function} callback 回调函数, 参数为[校验结果, 表单数据]
      */
     submit(callback) {
@@ -224,6 +231,9 @@ const HForm = {
      */
     _parseModel(element) {
       const key = `${element.dataId}.${element.dataProp}`;
+      if (!this.originalData[element.dataId]) {
+        this.$set(this.originalData, element.dataId, {});
+      }
       if (has(this.value, key)) {
         const propValue = get(this.originalData, key, 'null');
         this.$set(this.originalData[element.dataId], element.dataProp, propValue);
@@ -326,7 +336,13 @@ const HForm = {
     _renderElements(elements) {
       const result = [];
       elements.forEach(element => {
-        if (!get(element, 'options.hidden', false)) {
+        const isHiddenExpression = get(element, 'options.hidden', false);
+        let isHidden = isHiddenExpression === true;
+        if (isHiddenExpression && typeof isHiddenExpression === 'string') {
+          const formData = this.formData;
+          isHidden = eval(`formData.${isHiddenExpression}`);
+        }
+        if (!isHidden) {
           result.push(
             excludeFormElementTypes.includes(element.type)
               ? this._renderElement(element)
@@ -349,7 +365,6 @@ const HForm = {
       delete props['rules'];
       return (
         <FormTag
-          v-show={element.options && !element.options.hidden}
           {...{ props: props }}
           style={this.antFormModalItemAttrs.style}>
           {this._renderElement(element)}
@@ -474,6 +489,22 @@ const HForm = {
           {this._renderChildren(element)}
         </a-tab-pane>
       );
+    },
+    /**
+     * @description
+     * @param {String} name
+     * @return {Boolean} true
+     * @Modify dlj
+     */
+    _renderHTable(element) {
+      console.log(element);
+      const props = element.options
+      console.log(props);
+      return (
+        <h-table {...{props}} v-model={this.formData[element.dataId][element.dataProp]}>
+
+        </h-table>
+      )
     },
     /**
      * @description: ant-design的a-tab-pane存在问题, 未找到解决办法, 暂时进行特殊处理

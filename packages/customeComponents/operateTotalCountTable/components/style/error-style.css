@@ -1,0 +1,20 @@
+.form-explain {
+  color: #f5222d;
+  margin-bottom: -1px;
+  line-height: 1.5;
+  transition: color .3s cubic-bezier(.215,.61,.355,1);
+  position: absolute;
+  font-size: 13px;
+}
+.has-error {
+  background-color: #fff;
+  border-color: #f5222d !important;
+}
+
+.has-error.ant-input,
+.has-error.ant-input:hover,
+.has-error.ant-input:focus {
+  background-color: #fff;
+  border-color: #f5222d !important;
+  box-shadow: unset !important;
+}

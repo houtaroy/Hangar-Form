@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "ant-design-vue": "^1.7.7",
+    "async-validator": "^4.0.7",
     "axios": "^0.21.1",
     "babel-plugin-import": "^1.13.0",
     "babel-polyfill": "^6.26.0",

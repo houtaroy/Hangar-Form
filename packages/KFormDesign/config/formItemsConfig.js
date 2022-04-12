@@ -675,6 +675,7 @@ import HUploader from '../../customeComponents/uploadFile/SimpleUploader';
 import hCommentOptions from '../../customeComponents/commonOptions/commonOptions';
 import HDatePicker from '../../customeComponents/HDatePicker/HDatePicker';
 import hWebOffice from '../../customeComponents/webOffice/webOffice';
+import HTable from '../../customeComponents/operateTotalCountTable/index';
 
 // 自定义组件
 export const customComponents = {
@@ -700,7 +701,7 @@ export const customComponents = {
       style: '',
       class: '',
       dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+      dataProp: '', // 数据库表字段
       key: '',
       rules: [
         {
@@ -745,7 +746,7 @@ export const customComponents = {
         key: 'listData'
       },
       dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+      dataProp: '', // 数据库表字段
       key: '',
       rules: [
         {
@@ -774,7 +775,7 @@ export const customComponents = {
       style: '',
       class: '',
       dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+      dataProp: '', // 数据库表字段
       key: '',
       help: '',
       rules: [
@@ -801,7 +802,7 @@ export const customComponents = {
       style: '',
       class: '',
       dataId: '', // 数据库表名称
-    dataProp: '', // 数据库表字段
+      dataProp: '', // 数据库表字段
       key: '',
       rules: [
         {
@@ -809,6 +810,93 @@ export const customComponents = {
           message: '必填项'
         }
       ]
+    },
+    {
+      type: 'HTable', // 表单类型
+      label: '表格数据', // 标题文字
+      icon: 'icon-edit',
+      component: HTable,
+      options: {
+        column: [
+          {
+            title: '',
+            dataIndex: '',
+            key: '',
+            scopedSlots: { customRender: '' },
+            customRender: 'undefined',
+            customCell: 'undefined',
+            customHeaderCell: 'undefined',
+            align: 'left',
+            ellipsis: false,
+            showOverflowTooltip: false,
+            colSpan: null,
+            width: null,
+            className: '',
+            fixed: false,
+            canEdit: true,
+            type: 'operateBtns',
+            btns: [
+              {
+                name: '查看详情',
+                action: 'detailRecord'
+              },
+              {
+                name: '编辑',
+                action: 'editRecord'
+              },
+              {
+                name: '删除',
+                action: 'deleteRecord'
+              }
+            ],
+            filedOptions: {
+              type: 'input',
+              label: '',
+              options: {
+                type: 'text',
+                width: '100%',
+                defaultValue: '',
+                placeholder: '请输入',
+                allowClear: false,
+                maxLength: null,
+                addonBefore: '',
+                addonAfter: '',
+                hidden: false,
+                disabled: false
+              },
+              style: '',
+              class: '',
+              dataId: 'student',
+              dataProp: 'name',
+              key: 'input_1639125972747',
+              help: '',
+              rules: [
+                {
+                  required: true,
+                  message: '必填项'
+                }
+              ],
+              events: []
+            }
+          }
+        ],
+        disabled: false,
+        size: 'default',
+        loading: false,
+        bordered: false,
+        indentSize: 20,
+        locale: {},
+        rowKey: 'key',
+        showHeader: true,
+        sortDirections: ['ascend', 'descend'],
+        childrenColumnName: 'children'
+      },
+      dataId: '',
+      dataProp: '',
+      style: '',
+      class: '',
+      key: 'input_1639125972747',
+      events: []
     }
   ]
 };
@@ -844,7 +932,7 @@ export const layoutList = [
       tabPosition: 'top',
       size: 'default',
       animated: true,
-      events: [],
+      events: []
     },
     columns: [
       {

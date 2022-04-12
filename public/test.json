@@ -72,7 +72,7 @@
         "maxLength": null,
         "addonBefore": "",
         "addonAfter": "",
-        "hidden": false,
+        "hidden": "student.name == 2",
         "disabled": false
       },
       "style": "",
@@ -87,6 +87,209 @@
           "message": "必填项"
         }
       ],
+      "events": []
+    },
+    {
+      "type": "HTable",
+      "label": "表格数据",
+      "options": {
+        "columns": [
+          {
+            "title": "姓名",
+            "dataIndex": "name",
+            "key": "name",
+            "scopedSlots": {
+              "customRender": "name"
+            },
+            "align": "left",
+            "ellipsis": false,
+            "showOverflowTooltip": false,
+            "colSpan": null,
+            "width": null,
+            "className": "",
+            "fixed": false,
+            "canEdit": true,
+            "type": "",
+            "filedOptions": {
+              "type": "input",
+              "label": "姓名",
+              "options": {
+                "type": "text",
+                "width": "100%",
+                "defaultValue": "",
+                "placeholder": "请输入",
+                "allowClear": false,
+                "maxLength": null,
+                "addonBefore": "",
+                "addonAfter": "",
+                "hidden": false,
+                "disabled": false
+              },
+              "style": "",
+              "class": "",
+              "dataProp": "name",
+              "key": "input_1639125922222",
+              "help": "",
+              "rules": [
+                {
+                  "required": true,
+                  "message": "必填项"
+                }
+              ],
+              "events": []
+            }
+          },
+          {
+            "title": "年龄",
+            "dataIndex": "age",
+            "key": "age",
+            "scopedSlots": {
+              "customRender": "age"
+            },
+            "align": "left",
+            "ellipsis": false,
+            "showOverflowTooltip": false,
+            "colSpan": null,
+            "width": null,
+            "className": "",
+            "fixed": false,
+            "canEdit": true,
+            "filedOptions": {
+              "type": "input",
+              "label": "年龄",
+              "options": {
+                "type": "text",
+                "width": "100%",
+                "defaultValue": "",
+                "placeholder": "请输入",
+                "allowClear": false,
+                "maxLength": null,
+                "addonBefore": "",
+                "addonAfter": "",
+                "hidden": false,
+                "disabled": false
+              },
+              "style": "",
+              "class": "",
+              "dataProp": "age",
+              "key": "input_1639125454545",
+              "help": "",
+              "rules": [
+                {
+                  "required": true,
+                  "message": "必填项"
+                }
+              ],
+              "events": []
+            }
+          },
+          {
+            "title": "性别",
+            "dataIndex": "sex",
+            "key": "sex",
+            "scopedSlots": {
+              "customRender": "sex"
+            },
+            "align": "left",
+            "ellipsis": false,
+            "showOverflowTooltip": false,
+            "colSpan": null,
+            "width": null,
+            "className": "",
+            "fixed": false,
+            "canEdit": true,
+            "type": "",
+            "filedOptions": {
+              "type": "radio",
+              "label": "性别",
+              "options": {
+                "disabled": false,
+                "hidden": false,
+                "defaultValue": "",
+                "dataKey": "options",
+                "dynamicKey": "",
+                "dynamic": false,
+                "options": [
+                  {
+                    "value": "1",
+                    "label": "男"
+                  },
+                  {
+                    "value": "2",
+                    "label": "女"
+                  }
+                ]
+              },
+              "style": "",
+              "class": "",
+              "optionsConfig": {
+                "type": "static",
+                "name": "",
+                "key": "options"
+              },
+              "dataProp": "sex",
+              "key": "radio_1646299735967",
+              "help": "",
+              "rules": [
+                {
+                  "required": false,
+                  "message": "必填项"
+                }
+              ],
+              "events": []
+            }
+          },
+          {
+            "title": "操作",
+            "dataIndex": "operate",
+            "key": "operate",
+            "scopedSlots": {
+              "customRender": "operate"
+            },
+            "align": "left",
+            "ellipsis": false,
+            "showOverflowTooltip": false,
+            "colSpan": null,
+            "width": null,
+            "className": "",
+            "fixed": false,
+            "canEdit": false,
+            "type": "operateBtns",
+            "btns": [
+              {
+                "name": "查看详情",
+                "action": "detailRecord"
+              },
+              {
+                "name": "编辑",
+                "action": "editRecord"
+              },
+              {
+                "name": "删除",
+                "action": "deleteRecord"
+              }
+            ]
+          }
+        ],
+        "disabled": false,
+        "size": "default",
+        "loading": false,
+        "bordered": false,
+        "indentSize": 20,
+        "locale": {},
+        "rowKey": "key",
+        "showHeader": true,
+        "sortDirections": [
+          "ascend",
+          "descend"
+        ],
+        "childrenColumnName": "children"
+      },
+      "dataId": "student",
+      "dataProp": "table",
+      "style": "",
+      "class": "",
+      "key": "hTable_1646299431915",
       "events": []
     }
   ],
@@ -128,6 +331,11 @@
     "methods": [
       {
         "name": "outMethod",
+        "arguments": "val",
+        "body": "this.ignoreRulesList.push(val);this.ignoreRulesList=[...new Set(this.ignoreRulesList)]"
+      },
+      {
+        "name": "outMethod1",
         "arguments": "val",
         "body": "this.rules = val"
       }
